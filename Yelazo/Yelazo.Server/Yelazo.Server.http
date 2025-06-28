@@ -1,0 +1,6 @@
+@Yelazo.Server_HostAddress = http://localhost:5169
+
+GET {{Yelazo.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
