@@ -4,11 +4,17 @@
 
 .top-row {
     height: 3.5rem;
-    background-color: rgba(0,0,0,0.4);
+    background-color: #345874 !important; /*Esto es el css del titulo de arriba*/
 }
 
-.navbar-brand {
-    font-size: 1.1rem;
+
+/*.navbar-brand {
+    background-color: #416989 !important;*/ /*Esto es lo que se escribe, en este caso no pusimos el titulo*/
+    /*font-family: 'Alatsi', Arial;
+}*/
+.nav-link:active {
+    background-color: #698EAA;
+    color: #FFF;
 }
 
 .bi {
