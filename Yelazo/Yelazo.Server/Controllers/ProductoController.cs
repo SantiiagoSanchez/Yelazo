@@ -21,10 +21,10 @@ namespace Yelazo.Server.Controllers
 
         // GET: api/productos
         [HttpGet()]
-        public async Task<ActionResult<List<CrearProductoDTO>>> GetAll()
+        public async Task<ActionResult<List<Producto>>> GetAll()
         {
             var productos = await repositorio.Select();
-            var dto = mapper.Map<List<CrearProductoDTO>>(productos);
+            var dto = mapper.Map<List<Producto>>(productos);
             return Ok(dto);
         }
 
@@ -53,8 +53,8 @@ namespace Yelazo.Server.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, EditarProductoDTO productoDTO)
         {
-            if (id != productoDTO.Id)
-                return BadRequest("IDs no coinciden");
+            //if (id != productoDTO.Id)
+            //    return BadRequest("IDs no coinciden");
 
             var existente = await repositorio.SelectById(id);
             if (existente == null)

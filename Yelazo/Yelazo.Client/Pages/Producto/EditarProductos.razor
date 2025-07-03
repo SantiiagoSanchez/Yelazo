@@ -79,20 +79,20 @@
         {
             producto = respuesta.Respuesta;
         }
-        else
-        {
-            navigationManager.NavigateTo("/api/TDocumentos");
-        }
+        // else
+        // {
+        //     navigationManager.NavigateTo("/productos");
+        // }
     }
 
     private async Task Grabar()
     {
-        // var HttpRespuesta = await http.Put<Producto>("api/Producto", producto);
-        // if (HttpRespuesta.Error)
-        // {
-        //     var Body = HttpRespuesta.HttpResponseMessage;
-        // }
-        navigationManager.NavigateTo("/api/Producto");
+        var HttpRespuesta = await http.Put<Producto>($"api/Productos/{productoId}", producto);
+        if (HttpRespuesta.Error)
+        {
+            var Body = HttpRespuesta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("/productos");
     }
 
     private void Cancelar()

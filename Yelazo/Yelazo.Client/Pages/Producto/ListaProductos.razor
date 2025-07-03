@@ -28,7 +28,7 @@
         }
         else if(listaProductos.Count == 0)
         {
-            <p>No se encontraron Productos cargados.</p>            
+            <p>No se encontraron productos cargados.</p>            
         }
         @foreach (var item in listaProductos)
         {
@@ -74,24 +74,17 @@
 
     private async Task Leer()
     {
-        // var resp = await http.Get<List<Producto>>("Aca hay que poner la url del controller");
+        var resp = await http.Get<List<Producto>>("api/Productos");
 
-        // if (!resp.Error)
-        // {
-        //     listaProductos = resp.Respuesta;
-        // }
-        // else
-        // {
-        //     Mensaje = "Error";
-        // }
+        if (!resp.Error)
+        {
+            listaProductos = resp.Respuesta;
+        }
+        else
+        {
+            Mensaje = "Error";
+        }
 
-        listaProductos = new List<Producto>
-    {
-        new Producto { Id = 1, Nombre = "Bolsa de hielo vinoteca", Presentacion = "5kg", Precio = 1500.00M },
-        new Producto { Id = 2, Nombre = "Hielo seco", Presentacion = "2kg", Precio = 900.00M }
-    };
-
-        await Task.CompletedTask;
     }
 
 
@@ -125,10 +118,9 @@
         var confirmado = await Confirmar(nombre);
         if (confirmado)
         {
-            await http.Delete($"api/Producto/{id}");
+            await http.Delete($"api/Productos/{id}");
             await Leer();
         }
-
 
     }
 }

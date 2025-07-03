@@ -8,7 +8,6 @@ namespace Yelazo.Shared.DTO
 {
     public class EditarProductoDTO
     {
-        public int Id { get; set; } 
         public string Nombre { get; set; }
         public string Presentacion { get; set; }
 
@@ -16,7 +15,5 @@ namespace Yelazo.Shared.DTO
 
         public string Descripcion { get; set; }
 
-        //Falta poner la tabla Stock y hacer la relacion
-        public int Stock { get; set; }
     }
 }
