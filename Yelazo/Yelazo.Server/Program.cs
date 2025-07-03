@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Yelazo.BD.Data;
+using Yelazo.Server.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +16,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
 
+builder.Services.AddAutoMapper(typeof(Program));
+
+builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

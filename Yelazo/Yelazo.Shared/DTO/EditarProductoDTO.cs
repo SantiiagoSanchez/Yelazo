@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yelazo.BD.Data.Entity
-{       
-    public class Producto : EntityBase
+namespace Yelazo.Shared.DTO
+{
+    public class EditarProductoDTO
     {
+        public int Id { get; set; } 
         public string Nombre { get; set; }
         public string Presentacion { get; set; }
 
@@ -17,6 +18,5 @@ namespace Yelazo.BD.Data.Entity
 
         //Falta poner la tabla Stock y hacer la relacion
         public int Stock { get; set; }
-
     }
 }

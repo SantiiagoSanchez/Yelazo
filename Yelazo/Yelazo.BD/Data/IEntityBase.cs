@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Yelazo.BD.Data
 {
-    public class EntityBase : IEntityBase
+    public interface IEntityBase
     {
-        public int Id { get; set; }
+        int Id { get; set; }
     }
 }
