@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Yelazo.BD.Data.Entity
-{
+{       
     public class Producto : EntityBase
     {
         [Required(ErrorMessage = "El nombre del producto es obligatorio")]
