@@ -6,14 +6,8 @@ using System.Threading.Tasks;
 
 namespace Yelazo.Shared.DTO
 {
-    public class CrearProductoDTO
+    public class CrearRolDTO
     {
         public string Nombre { get; set; }
-        public string Presentacion { get; set; }
-
-        public decimal Precio { get; set; }
-
-        public string Descripcion { get; set; }
-
     }
 }
