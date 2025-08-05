@@ -13,8 +13,9 @@ namespace Yelazo.Server.Util
                 CreateMap<Producto, EditarProductoDTO>().ReverseMap();
                 CreateMap<Rol, CrearRolDTO>().ReverseMap();
                 CreateMap<CategoriaInsumo, CrearCategoriaInsumosDTO>().ReverseMap();
+                CreateMap<MetodoPago, CrearMetodoPagoDTO>().ReverseMap();
 
-            }
+        }
 
     }
 }
