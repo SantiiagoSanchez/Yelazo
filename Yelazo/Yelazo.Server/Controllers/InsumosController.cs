@@ -7,13 +7,13 @@ using Yelazo.Shared.DTO;
 namespace Yelazo.Server.Controllers
 {
     [ApiController]
-    [Route("api/CategoriaInsumos")]
-    public class CategoriaInsumosController : ControllerBase
+    [Route("api/Insumos")]
+    public class InsumosController : ControllerBase
     {
-        private readonly IRepositorio<CategoriaInsumo> repositorio;
+        private readonly IRepositorio<Insumo> repositorio;
         private readonly IMapper mapper;
 
-        public CategoriaInsumosController(IRepositorio<CategoriaInsumo> repositorio, IMapper mapper)
+        public InsumosController(IRepositorio<Insumo> repositorio, IMapper mapper)
         {
             this.repositorio = repositorio;
             this.mapper = mapper;
@@ -21,27 +21,27 @@ namespace Yelazo.Server.Controllers
 
         // GET: api/productos
         [HttpGet()]
-        public async Task<ActionResult<List<CategoriaInsumo>>> GetAll()
+        public async Task<ActionResult<List<Insumo>>> GetAll()
         {
             var categoriainsumos = await repositorio.Select();
-            var dto = mapper.Map<List<CategoriaInsumo>>(categoriainsumos);
+            var dto = mapper.Map<List<Insumo>>(categoriainsumos);
             return Ok(dto);
         }
 
         // GET: api/productos/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CrearCategoriaInsumosDTO>> Get(int id)
+        public async Task<ActionResult<CrearInsumosDTO>> Get(int id)
         {
             var categoria = await repositorio.SelectById(id);
             if (categoria == null) return NotFound();
-            var dto = mapper.Map<CrearCategoriaInsumosDTO>(categoria);
+            var dto = mapper.Map<CrearInsumosDTO>(categoria);
             return Ok(dto);
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Post(CrearCategoriaInsumosDTO dto)
+        public async Task<ActionResult<int>> Post(CrearInsumosDTO dto)
         {
-            var entidad = mapper.Map<CategoriaInsumo>(dto);
+            var entidad = mapper.Map<Insumo>(dto);
             var id = await repositorio.Insert(entidad);
             return Ok(id);
         }
@@ -51,7 +51,7 @@ namespace Yelazo.Server.Controllers
 
         //PUT: api/producto/5
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, CrearCategoriaInsumosDTO DTO)
+        public async Task<ActionResult> Put(int id, CrearInsumosDTO DTO)
         {
             //if (id != productoDTO.Id)
             //    return BadRequest("IDs no coinciden");

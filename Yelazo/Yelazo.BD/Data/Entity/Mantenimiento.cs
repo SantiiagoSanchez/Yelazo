@@ -16,14 +16,14 @@ namespace Yelazo.BD.Data.Entity
 
         public int Frecuencia { get; set; }
 
-        [Required(ErrorMessage = "El precio del producto es obligatorio")]
-
-        public decimal Precio { get; set; }
-
         [Required(ErrorMessage = "La descripcion del mantenimiento es obligatoria")]
         public string Descripcion { get; set; }
 
         [Required(ErrorMessage = "El estado del mantenimiento es obligatorio")]
         public bool Estado { get; set; }
+
+        [Required(ErrorMessage = "Validar que el mantenimiento necesita insumo es obligatorio")]
+
+        public bool Insumo { get; set; }
     }
 }

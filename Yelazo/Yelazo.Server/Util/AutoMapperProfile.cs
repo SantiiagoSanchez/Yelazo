@@ -12,10 +12,11 @@ namespace Yelazo.Server.Util
                 CreateMap<Producto, CrearProductoDTO>().ReverseMap();
                 CreateMap<Producto, EditarProductoDTO>().ReverseMap();
                 CreateMap<Rol, CrearRolDTO>().ReverseMap();
-                CreateMap<CategoriaInsumo, CrearCategoriaInsumosDTO>().ReverseMap();
+                CreateMap<Insumo, CrearInsumosDTO>().ReverseMap();
                 CreateMap<MetodoPago, CrearMetodoPagoDTO>().ReverseMap();
                 CreateMap<Mantenimiento, CrearMantenimientoDTO>().ReverseMap();
                 CreateMap<TipoGasto, CrearTipoGastoDTO>().ReverseMap();
-        }
+                CreateMap<Proveedor, CrearProveedorDTO>().ReverseMap();
+            }
     }
 }
