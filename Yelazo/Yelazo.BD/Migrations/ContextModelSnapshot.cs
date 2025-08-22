@@ -46,7 +46,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Insumos");
+                    b.ToTable("Insumos", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Mantenimiento", b =>
@@ -76,7 +76,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Mantenimientos");
+                    b.ToTable("Mantenimientos", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.MetodoPago", b =>
@@ -93,7 +93,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MetodosPago");
+                    b.ToTable("MetodosPago", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Producto", b =>
@@ -121,7 +121,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Productos");
+                    b.ToTable("Productos", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Proveedor", b =>
@@ -153,7 +153,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Proveedores");
+                    b.ToTable("Proveedores", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Rol", b =>
@@ -170,7 +170,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.TipoGasto", b =>
@@ -187,7 +187,7 @@ namespace Yelazo.BD.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TiposGasto");
+                    b.ToTable("TiposGasto", (string)null);
                 });
 #pragma warning restore 612, 618
         }
