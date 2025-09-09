@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yelazo.Client", "Yelazo.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yelazo.Server", "Yelazo.Server\Yelazo.Server.csproj", "{5FED6185-FB79-4C17-A37E-723C75BC96DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yelazo.Shared", "Yelazo.Shared\Yelazo.Shared.csproj", "{43AA359B-FFB1-4EF6-B5A5-F26EC12B903C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Yelazo.Shared", "Yelazo.Shared\Yelazo.Shared.csproj", "{43AA359B-FFB1-4EF6-B5A5-F26EC12B903C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
