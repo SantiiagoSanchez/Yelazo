@@ -21,6 +21,7 @@ builder.Services.AddDbContext<Context>(op => op.UseSqlServer("name=conn"));
 builder.Services.AddAutoMapper(typeof(Program));
 
 builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddScoped<IStockRepositorio, StockRepositorio>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
