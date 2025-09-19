@@ -23,5 +23,9 @@ namespace Yelazo.BD.Data.Entity
 
         public string Descripcion { get; set; }
 
+        [Required(ErrorMessage = "La cantidad del producto es obligatoria")]
+
+        public int Cantidad { get; set; } = 0;
+
     }
 }

@@ -20,6 +20,8 @@ namespace Yelazo.BD.Data
         public DbSet<Producto> Productos { get; set; }
 
         public DbSet<Rol> Roles { get; set; }
+
+        public DbSet<Stock> Stocks { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
         }
