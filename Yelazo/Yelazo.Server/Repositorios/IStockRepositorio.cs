@@ -7,5 +7,6 @@ namespace Yelazo.Server.Repositorios
     {
         Task crearAsync(Stock stock);
         Task<List<Stock>> GetStockInclude();
+        Task<List<Stock>> GetStockPorFecha(DateTime fecha);
     }
 }

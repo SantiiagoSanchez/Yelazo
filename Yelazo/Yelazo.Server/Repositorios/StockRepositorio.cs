@@ -26,5 +26,10 @@ namespace Yelazo.Server.Repositorios
             context.Stocks.Add(stock);
             await context.SaveChangesAsync();
         }
+
+        public async Task<List<Stock>> GetStockPorFecha(DateTime fecha)
+        {
+            return await context.Stocks.Where(s => s.FechaActualizacio.Date == fecha.Date).Include(p => p.Producto).ToListAsync();
+        }
     }
 }

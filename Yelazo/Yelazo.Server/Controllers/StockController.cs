@@ -29,6 +29,20 @@ namespace Yelazo.Server.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("filter")]
+        public async Task<ActionResult<List<Stock>>> GetByFilter([FromQuery] DateTime fecha) //El fromquery es para que lo tome de la url, es decir, api/Stock/filter?fecha=2024-01-01 por ejemplo.
+        {
+            var stock = await repositorio.GetStockPorFecha(fecha);
+
+            if (stock == null || stock.Count == 0)
+            {
+                return NotFound("No se encontraron registros para la fecha proporcionada.");
+            }
+
+            var dto = mapper.Map<List<Stock>>(stock);
+            return Ok(dto);
+        }
+
         [HttpPost()]
         public async Task<ActionResult<int>> CrearStock([FromBody] CrearStockDTO dto)
         {
@@ -51,7 +65,7 @@ namespace Yelazo.Server.Controllers
             {
                 producto.Cantidad += dto.Cantidad;
             }
-            else if (dto.Movimiento == "Salida") 
+            else if (dto.Movimiento == "Salida")
             {
                 producto.Cantidad -= dto.Cantidad;
             }
