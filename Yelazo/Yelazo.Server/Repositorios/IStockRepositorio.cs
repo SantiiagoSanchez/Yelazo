@@ -5,6 +5,7 @@ namespace Yelazo.Server.Repositorios
 {
     public interface IStockRepositorio
     {
+        Task crearAsync(Stock stock);
         Task<List<Stock>> GetStockInclude();
     }
 }

@@ -20,5 +20,11 @@ namespace Yelazo.Server.Repositorios
                 .Include(s => s.Producto) // Incluir la entidad relacionada Producto
                 .ToListAsync();
         }
+
+        public async Task crearAsync(Stock stock)
+        {
+            context.Stocks.Add(stock);
+            await context.SaveChangesAsync();
+        }
     }
 }
