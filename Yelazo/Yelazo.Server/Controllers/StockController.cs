@@ -43,6 +43,15 @@ namespace Yelazo.Server.Controllers
             return Ok(dto);
         }
 
+        [HttpGet("movimientos-hoy")]
+        public async Task<ActionResult<List<Stock>>> GetMovimientosHoy()
+        {
+            var hoy = DateTime.Today;
+            var movimientos = await repositorio.GetStockPorFecha(hoy);
+            var dto = mapper.Map<List<Stock>>(movimientos);
+            return Ok(dto);
+        }
+
         [HttpPost()]
         public async Task<ActionResult<int>> CrearStock([FromBody] CrearStockDTO dto)
         {

@@ -1,0 +1,131 @@
+﻿@page "/historial-stock"
+@inject IHttpServicio http
+
+<div class="card shadow-sm border-0 p-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="fw-bold mb-1">Historial de Movimientos</h3>
+            <small class="text-muted">Control de entradas y salidas de productos</small>
+        </div>
+
+        <!-- Filtro -->
+        <div class="d-flex align-items-center gap-2">
+            <InputDate @bind-Value="fechaSeleccionada" class="form-control form-control-sm" />
+            <button class="btn btn-outline-primary btn-sm" @onclick="Leer">
+                <i class="bi bi-search"></i> Aplicar
+            </button>
+        </div>
+    </div>
+
+    <!-- Totales -->
+    <div class="d-flex gap-3 mb-4">
+        <div class="card border-0 shadow-sm flex-fill p-3 text-center">
+            <h6 class="text-muted">INGRESOS HOY</h6>
+            <h2 class="text-success fw-bold">@TotalIngresosHoy</h2>
+        </div>
+        <div class="card border-0 shadow-sm flex-fill p-3 text-center">
+            <h6 class="text-muted">EGRESOS HOY</h6>
+            <h2 class="text-danger fw-bold">@TotalEgresosHoy</h2>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-responsive">
+        <table class="table align-middle table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th class="text-uppercase small">ID Mov.</th>
+                    <th class="text-uppercase small">Producto</th>
+                    <th class="text-uppercase small">Cantidad</th>
+                    <th class="text-uppercase small">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (listaStock == null)
+                {
+                    <tr><td colspan="4" class="text-center text-muted">Buscando registros ...</td></tr>
+                }
+                else if (listaStock.Count == 0)
+                {
+                    <tr><td colspan="4" class="text-center text-muted">No se encontraron registros cargados.</td></tr>
+                }
+                else
+                {
+                    @foreach (var item in listaStock)
+                    {
+                        <tr>
+                            <td>@item.Id.ToString("D3")</td>
+                            <td>@item.Producto.Nombre @item.Producto.Presentacion</td>
+                            <td class="fw-bold" style="color:@(item.Movimiento == "Entrada" ? "green" : "red")">
+                                @(item.Movimiento == "Entrada" ? "+" : "-")@Math.Abs(item.Cantidad)
+                            </td>
+                            <td>@item.FechaActualizacio.ToString("dd MMM yyyy HH:mm")</td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    DateTime fechaSeleccionada = DateTime.Today;
+    int TotalIngresosHoy = 0;
+    int TotalEgresosHoy = 0;
+
+    List<Stock> listaStock = new List<Stock>();
+    string Mensaje = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+        await CargarTotalesHoy();
+    }
+
+    private async Task Leer()
+    {
+        Mensaje = "";
+        listaStock = new List<Stock>();
+
+        var fechaStr = fechaSeleccionada.ToString("yyyy-MM-dd");
+        var resp = await http.Get<List<Stock>>($"api/Stock/filter?fecha={fechaStr}");
+
+        if (!resp.Error && resp.Respuesta != null)
+        {
+            listaStock = resp.Respuesta;
+
+            if (listaStock.Count == 0)
+            {
+                Mensaje = "No se encontraron registros para la fecha seleccionada.";
+            }
+        }
+        else
+        {
+            Mensaje = "Error al obtener datos.";
+        }
+    }
+
+    private async Task CargarTotalesHoy()
+    {
+        var resp = await http.Get<List<Stock>>("api/Stock/movimientos-hoy");
+
+        if (!resp.Error && resp.Respuesta != null)
+        {
+            var movimientosHoy = resp.Respuesta;
+
+            TotalIngresosHoy = movimientosHoy
+                .Where(x => x.Movimiento == "Entrada")
+                .Sum(x => x.Cantidad);
+
+            TotalEgresosHoy = movimientosHoy
+                .Where(x => x.Movimiento == "Salida")
+                .Sum(x => Math.Abs(x.Cantidad));
+        }
+        else
+        {
+            TotalIngresosHoy = 0;
+            TotalEgresosHoy = 0;
+        }
+    }
+}
