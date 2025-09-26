@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Yelazo.BD\Yelazo.BD.csproj" />
+    <ProjectReference Include="..\Yelazo.Shared\Yelazo.Shared.csproj" />
   </ItemGroup>
 
 </Project>

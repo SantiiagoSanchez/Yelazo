@@ -28,10 +28,11 @@
             </div>
 
             <InputSelect class="form-select border-secondary me-2" @bind-Value="movimiento">
+                <option value="">Seleccione...</option>
                 <option value="Entrada">Ingreso</option>
                 <option value="Salida">Egreso</option>
-                
-              
+
+
             </InputSelect>
 
             <div class="mb-3">
@@ -78,12 +79,12 @@
     private async Task Grabar()
     {
         Stock registro = new Stock
-            {
-                ProductoId = productoId,
-               FechaActualizacio = DateTime.Today,
-                Cantidad = cantidad,
-                Movimiento = movimiento
-            };
+        {
+            ProductoId = productoId,
+            FechaActualizacio = DateTime.Today,
+            Cantidad = cantidad,
+            Movimiento = movimiento
+        };
         var HttpRespuesta = await http.Post<Stock>("api/Stock", registro);
         if (HttpRespuesta.Error)
         {
