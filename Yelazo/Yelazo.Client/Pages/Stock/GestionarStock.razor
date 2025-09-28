@@ -5,56 +5,66 @@
 @inject NavigationManager navigationManager
 
 
-
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Tipo de Bolsa (x KG)</th>
-            <th>Cantidad</th>
-
-        </tr>
-    </thead>
-    <tbody>
+<div class="card shadow-sm border-0 mb-4">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-semibold mb-0">Gestión de Stock</h4>
+                <small class="text-muted">Listado de productos disponibles</small>
+            </div>
+            <button class="btn btn-outline-secondary d-flex align-items-center gap-2" @onclick="VisualizarHistorial">
+                <i class="bi bi-clock-history"></i>
+                Historial
+            </button>
+        </div>
 
         @if (listaProducto == null)
         {
-            <p>Cargando Stock ...</p>
+            <div class="alert alert-info">Cargando stock...</div>
         }
         else if (listaProducto.Count == 0)
         {
-            <p>No se encontraron productos cargados.</p>
+            <div class="alert alert-warning">No se encontraron productos cargados.</div>
         }
-        @foreach (var item in listaProducto)
+        else
         {
-            <tr>
-                <td>
-                    <div>@item.Nombre</div>
-                    <div>@item.Presentacion</div>
-                  
-                </td>
+            <div class="table-responsive">
+                <table class="table align-middle table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Tipo de Bolsa</th>
+                            <th>Cantidad</th>
+                            <th class="text-end">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in listaProducto)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="fw-bold">@item.Nombre</div>
+                                    <div class="text-muted small">@item.Presentacion</div>
+                                </td>
 
-                <td>@item.Cantidad</td>
+                                <td>
+                                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">
+                                        @item.Cantidad
+                                    </span>
+                                </td>
 
-                <td>
-                    <a class="btn btn-primary" href="/stock/editar/@item.Id">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                        </svg>
-                    </a>
-                </td>
-            
-            </tr>
+                                <td class="text-end">
+                                    <a class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" href="/stock/editar/@item.Id">
+                                        <i class="bi bi-pencil-square"></i>
+                                        Editar
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
-
-    </tbody>
-</table>
-<!-- Botón de Visualizar historial -->
-<div class="d-flex justify-content-end mt-3">
-    <button class="btn btn-outline-secondary d-flex align-items-center gap-2" @onclick="VisualizarHistorial">
-        <i class="bi bi-clock-history"></i>
-        Visualizar historial
-    </button>
+    </div>
 </div>
 
 
@@ -87,8 +97,6 @@
         }
 
     }
-
-
 
 
 }
