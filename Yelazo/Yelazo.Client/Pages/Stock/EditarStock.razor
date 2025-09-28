@@ -9,8 +9,8 @@
         <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Cerrar" @onclick="Cancelar"></button>
 
         <!-- Título -->
-        <h5 class="fw-semibold mb-1">Agregar stock</h5>
-        <p class="text-muted mb-4">Registra nueva entrada de inventario </p>
+        <h5 class="fw-semibold mb-1">Editar stock</h5>
+        <p class="text-muted mb-4">Registra nueva entrada/salida de inventario </p>
 
         <EditForm Model="producto" OnValidSubmit="Grabar">
             <DataAnnotationsValidator />
@@ -23,8 +23,13 @@
                 <p class="form-control">@producto.Nombre  @producto.Presentacion</p>
             </div>
 
-            <div class="mb-3">
-                <p class="form-control">Cantidad actual:  @producto.Cantidad</p>
+            <div class="alert alert-primary d-flex align-items-center" role="alert" style="background-color: #eaf4fe; color: #0c63e4;">
+                <svg xmlns="http://www.w3.org/2000/svg" class="me-2" width="16" height="16" fill="#0c63e4" viewBox="0 0 16 16">
+                    <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-4.412-.588-.034-.007-.857c-.02-1.007-.031-1.266-.077-1.358a.623.623 0 0 0-.277-.267c-.164-.087-.23-.091-1.005-.105l-.835-.014v-.571h1.714c.985 0 1.729.003 1.77.008.104.01.243.04.344.088.25.123.37.392.382.863l.007.45c.02 1.007.03 1.266.077 1.358.06.12.144.2.277.267.164.087.23.091 1.005.105l.835.014v.571h-1.714a6.992 6.992 0 0 1-.588-.034zM8 5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                </svg>
+                <div>
+                    <strong>Stock actual:</strong> @producto.Cantidad unidades
+                </div>
             </div>
 
             <InputSelect class="form-select border-secondary me-2" @bind-Value="movimiento">
