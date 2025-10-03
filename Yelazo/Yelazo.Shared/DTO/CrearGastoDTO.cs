@@ -22,7 +22,7 @@ namespace Yelazo.Shared.DTO
 
         [Required(ErrorMessage = "El tipo de gasto para el costo es necesario")]
 
-        public int tipoGastoId { get; set; }
+        public int TipoGastoId { get; set; }
 
         [Required(ErrorMessage = "El proveedor para el costo, es necesario")]
 
