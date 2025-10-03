@@ -12,7 +12,7 @@ namespace Yelazo.BD.Data
     {
 
         public DbSet<Insumo> Insumos { get; set; }
-
+        public DbSet<Gasto> Gastos { get; set; }
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<TipoGasto> TiposGasto { get; set; }
         public DbSet<MetodoPago> MetodosPago { get; set; }

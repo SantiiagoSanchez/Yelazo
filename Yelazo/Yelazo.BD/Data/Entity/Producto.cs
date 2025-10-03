@@ -27,5 +27,8 @@ namespace Yelazo.BD.Data.Entity
 
         public int Cantidad { get; set; } = 0;
 
+
+        [Required(ErrorMessage = "La estado del producto es obligatorio")]
+        public bool Estado { get; set; } = true; 
     }
 }

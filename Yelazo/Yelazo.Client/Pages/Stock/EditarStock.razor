@@ -31,7 +31,7 @@
                     <strong>Stock actual:</strong> @producto.Cantidad unidades
                 </div>
             </div>
-
+         
             <InputSelect class="form-select border-secondary me-2" @bind-Value="movimiento">
                 <option value="">Seleccione...</option>
                 <option value="Entrada">Ingreso</option>
@@ -39,6 +39,13 @@
 
 
             </InputSelect>
+
+            @if (error)
+            {
+                <div class="text-danger mt-1">
+                    Debe seleccionar un tipo de movimiento.
+                </div>
+            }
 
             <div class="mb-3">
                 <label class="form-label">Categoría</label>
@@ -51,7 +58,7 @@
                 <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
                         <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
-                    </svg> Guardar insumo
+                    </svg> Editar Stock
                 </button>
             </div>
         </EditForm>
@@ -63,6 +70,7 @@
     Producto producto = new Producto();
     int cantidad;
     string movimiento;
+    bool error = false; 
     [Parameter] public int productoId { get; set; }
 
     protected override async Task OnInitializedAsync()
@@ -83,19 +91,33 @@
 
     private async Task Grabar()
     {
-        Stock registro = new Stock
+        if (string.IsNullOrWhiteSpace(movimiento))
         {
-            ProductoId = productoId,
-            FechaActualizacio = DateTime.Today,
-            Cantidad = cantidad,
-            Movimiento = movimiento
-        };
-        var HttpRespuesta = await http.Post<Stock>("api/Stock", registro);
-        if (HttpRespuesta.Error)
-        {
-            var Body = HttpRespuesta.HttpResponseMessage;
+            error = true;
+           
         }
-        navigationManager.NavigateTo("/stock/gestionar");
+        else
+        {
+            error = false;
+            Stock registro = new Stock
+                {
+                    ProductoId = productoId,
+                    FechaActualizacio = DateTime.Today,
+                    Cantidad = cantidad,
+                    Movimiento = movimiento
+                };
+            var HttpRespuesta = await http.Post<Stock>("api/Stock", registro);
+            if (HttpRespuesta.Error)
+            {
+                var Body = HttpRespuesta.HttpResponseMessage;
+            }
+            navigationManager.NavigateTo("/stock/gestionar");
+            
+        }
+        
+      
+        
+      
     }
 
     private void Cancelar()
