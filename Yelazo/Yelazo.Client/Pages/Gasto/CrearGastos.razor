@@ -5,75 +5,78 @@
 <div class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style="z-index: 1050;">
     <div class="bg-white rounded-3 shadow p-4" style="width: 100%; max-width: 500px; position: relative;">
 
-        <!-- Botón de cerrar (X) -->
+        <!-- Botón de cerrar -->
         <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Cerrar" @onclick="Cancelar"></button>
 
         <!-- Título -->
-        <h5 class="fw-semibold mb-1">Nuevo insumo</h5>
-        <p class="text-muted mb-4">Completa la información del insumo</p>
-
+        <h5 class="fw-semibold mb-1">Nuevo gasto</h5>
+        <p class="text-muted mb-4">Registra un nuevo gasto</p>
 
         <EditForm Model="gasto" OnValidSubmit="Grabar">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
-            <!-- Información del Insumo -->
-            <h6 class="fw-bold">Información del Gasto</h6>
+            <!-- Información del gasto -->
+            <h6 class="fw-bold mb-3 pb-2 border-bottom">Información del gasto</h6>
 
             <div class="mb-3">
-                <label class="form-label">Fecha de Última Actualización</label>
-                <InputDate class="form-control" @bind-Value="gasto.Fecha" />
+                <label class="form-label">Fecha *</label>
+                <InputDate class="form-control form-control-lg shadow-sm border-0" @bind-Value="gasto.Fecha" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Tipo de Gasto</label>
+                <label class="form-label">Tipo de gasto *</label>
                 <div class="d-flex">
-                    <InputSelect class="form-select bg-white text-dark border-secondary me-2" @bind-Value="gasto.TipoGastoId">
+                    <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="gasto.TipoGastoId">
                         <option value="">Seleccione...</option>
-                        @foreach (var gasto in tipoGastos)
+                        @foreach (var tg in tipoGastos)
                         {
-                            <option value="@gasto.Id">@gasto.Nombre</option>
+                            <option value="@tg.Id">@tg.Nombre</option>
                         }
                     </InputSelect>
-                    <a href="/tiposGasto/crear" class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-                       title="Nuevo Tipo Gasto" style="width: 40px; height: 40px;">+</a>
+                    <a href="/tiposGasto/crear"
+                       class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+                       title="Nuevo Tipo Gasto" style="width: 42px; height: 42px;">+</a>
                 </div>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Descripción *</label>
+                <InputText class="form-control form-control-lg shadow-sm border-0" @bind-Value="gasto.Descripcion" />
+            </div>
 
+            <!-- Detalles del costo -->
+            <h6 class="fw-bold mb-3 mt-4 pb-2 border-bottom">Detalles del costo</h6>
 
             <div class="mb-3">
-                <label class="form-label">Descripcion</label>
-                <InputText class="form-control" @bind-Value="gasto.Descripcion" />
+                <label class="form-label">Costo *</label>
+                <div class="input-group input-group-lg shadow-sm">
+                    <span class="input-group-text">$</span>
+                    <InputNumber class="form-control border-0" @bind-Value="gasto.Costo" />
+                </div>
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Costo</label>
-                <InputNumber class="form-control" @bind-Value="gasto.Costo" />
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Proveedor</label>
+                <label class="form-label">Proveedor *</label>
                 <div class="d-flex">
-                    <InputSelect class="form-select bg-white text-dark border-secondary me-2" @bind-Value="gasto.ProveedorId">
+                    <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="gasto.ProveedorId">
                         <option value="">Seleccione...</option>
                         @foreach (var proveedor in proveedores)
                         {
                             <option value="@proveedor.Id">@proveedor.Nombre</option>
                         }
                     </InputSelect>
-                    <a href="/tiposGasto/crear" class="btn btn-outline-light rounded-circle d-flex align-items-center justify-content-center"
-                       title="Nuevo Tipo Gasto" style="width: 40px; height: 40px;">+</a>
+                    <a href="/proveedor"
+                       class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+                       title="Nuevo Proveedor" style="width: 42px; height: 42px;">+</a>
                 </div>
             </div>
 
             <!-- Botones -->
             <div class="d-flex justify-content-end border-top pt-3 gap-2">
-                <button type="button" class="btn btn-light" @onclick="Cancelar">Cancelar</button>
-                <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check2" viewBox="0 0 16 16">
-                        <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0" />
-                    </svg> Guardar gasto
+                <button type="button" class="btn btn-light btn-lg" @onclick="Cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Registrar Gasto
                 </button>
             </div>
         </EditForm>
