@@ -1,0 +1,72 @@
+﻿@page "/proveedor/crear"
+@inject NavigationManager navigationManager
+@inject IHttpServicio http
+
+<div class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style="z-index: 1050;">
+    <div class="bg-white rounded-4 shadow p-4" style="width: 100%; max-width: 520px; position: relative;">
+
+        <!-- Botón cerrar -->
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Cerrar" @onclick="Cancelar"></button>
+
+        <!-- Título -->
+        <h5 class="fw-bold mb-1">Crear Proveedor</h5>
+        <p class="text-muted mb-4">Complete los datos del nuevo proveedor</p>
+
+        <EditForm Model="proveedor" OnValidSubmit="Grabar">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Nombre *</label>
+                <InputText class="form-control form-control-lg" placeholder="Ingrese el nombre del proveedor" @bind-Value="proveedor.Nombre" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Dirección *</label>
+                <InputText class="form-control form-control-lg" placeholder="Ingrese la dirección completa" @bind-Value="proveedor.Direccion" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Teléfono *</label>
+                <InputText class="form-control form-control-lg" placeholder="Ingrese el número de teléfono" @bind-Value="proveedor.Telefono" />  <!--Nose porque pero el telefono esta en string en la bd xD-->
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">Email (opcional)</label>
+                <InputText class="form-control form-control-lg" placeholder="ejemplo@correo.com" @bind-Value="proveedor.Correo" />
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label fw-semibold">Descripción *</label>
+                <InputTextArea class="form-control form-control-lg" rows="3" placeholder="Describa los productos o servicios que ofrece" @bind-Value="proveedor.Descripcion" />
+            </div>
+
+            <div class="d-flex justify-content-end border-top pt-3 gap-2">
+                <button type="button" class="btn btn-light px-4" @onclick="Cancelar">Cancelar</button>
+                <button type="submit" class="btn btn-primary px-4">
+                    Guardar Proveedor
+                </button>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@code {
+    private Proveedor proveedor = new Proveedor();
+
+    private async Task Grabar()
+    {
+        var HttpRespuesta = await http.Post<Proveedor>("api/Proveedor", proveedor);
+        if (HttpRespuesta.Error)
+        {
+            var Body = HttpRespuesta.HttpResponseMessage;
+        }
+        navigationManager.NavigateTo("/proveedor");
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/proveedor");
+    }
+
+}

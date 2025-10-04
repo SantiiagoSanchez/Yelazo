@@ -1,5 +1,6 @@
 ﻿@page "/historial-stock"
 @inject IHttpServicio http
+@inject NavigationManager navigationManager
 
 <div class="card shadow-sm border-0 p-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -7,7 +8,9 @@
             <h3 class="fw-bold mb-1">Historial de Movimientos</h3>
             <small class="text-muted">Control de entradas y salidas de productos</small>
         </div>
-
+        <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="Volver">
+            <i class="bi bi-arrow-left"></i> Volver
+        </button>
         <!-- Filtro -->
         <div class="d-flex align-items-center gap-2">
             <InputDate @bind-Value="fechaSeleccionada" class="form-control form-control-sm" />
@@ -127,5 +130,11 @@
             TotalIngresosHoy = 0;
             TotalEgresosHoy = 0;
         }
+    }
+
+    private void Volver()
+    {
+        // Navegar a la página de gestión de stock
+        navigationManager.NavigateTo("/stock/gestionar");
     }
 }
