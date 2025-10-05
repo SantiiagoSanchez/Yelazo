@@ -15,25 +15,19 @@
     <div class="col-md-3">
         <div class="border rounded p-3 text-center">
             <h6 class="text-muted m-0">Total gastos</h6>
-            <h5 class="fw-bold mt-2">24</h5>
+            <h5 class="fw-bold mt-2">@totalGastos</h5>
         </div>
     </div>
     <div class="col-md-3">
         <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Stock e inventario</h6>
-            <h5 class="fw-bold mt-2 text-danger">$1,250.00</h5>
+            <h6 class="text-muted m-0">Costos de gastos (mes)</h6>
+            <h5 class="fw-bold mt-2 text-warning">$@totalGastosMes</h5>
         </div>
     </div>
     <div class="col-md-3">
         <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Combustible (mes)</h6>
-            <h5 class="fw-bold mt-2 text-warning">$850.00</h5>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Último mantenimiento</h6>
-            <h5 class="fw-bold mt-2 text-success">Hace 5 días</h5>
+            <h6 class="text-muted m-0">Último gasto</h6>
+            <h5 class="fw-bold mt-2 text-success">@ultimoGasto</h5>
         </div>
     </div>
 </div>
@@ -121,11 +115,51 @@
 @code {
     List<Gasto> listaGastos = new List<Gasto>();
     string Mensaje = "";
+    decimal totalGastos = 0;
+    decimal totalGastosMes = 0;
+    string ultimoGasto = "Cargando...";
+
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
+        await CalcularTotalGastos();
+        await CalcularTotalGastosMes();
+        await CalcularUltimoGasto();
+    }
+
+    private async Task CalcularTotalGastos()
+    {
+        totalGastos = listaGastos.Count;
+    }
+
+    private async Task CalcularTotalGastosMes()
+    {
+        var mesActual = DateTime.Now.Month;
+        totalGastosMes = listaGastos.Where(g => g.Fecha.Month == mesActual).Sum(g => g.Costo);
+    }
+
+    private async Task CalcularUltimoGasto()
+    {
+        if (listaGastos.Any())
+        {
+            var gasto = listaGastos.OrderByDescending(g => g.Fecha).First(); //Ordeno de manera descendente y escogo el primero, entonces eso me da el ultimo gasto
+            var diasTranscurridos = (DateTime.Now - gasto.Fecha).Days; //Calculo los dias transcurridos desde el ultimo gasto
+
+            if (diasTranscurridos == 0)
+            {
+                ultimoGasto = "Hoy";
+            }
+            else
+            {
+                ultimoGasto = $"Hace {diasTranscurridos} días";
+            }
+        }
+        else
+        {
+            ultimoGasto = "No hay gastos registrados";
+        }
     }
 
     private async Task Leer()
