@@ -17,8 +17,4 @@
     <ProjectReference Include="..\Yelazo.Shared\Yelazo.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Pages\Gasto\" />
-  </ItemGroup>
-
 </Project>

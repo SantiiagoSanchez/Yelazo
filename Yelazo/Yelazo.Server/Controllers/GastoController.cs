@@ -31,11 +31,11 @@ namespace Yelazo.Server.Controllers
 
         // GET: api/productos/5
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<CrearInsumosDTO>> Get(int id)
+        public async Task<ActionResult<CrearGastoDTO>> Get(int id)
         {
             var categoria = await repositorio.SelectById(id);
-            if (categoria == null) return NotFound();
-            var dto = mapper.Map<CrearInsumosDTO>(categoria);
+            if (categoria == null) return NotFound("No se encontro el registro con ese ID");
+            var dto = mapper.Map<CrearGastoDTO>(categoria);
             return Ok(dto);
         }
 
@@ -52,7 +52,7 @@ namespace Yelazo.Server.Controllers
 
         //PUT: api/producto/5
         [HttpPut("{id:int}")]
-        public async Task<ActionResult> Put(int id, CrearInsumosDTO DTO)
+        public async Task<ActionResult> Put(int id, CrearGastoDTO DTO)
         {
             //if (id != productoDTO.Id)
             //    return BadRequest("IDs no coinciden");
@@ -60,9 +60,6 @@ namespace Yelazo.Server.Controllers
             var existente = await repositorio.SelectById(id);
             if (existente == null)
                 return NotFound("No existe la categoría");
-
-            if (string.IsNullOrWhiteSpace(DTO.Nombre))
-                return BadRequest("El nombre de la categoría es obligatorio.");
 
             // Mapeamos SOLO los datos actualizados sobre la entidad existente
             mapper.Map(DTO, existente);
