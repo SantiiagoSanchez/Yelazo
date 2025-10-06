@@ -28,6 +28,20 @@ namespace Yelazo.Server.Controllers
             var dto = mapper.Map<List<Gasto>>(categoriainsumos);
             return Ok(dto);
         }
+        [HttpGet("buscar")]
+        public async Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(
+    [FromQuery] string? nombreTipoGasto,
+    [FromQuery] DateTime? fecha)
+        {
+            var resultados = await repositorio.BuscarGastos(nombreTipoGasto, fecha);
+
+            //if (resultados == null || !resultados.Any())
+            //{
+            //    return NotFound("No se encontraron gastos con los filtros aplicados.");
+            //}
+
+            return Ok(resultados);
+        }
 
         // GET: api/productos/5
         [HttpGet("{id:int}")]

@@ -31,5 +31,7 @@ namespace Yelazo.Server.Repositorios
         {
             return await context.Stocks.Where(s => s.FechaActualizacio.Date == fecha.Date).Include(p => p.Producto).ToListAsync();
         }
+
+
     }
 }
