@@ -24,6 +24,7 @@ builder.Services.AddScoped(typeof(IRepositorio<>), typeof(Repositorio<>));
 builder.Services.AddScoped<IStockRepositorio, StockRepositorio>();
 builder.Services.AddScoped<IProductoRepositorio, ProductoRepositorio>();
 builder.Services.AddScoped<IGastoRepositorio, GastoRepositorio>();
+builder.Services.AddScoped<IActividadMantenimientoRepositorio, ActividadMantenimientoRepositorio>();
 
 var app = builder.Build();
 

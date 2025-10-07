@@ -18,6 +18,7 @@ namespace Yelazo.Server.Util
                 CreateMap<Mantenimiento, CrearMantenimientoDTO>().ReverseMap();
                 CreateMap<TipoGasto, CrearTipoGastoDTO>().ReverseMap();
                 CreateMap<Proveedor, CrearProveedorDTO>().ReverseMap();
-            }
+                CreateMap<ActividadMantenimiento, CrearActividadMantenimientoDTO>().ReverseMap();
+        }
     }
 }

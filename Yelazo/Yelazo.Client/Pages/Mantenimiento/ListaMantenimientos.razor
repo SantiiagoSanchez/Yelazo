@@ -48,9 +48,9 @@ else
                             <li><strong>Insumo:</strong> @(item.Insumo ? "Sí" : "No")</li>  
                         </ul>  
 
-                        <div class="d-flex justify-content-between">  
-                            <a class="btn btn-sm btn-outline-primary" href="/mantenimientos/editar/@item.Id">  
-                                Editar  
+                        <div class="d-flex justify-content-between">
+                            <a class="btn btn-sm btn-outline-primary" href="/actividadmantenimiento/crear/@item.Id">
+                                Renovar  
                             </a>  
                             <button class="btn btn-sm btn-outline-danger" @onclick="() => EliminarMantenimiento(item.Id, item.Nombre)">  
                                 Eliminar  
