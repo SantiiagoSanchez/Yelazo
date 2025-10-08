@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Yelazo.Shared.DTO
+{
+    public class CrearDetalleActividadMantenimientoDTO
+    {
+        public int Cantidad { get; set; }
+
+        public int InsumoId { get; set; }
+
+        public int ActividadMantenimientoId { get; set; }
+    }
+}

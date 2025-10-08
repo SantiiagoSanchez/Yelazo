@@ -25,5 +25,7 @@ namespace Yelazo.BD.Data.Entity
         [Required(ErrorMessage = "Validar que el mantenimiento necesita insumo es obligatorio")]
 
         public bool Insumo { get; set; }
+
+        public ICollection<ActividadMantenimiento> ActividadesMantenimiento { get; set; } = new List<ActividadMantenimiento>();
     }
 }

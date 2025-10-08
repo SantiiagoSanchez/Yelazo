@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Yelazo.BD.Data;
 using Yelazo.BD.Data.Entity;
 using Yelazo.Server.Repositorios;
 using Yelazo.Shared.DTO;
@@ -29,6 +30,14 @@ namespace Yelazo.Server.Controllers
             var actividades = await repositorio.GetActividadMantenimientoInclude();
             var dto = mapper.Map<List<ActividadMantenimiento>>(actividades);
             return Ok(dto);
+        }
+
+
+        [HttpGet("ultimas")]
+        public async Task<ActionResult<List<MantenimientoCardDTO>>> GetUltimasActividades()
+        {
+            var resultado = await repositorio.ObtenerMantenimientosConUltimaActividad();
+            return Ok(resultado);
         }
 
         [HttpPost]

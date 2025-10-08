@@ -1,9 +1,204 @@
 ﻿@page "/actividadmantenimiento/crear/{idMantenimiento:int}"
-
+@inject NavigationManager navigationManager
+@inject IHttpServicio http
 
 <h3>Crear Actividad Mantenimiento</h3>
 
-@code {
+@if (cargando)
+{
+    <p><em>Cargando...</em></p>
+}
+else
+{
+    <EditForm Model="modelo" OnValidSubmit="EnviarFormulario">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
 
+        <div class="mb-3">
+            <label class="form-label">Fecha de Actividad:</label>
+            <InputDate @bind-Value="modelo.FechaActividad" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Precio:</label>
+            <InputNumber @bind-Value="modelo.Precio" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Proveedor:</label>
+            <select @bind="modelo.ProveedorId" class="form-select">
+                <option value="">-- Seleccione un proveedor --</option>
+                @foreach (var p in proveedores)
+                {
+                    <option value="@p.Id">@p.Nombre</option>
+                }
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Tipo de Gasto:</label>
+            <select @bind="modelo.TipoGastoId" class="form-select">
+                <option value="">-- Seleccione un tipo --</option>
+                @foreach (var t in tiposGastos)
+                {
+                    <option value="@t.Id">@t.Nombre</option>
+                }
+            </select>
+        </div>
+
+        @if (requiereInsumos)
+        {
+            <hr />
+            <h5>Cargar Insumos</h5>
+
+            <div class="mb-3">
+                <label class="form-label">Insumo:</label>
+                <select @bind="nuevoInsumo.InsumoId" class="form-select">
+                    <option value="">-- Seleccione un insumo --</option>
+                    @foreach (var insumo in insumos)
+                    {
+                        <option value="@insumo.Id">@insumo.Nombre</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cantidad:</label>
+                <InputNumber @bind-Value="nuevoInsumo.Cantidad" class="form-control" />
+            </div>
+
+            <button type="button" class="btn btn-secondary mb-3" @onclick="AgregarInsumo">Agregar Insumo</button>
+
+            @if (modelo.Insumos.Any())
+            {
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Insumo</th>
+                            <th>Cantidad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var insumo in modelo.Insumos)
+                        {
+                            <tr>
+                                <td>@insumos.FirstOrDefault(i => i.Id == insumo.InsumoId)?.Nombre</td>
+                                <td>@insumo.Cantidad</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        }
+
+        <button type="submit" class="btn btn-primary">Guardar Actividad</button>
+    </EditForm>
+}
+
+@code {
     [Parameter] public int idMantenimiento { get; set; }
+
+    private RenovarMantenimiento modelo = new();
+    private DetalleInsumo nuevoInsumo = new();
+
+    private List<Proveedor> proveedores = new List<Proveedor>();
+    private List<TipoGasto> tiposGastos = new List<TipoGasto>();
+    private List<Insumo> insumos = new List<Insumo>();
+
+    private bool cargando = true;
+    private bool requiereInsumos = false;
+
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        cargando = true;
+
+        // Obtener info del mantenimiento (para saber si requiere insumos)
+        var mantenimientoResp = await http.Get<Mantenimiento>($"api/Mantenimiento/{idMantenimiento}");
+        if (!mantenimientoResp.Error && mantenimientoResp.Respuesta != null)
+        {
+            requiereInsumos = mantenimientoResp.Respuesta.Insumo; // o .Insumos == true
+        }
+
+        // Cargar proveedores, tipos de gasto, insumos
+        var HttpRespuestaProveedor = await http.Get<List<Proveedor>>("api/Proveedor");
+        if (!HttpRespuestaProveedor.Error)
+        {
+            proveedores = HttpRespuestaProveedor.Respuesta;
+        }
+        var HttpRespuestaGasto = await http.Get<List<TipoGasto>>("api/TipoGasto");
+        if (!HttpRespuestaGasto.Error)
+        {
+            tiposGastos = HttpRespuestaGasto.Respuesta;
+        }
+
+        var HttpRespuestaInsumos = await http.Get<List<Insumo>>("api/Insumos");
+        if (!HttpRespuestaInsumos.Error)
+        {
+            insumos = HttpRespuestaInsumos.Respuesta;
+        }
+
+        cargando = false;
+    }
+
+    private void AgregarInsumo()
+    {
+        if (nuevoInsumo.InsumoId != 0 && nuevoInsumo.Cantidad > 0)
+        {
+            modelo.Insumos.Add(new DetalleInsumo
+            {
+                InsumoId = nuevoInsumo.InsumoId,
+                Cantidad = nuevoInsumo.Cantidad
+            });
+            nuevoInsumo = new();
+        }
+    }
+
+    private async Task EnviarFormulario()
+    {
+        var actividadDto = new CrearActividadMantenimientoDTO
+        {
+            MantenimientoId = idMantenimiento,
+            FechaActividad = modelo.FechaActividad,
+            Precio = modelo.Precio,
+            ProveedorId = modelo.ProveedorId,
+            TipoGastoId = modelo.TipoGastoId
+        };
+
+        var respuesta = await http.Post("api/ActividadMantenimiento", actividadDto);
+
+        if (respuesta.Error)
+        {
+            Console.WriteLine("Error al crear la actividad de mantenimiento.");
+            return;
+        }
+
+        var responseString = await respuesta.HttpResponseMessage.Content.ReadAsStringAsync();
+        if (!int.TryParse(responseString, out int idActividad))
+        {
+            Console.WriteLine("No se pudo obtener el ID de la actividad.");
+            return;
+        }
+
+        if (modelo.Insumos.Any())
+        {
+            var detalles = modelo.Insumos.Select(i => new CrearDetalleActividadMantenimientoDTO
+            {
+                ActividadMantenimientoId = idActividad,
+                InsumoId = i.InsumoId,
+                Cantidad = i.Cantidad
+            }).ToList();
+
+            var detalleResp = await http.Post("api/DetalleActividadMantenimiento", detalles);
+
+            if (detalleResp.Error)
+            {
+                Console.WriteLine("Error al guardar los insumos.");
+                return;
+            }
+        }
+
+        navigationManager.NavigateTo("/mantenimientos");
+    }
 }
