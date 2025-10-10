@@ -2,6 +2,8 @@
 @inject NavigationManager navigationManager
 @inject IHttpServicio http
 
+
+
 <h3>Crear Actividad Mantenimiento</h3>
 
 @if (cargando)
@@ -67,7 +69,11 @@ else
                 <InputNumber @bind-Value="nuevoInsumo.Cantidad" class="form-control" />
             </div>
 
-            <button type="button" class="btn btn-secondary mb-3" @onclick="AgregarInsumo">Agregar Insumo</button>
+            <!-- Botones alineados horizontalmente con separación -->
+            <div class="d-flex gap-3 mt-3 mb-4">
+                <button type="button" class="btn btn-secondary" @onclick="AgregarInsumo">Confirmar Insumo</button>
+                <button type="submit" class="btn btn-primary">Guardar Actividad</button>
+            </div>
 
             @if (modelo.Insumos.Any())
             {
@@ -90,8 +96,19 @@ else
                 </table>
             }
         }
+        else
+        {
+            <!-- Si no requiere insumos, botón de guardar solo -->
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary">Guardar Actividad</button>
+            </div>
+        }
 
-        <button type="submit" class="btn btn-primary">Guardar Actividad</button>
+        <div class="d-flex justify-content-between mt-4">
+            <!-- Botón Volver a la izquierda -->
+            <button type="button" class="btn btn-outline-secondary" @onclick="Volver">Volver</button>
+        </div>
+
     </EditForm>
 }
 
@@ -140,6 +157,11 @@ else
         }
 
         cargando = false;
+    }
+
+    private void Volver()
+    {
+        navigationManager.NavigateTo("/mantenimientos");
     }
 
     private void AgregarInsumo()
