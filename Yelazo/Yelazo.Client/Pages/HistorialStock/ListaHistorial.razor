@@ -62,7 +62,7 @@
                             <td class="fw-bold" style="color:@(item.Movimiento == "Entrada" ? "green" : "red")">
                                 @(item.Movimiento == "Entrada" ? "+" : "-")@Math.Abs(item.Cantidad)
                             </td>
-                            <td>@item.FechaActualizacio.ToString("dd MMM yyyy HH:mm")</td>
+                            <td>@item.FechaActualizacio.ToString("dd MMM yyyy")</td>
                         </tr>
                     }
                 }

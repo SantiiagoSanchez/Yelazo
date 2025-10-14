@@ -76,7 +76,7 @@ namespace Yelazo.Server.Repositorios
             {
                 if (!await Existe(id))
                 {
-                    Console.WriteLine($"La bolsa con id {id} No existe");
+                    Console.WriteLine($"Id {id} No existe");
                     return null;
                 }
 

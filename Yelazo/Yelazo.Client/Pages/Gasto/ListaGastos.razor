@@ -89,7 +89,7 @@
         @foreach (var item in listaGastos)
         {
             <tr>
-                <td>@item.Fecha</td>
+                <td>@item.Fecha.ToString("dd MMM yyyy HH:mm")</td>
                 <td>@item.TipoGasto.Nombre</td>
                 <td>@item.Descripcion</td>
                 <td>@item.Costo</td>

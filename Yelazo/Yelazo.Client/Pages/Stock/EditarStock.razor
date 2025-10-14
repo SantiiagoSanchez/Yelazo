@@ -31,7 +31,8 @@
                     <strong>Stock actual:</strong> @producto.Cantidad unidades
                 </div>
             </div>
-         
+            
+            <h6 class="fw-bold">Movimiento*</h6>
             <InputSelect class="form-select border-secondary me-2" @bind-Value="movimiento">
                 <option value="">Seleccione...</option>
                 <option value="Entrada">Ingreso</option>
@@ -47,8 +48,8 @@
                 </div>
             }
 
-            <div class="mb-3">
-                <label class="form-label">Categoría</label>
+            <div class="mb-3 mt-1">
+                <h6 class="fw-bold">Cantidad*</h6>
                 <InputNumber class="form-control" @bind-Value="cantidad" />
             </div>
 

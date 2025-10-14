@@ -16,14 +16,14 @@ namespace Yelazo.Server.Repositorios
         public async Task<List<ActividadMantenimiento>> GetActividadMantenimientoInclude()
         {
             return await context.ActividadMantenimientos
-                .Include(s => s.Proveedor).Include(s => s.Mantenimiento)// Incluir la entidad relacionada
+                .Include(s => s.Proveedor).Include(s => s.Mantenimiento)
                 .ToListAsync();
         }
 
         public async Task<List<MantenimientoCardDTO>> ObtenerMantenimientosConUltimaActividad()
         {
             var mantenimientos = await context.Mantenimientos
-        .Include(m => m.ActividadesMantenimiento) // Asegúrate de tener esta relación en el modelo
+        .Include(m => m.ActividadesMantenimiento) 
         .ToListAsync();
 
             var resultado = mantenimientos.Select(m =>

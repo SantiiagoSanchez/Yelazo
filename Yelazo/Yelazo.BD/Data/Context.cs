@@ -16,7 +16,7 @@ namespace Yelazo.BD.Data
         public DbSet<Proveedor> Proveedores { get; set; }
         public DbSet<TipoGasto> TiposGasto { get; set; }
         public DbSet<MetodoPago> MetodosPago { get; set; }
-
+        public DbSet<IngresoInsumo> IngresoInsumos { get; set; }
         public DbSet<DetalleActividadMantenimiento> DetalleActividadMantenimientos { get; set; }
         public DbSet<ActividadMantenimiento> ActividadMantenimientos { get; set; }
         public DbSet<Mantenimiento> Mantenimientos { get; set; }
