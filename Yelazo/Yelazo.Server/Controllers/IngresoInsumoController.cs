@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Yelazo.BD.Data.Entity;
 using Yelazo.Server.Repositorios;
 using Yelazo.Shared.DTO;
@@ -34,33 +35,44 @@ namespace Yelazo.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<int>> Post(CrearIngresoInsumoDTO dto)
         {
-            var entidad = mapper.Map<IngresoInsumo>(dto);
-            var id = await repositorio.Insert(entidad);
-
-            var gasto = new Gasto
+            try
             {
-                Fecha = dto.Fecha,
-                Costo = dto.Precio,
-                ProveedorId = dto.ProveedorId,
-                tipoGastoId = dto.TipoGastoId,
-                Descripcion = $"Compra de insumos en la fabrica"
-            };
+                var entidad = mapper.Map<IngresoInsumo>(dto);
+                var id = await repositorio.Insert(entidad);
 
-            var insumo = await insumoRepositorio.SelectById(dto.InsumoId);
+                var gasto = new Gasto
+                {
+                    Fecha = dto.Fecha,
+                    Costo = dto.Precio,
+                    ProveedorId = dto.ProveedorId,
+                    tipoGastoId = dto.TipoGastoId,
+                    Descripcion = "Compra de insumos en la fabrica"
+                };
 
-            if (insumo == null)
+                var insumo = await insumoRepositorio.SelectById(dto.InsumoId);
+                if (insumo == null)
+                {
+                    return NotFound($"No se encontró el insumo con ID {dto.InsumoId}");
+                }
+
+                insumo.Stock += dto.Cantidad;
+                insumo.FechaActualizacion = DateTime.Now;
+
+                await insumoRepositorio.ActualizarAsync(insumo);
+                await gastoRepositorio.Insert(gasto);
+
+                return Ok(id);
+            }
+            catch (DbUpdateException ex)
             {
-                return NotFound($"No se encontró el insumo con ID {dto.InsumoId}");
+                var inner = ex.InnerException?.Message ?? "No inner exception.";
+                return StatusCode(500, $"Error al guardar los cambios: {ex.Message}. Inner: {inner}");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error general del servidor: {ex.Message}");
             }
 
-            insumo.Stock += dto.Cantidad;
-            insumo.FechaActualizacion = DateTime.Now;
-
-            await insumoRepositorio.ActualizarAsync(insumo);
-
-            await gastoRepositorio.Insert(gasto);
-
-            return Ok(id);
         }
     }
 }

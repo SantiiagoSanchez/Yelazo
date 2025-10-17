@@ -1,5 +1,123 @@
-﻿<h3>RenovarInsumos</h3>
+﻿@page "/insumos/renovar/{insumoId:int}"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+@inject SweetAlertService swal
+
+
+<h3>RenovarInsumos</h3>
+
+<p>@mensaje</p>
+
+<EditForm Model="modelo" OnValidSubmit="Guardar">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="cantidad">Cantidad Comprada:</label>
+        <InputNumber id="cantidad" class="form-control" @bind-Value="modelo.Cantidad" />
+    </div>
+
+    <div class="mb-3">
+        <label for="precio">Precio Total:</label>
+        <InputNumber id="precio" class="form-control" @bind-Value="modelo.Precio" />
+    </div>
+
+    <div class="mb-3">
+        <label for="fecha">Fecha:</label>
+        <InputDate id="fecha" class="form-control" @bind-Value="modelo.Fecha" />
+    </div>
+
+    <div class="mb-3">
+        <label for="proveedor">Proveedor:</label>
+        <InputSelect id="proveedor" class="form-control" @bind-Value="modelo.ProveedorId">
+            <option value="">-- Selecciona un proveedor --</option>
+            @foreach (var proveedor in listaProveedores)
+            {
+                <option value="@proveedor.Id">@proveedor.Nombre</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label for="tipoGasto">Tipo de Gasto:</label>
+        <InputSelect id="tipoGasto" class="form-control" @bind-Value="modelo.TipoGastoId">
+            <option value="">-- Selecciona un tipo de gasto --</option>
+            @foreach (var tipo in listaTiposGasto)
+            {
+                <option value="@tipo.Id">@tipo.Nombre</option>
+            }
+        </InputSelect>
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar</button>
+</EditForm>
+
+
 
 @code {
+
+    [Parameter] public int insumoId { get; set; }
+
+    string mensaje = string.Empty;
+
+    private CrearIngresoInsumoDTO modelo = new CrearIngresoInsumoDTO();
+
+    List<TipoGasto> listaTiposGasto = new List<TipoGasto>();
+    List<Proveedor> listaProveedores = new List<Proveedor>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var resp = await http.Get<List<TipoGasto>>("api/TipoGasto");
+
+        if (!resp.Error)
+        {
+            listaTiposGasto = resp.Respuesta;
+        }
+        else
+        {
+            mensaje = "Error al obtener los tipos de gasto.";
+        }
+
+        var respProveedores = await http.Get<List<Proveedor>>("api/Proveedor");
+        if (!respProveedores.Error)
+        {
+            listaProveedores = respProveedores.Respuesta;
+        }
+        else
+        {
+            mensaje = "Error al obtener los proveedores.";
+        }
+    }
+
+    private async Task Guardar()
+    {
+        modelo.InsumoId = insumoId; // desde la URL
+        var resp = await http.Post<CrearIngresoInsumoDTO>("api/IngresoInsumo", modelo);
+
+        if (!resp.Error)
+        {
+            await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¡Registro exitoso!",
+                Text = "El ingreso se guardó correctamente.",
+                Icon = SweetAlertIcon.Success,
+                ConfirmButtonText = "Ir a lista de insumos"
+            });
+
+            // Redirigir a la lista de insumos después de cerrar el SweetAlert
+            navigationManager.NavigateTo("/insumos");
+
+        }
+        else
+        {
+            mensaje = $"Error al guardar el ingreso de insumo: {resp.HttpResponseMessage}";
+        }
+    }
 
 }
