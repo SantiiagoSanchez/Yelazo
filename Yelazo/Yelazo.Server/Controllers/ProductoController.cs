@@ -70,6 +70,16 @@ namespace Yelazo.Server.Controllers
             return ok ? Ok() : BadRequest();
         }
 
+        [HttpPut("cambiar-estado/{id:int}")]
+        public async Task<ActionResult> PutEstado(int id) 
+        {
+            var producto = await repositorio.SelectById(id);
+            if (producto == null)
+                return NotFound("No existe el producto");
+            producto.Estado = !producto.Estado;
+            var ok = await repositorio.UpdateEntidad(id, producto);
+            return ok ? Ok() : BadRequest();
+        }
 
         // DELETE: api/categorias/5
         [HttpDelete("{id:int}")]

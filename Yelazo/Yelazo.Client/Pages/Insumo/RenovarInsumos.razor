@@ -4,7 +4,7 @@
 @inject SweetAlertService swal
 
 
-<h3>RenovarInsumos</h3>
+<h3>Renovar Insumos</h3>
 
 <p>@mensaje</p>
 
@@ -50,6 +50,7 @@
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary" @onclick="() => Volver()">Cancelar</button>
 </EditForm>
 
 
@@ -69,6 +70,11 @@
     {
         await base.OnInitializedAsync();
         await Leer();
+    }
+
+    private void Volver()
+    {
+        navigationManager.NavigateTo("/insumos");
     }
 
     private async Task Leer()

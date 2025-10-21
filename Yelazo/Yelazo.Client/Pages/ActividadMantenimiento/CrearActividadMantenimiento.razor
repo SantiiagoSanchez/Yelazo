@@ -1,6 +1,8 @@
 ﻿@page "/actividadmantenimiento/crear/{idMantenimiento:int}"
 @inject NavigationManager navigationManager
 @inject IHttpServicio http
+@inject SweetAlertService swal
+
 
 
 
@@ -195,6 +197,19 @@ else
             Console.WriteLine("Error al crear la actividad de mantenimiento.");
             return;
         }
+        else
+        {
+            await swal.FireAsync(new SweetAlertOptions
+            {
+                Title = "¡Registro exitoso!",
+                Text = "El mantenimiento se realizo correctamente.",
+                Icon = SweetAlertIcon.Success,
+                ConfirmButtonText = "Ir a gestion mantenimientos"
+            });
+
+            // Redirigir a la lista de insumos después de cerrar el SweetAlert
+            navigationManager.NavigateTo("/mantenimientos");
+        }
 
         var responseString = await respuesta.HttpResponseMessage.Content.ReadAsStringAsync();
         if (!int.TryParse(responseString, out int idActividad))
@@ -219,8 +234,20 @@ else
                 Console.WriteLine("Error al guardar los insumos.");
                 return;
             }
+            else
+            {
+                await swal.FireAsync(new SweetAlertOptions
+                {
+                    Title = "¡Registro exitoso!",
+                    Text = "El mantenimiento se realizo correctamente.",
+                    Icon = SweetAlertIcon.Success,
+                    ConfirmButtonText = "Ir a gestion mantenimientos"
+                });
+
+                // Redirigir a la lista de insumos después de cerrar el SweetAlert
+                navigationManager.NavigateTo("/mantenimientos");
+            }
         }
 
-        navigationManager.NavigateTo("/mantenimientos");
     }
 }
