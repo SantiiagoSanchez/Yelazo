@@ -22,26 +22,26 @@ namespace Yelazo.Server.Repositorios
                 .ToListAsync();
         }
 
-        public async Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(string? nombreTipoGasto, DateTime? fecha)
+        public async Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(string? nombreTipoGasto, int? mes)
         {
             var query = context.Gastos
-        .Include(g => g.TipoGasto)
-        .Include(g => g.Proveedor)
-        .AsQueryable();
+                .Include(g => g.TipoGasto)
+                .Include(g => g.Proveedor)
+                .AsQueryable();
 
-            // Filtro por nombre del Tipo de Gasto
+            // 🔹 Filtro por nombre del Tipo de Gasto
             if (!string.IsNullOrWhiteSpace(nombreTipoGasto))
             {
                 query = query.Where(g => g.TipoGasto.Nombre.Contains(nombreTipoGasto));
             }
 
-            // Filtro por fecha del Gasto
-            if (fecha.HasValue)
+            // 🔹 Filtro por número de mes (sin necesidad de una fecha exacta)
+            if (mes.HasValue)
             {
-                query = query.Where(g => g.Fecha.Date == fecha.Value.Date);
+                query = query.Where(g => g.Fecha.Month == mes.Value);
             }
 
-            // Proyección al DTO
+            // 🔹 Proyección al DTO
             var resultados = await query.Select(g => new FiltrarGastoDTO
             {
                 Id = g.Id,
@@ -61,5 +61,6 @@ namespace Yelazo.Server.Repositorios
 
             return resultados;
         }
+
     }
 }

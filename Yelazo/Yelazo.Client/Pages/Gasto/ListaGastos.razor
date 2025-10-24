@@ -33,38 +33,44 @@
 </div>
 
 <!-- Filtros -->
-<div class="row mb-3">
-
-
-
-    <!--Gastos obviamente hay que cambiar y hacerlo con logica-->
+<div class="row mb-3 align-items-end">
     <div class="col-md-4 mb-2">
-        <select class="form-select">
-            <option selected>Tipo de gasto</option>
-            <option value="1">Combustible</option>
-            <option value="2">Inventario</option>
-            <option value="3">Mantenimiento</option>
+        <select class="form-select" @bind="tipoSeleccionado">
+            <option value="">Tipo de gasto</option>
+
+           @foreach (var item in listaTiposGasto)
+            {
+                <option value="@item.Nombre">@item.Nombre</option>
+            }
+
         </select>
     </div>
-    <!--Meses, creo que no hace falta cambiarlo-->
+
     <div class="col-md-4 mb-2">
-        <select class="form-select">
-            <option selected>Último mes</option>
-            <option value="1">Enero</option>
-            <option value="2">Febrero</option>
-            <option value="3">Marzo</option>
-            <option value="4">Abril</option>
-            <option value="5">Mayo</option>
-            <option value="6">Junio</option>
-            <option value="7">Julio</option>
-            <option value="8">Agosto</option>
-            <option value="9">Septiembre</option>
-            <option value="10">Octubre</option>
-            <option value="11">Noviembre</option>
-            <option value="12">Diciembre</option>       
+        <select class="form-select" @bind="mesSeleccionado">
+            <option value="">Seleccione mes</option>
+            @for (int i = 1; i <= 12; i++)
+            {
+                <option value="@i">@System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(i)</option>
+            }
         </select>
+    </div>
+
+    <div class="col-md-2 mb-2">
+        <button class="btn btn-success w-100" @onclick="FiltrarGastos">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-funnel me-1" viewBox="0 0 16 16">
+                <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .4.8L10 8.333V13a1 1 0 0 1-1.447.894l-2-1A1 1 0 0 1 6 12V8.333L1.6 1.8a.5.5 0 0 1-.1-.3z" />
+            </svg>
+            Filtrar
+        </button>
+    </div>
+    <div>
+        <button class="btn btn-secondary ms-2" @onclick="Leer">
+            Mostrar todos
+        </button>
     </div>
 </div>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -76,54 +82,73 @@
             <th>Acciones</th>
         </tr>
     </thead>
+   
     <tbody>
-
-        @if (listaGastos == null)
+        @if (!mostrandoFiltro)
         {
-            <p>Buscando gastos ...</p>
+            @foreach (var item in listaGastos)
+            {
+                <tr>
+                    <td>@item.Fecha.ToShortDateString()</td>
+                    <td>@item.TipoGasto.Nombre</td>
+                    <td>@item.Descripcion</td>
+                    <td>$@item.Costo</td>
+                    <td>@item.Proveedor.Nombre</td>
+                    <td>
+                        <a class="btn btn-primary" href="/gastos/editar/@item.Id">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            }
         }
-        else if (listaGastos.Count == 0)
+        else
         {
-            <p>No se encontraron gastos cargados.</p>
+            @foreach (var item in listaFiltrada)
+            {
+                <tr>
+                    <td>@item.Fecha.ToShortDateString()</td>
+                    <td>@item.TipoGasto</td>
+                    <td>@item.Descripcion</td>
+                    <td>$@item.Costo</td>
+                    <td>@item.Proveedor.Nombre</td>
+                    <td>
+                        <a class="btn btn-primary" href="/gastos/editar/@item.Id">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
+                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
+                            </svg>
+                        </a>
+                    </td>
+                </tr>
+            }
         }
-        @foreach (var item in listaGastos)
-        {
-            <tr>
-                <td>@item.Fecha.ToString("dd MMM yyyy HH:mm")</td>
-                <td>@item.TipoGasto.Nombre</td>
-                <td>@item.Descripcion</td>
-                <td>@item.Costo</td>
-                <td>@item.Proveedor.Nombre</td>
-                <td>
-                    <a class="btn btn-primary" href="/gastos/editar/@item.Id">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
-                            <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z" />
-                            <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5z" />
-                        </svg>
-                    </a>
-                </td>
-            </tr>
-        }
-
-
     </tbody>
-
 </table>
 
 
 
 @code {
-    List<Gasto> listaGastos = new List<Gasto>();
+    List<Gasto> listaGastos = new();
+    List<FiltrarGastoDTO> listaFiltrada = new();
+    List<TipoGasto> listaTiposGasto = new();
     string Mensaje = "";
     decimal totalGastos = 0;
     decimal totalGastosMes = 0;
     string ultimoGasto = "Cargando...";
+    string? tipoSeleccionado = "";
+    string? mesSeleccionado = "";
+    bool mostrandoFiltro = false;
 
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
+        await LeerTipoGastos();
         await CalcularTotalGastos();
         await CalcularTotalGastosMes();
         await CalcularUltimoGasto();
@@ -166,13 +191,76 @@
     {
         var resp = await http.Get<List<Gasto>>("api/Gastos");
 
-        if (!resp.Error)
+        if (!resp.Error && resp.Respuesta != null)
         {
             listaGastos = resp.Respuesta;
+            listaFiltrada.Clear();
+            mostrandoFiltro = false;
+            Mensaje = $"Se cargaron {listaGastos.Count} gastos.";
         }
         else
         {
-            Mensaje = "Error";
+            Mensaje = "Error al cargar los gastos.";
         }
     }
+
+    private async Task LeerTipoGastos()
+    {
+        var resp = await http.Get<List<TipoGasto>>("api/TipoGasto");
+        if (!resp.Error && resp.Respuesta != null)
+        {
+            listaTiposGasto = resp.Respuesta;
+
+            Mensaje = $"Se cargaron {listaTiposGasto.Count} tipos de gasto.";
+        }
+        else
+        {
+            Mensaje = "Error al cargar los tipos de gasto.";
+        }
+
+    }
+
+    private async Task FiltrarGastos()
+    {
+        try
+        {
+            string url = "api/Gastos/buscar?";
+            bool tieneParametro = false;
+
+            if (!string.IsNullOrEmpty(tipoSeleccionado))
+            {
+                url += $"nombreTipoGasto={tipoSeleccionado}";
+                tieneParametro = true;
+            }
+
+            if (!string.IsNullOrEmpty(mesSeleccionado))
+            {
+                int mes = int.Parse(mesSeleccionado);
+                url += (tieneParametro ? "&" : "") + $"mes={mes}";
+            }
+
+            var resp = await http.Get<List<FiltrarGastoDTO>>(url);
+
+            if (!resp.Error && resp.Respuesta != null)
+            {
+                listaFiltrada = resp.Respuesta;
+                mostrandoFiltro = true;
+                Mensaje = $"Se encontraron {listaFiltrada.Count} gastos filtrados.";
+            }
+            else
+            {
+                listaFiltrada.Clear();
+                mostrandoFiltro = true;
+                Mensaje = "No se encontraron gastos con esos filtros.";
+            }
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"Error al filtrar: {ex.Message}";
+        }
+    }
+
+
+
+
 }

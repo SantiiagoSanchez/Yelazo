@@ -8,6 +8,6 @@ namespace Yelazo.Server.Repositorios
     {
         Task<List<Gasto>> GetGastoInclude();
 
-        Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(string? nombreTipoGasto, DateTime? fecha);
+        Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(string? nombreTipoGasto, int? mes);
     }
 }

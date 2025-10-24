@@ -30,18 +30,19 @@ namespace Yelazo.Server.Controllers
         }
         [HttpGet("buscar")]
         public async Task<ActionResult<IEnumerable<FiltrarGastoDTO>>> BuscarGastos(
-    [FromQuery] string? nombreTipoGasto,
-    [FromQuery] DateTime? fecha)
+     [FromQuery] string? nombreTipoGasto,
+     [FromQuery] int? mes)
         {
-            var resultados = await repositorio.BuscarGastos(nombreTipoGasto, fecha);
+            var resultados = await repositorio.BuscarGastos(nombreTipoGasto, mes);
 
-            //if (resultados == null || !resultados.Any())
-            //{
-            //    return NotFound("No se encontraron gastos con los filtros aplicados.");
-            //}
+            if (resultados == null )
+            {
+                return NotFound("No se encontraron gastos con los filtros aplicados.");
+            }
 
-            return Ok(resultados);
+            return Ok(resultados.Value);
         }
+
 
         // GET: api/productos/5
         [HttpGet("{id:int}")]
