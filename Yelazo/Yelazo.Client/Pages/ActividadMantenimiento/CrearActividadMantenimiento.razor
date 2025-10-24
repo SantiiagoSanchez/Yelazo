@@ -30,24 +30,37 @@ else
 
         <div class="mb-3">
             <label class="form-label">Proveedor:</label>
-            <select @bind="modelo.ProveedorId" class="form-select">
-                <option value="">-- Seleccione un proveedor --</option>
-                @foreach (var p in proveedores)
-                {
-                    <option value="@p.Id">@p.Nombre</option>
-                }
-            </select>
+            <div class="d-flex align-items-center">
+                <select @bind="modelo.ProveedorId" class="form-select me-2">
+                    <option value="">-- Seleccione un proveedor --</option>
+                    @foreach (var p in proveedores)
+                    {
+                        <option value="@p.Id">@p.Nombre</option>
+                    }
+                </select>
+
+                <a href="/proveedor"
+                   class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+                   title="Nuevo Proveedor" style="width: 42px; height: 42px;">+</a>
+            </div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Tipo de Gasto:</label>
-            <select @bind="modelo.TipoGastoId" class="form-select">
-                <option value="">-- Seleccione un tipo --</option>
-                @foreach (var t in tiposGastos)
-                {
-                    <option value="@t.Id">@t.Nombre</option>
-                }
-            </select>
+            <div class="d-flex align-items-center">
+                <select @bind="modelo.TipoGastoId" class="form-select me-2">
+                    <option value="">-- Seleccione un tipo --</option>
+                    @foreach (var t in tiposGastos)
+                    {
+                        <option value="@t.Id">@t.Nombre</option>
+                    }
+                </select>
+
+                <a href="/tiposGasto/crear"
+                   class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+                   title="Nuevo Tipo Gasto"
+                   style="width: 42px; height: 42px;">+</a>
+            </div>
         </div>
 
         @if (requiereInsumos)
