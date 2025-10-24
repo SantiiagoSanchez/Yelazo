@@ -29,24 +29,36 @@
 
     <div class="mb-3">
         <label for="proveedor">Proveedor:</label>
-        <InputSelect id="proveedor" class="form-control" @bind-Value="modelo.ProveedorId">
-            <option value="">-- Selecciona un proveedor --</option>
-            @foreach (var proveedor in listaProveedores)
-            {
-                <option value="@proveedor.Id">@proveedor.Nombre</option>
-            }
-        </InputSelect>
+        <div class="d-flex align-items-center">
+            <InputSelect id="proveedor" class="form-control me-2" @bind-Value="modelo.ProveedorId">
+                <option value="">-- Selecciona un proveedor --</option>
+                @foreach (var proveedor in listaProveedores)
+                {
+                    <option value="@proveedor.Id">@proveedor.Nombre</option>
+                }
+            </InputSelect>
+            <a href="/proveedor/crear"
+               class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+               title="Nuevo Proveedor" style="width: 42px; height: 42px;">+</a>
+        </div>
     </div>
 
     <div class="mb-3">
         <label for="tipoGasto">Tipo de Gasto:</label>
-        <InputSelect id="tipoGasto" class="form-control" @bind-Value="modelo.TipoGastoId">
-            <option value="">-- Selecciona un tipo de gasto --</option>
-            @foreach (var tipo in listaTiposGasto)
-            {
-                <option value="@tipo.Id">@tipo.Nombre</option>
-            }
-        </InputSelect>
+        <div class="d-flex align-items-center">
+            <InputSelect id="tipoGasto" class="form-control" @bind-Value="modelo.TipoGastoId">
+                <option value="">-- Selecciona un tipo de gasto --</option>
+                @foreach (var tipo in listaTiposGasto)
+                {
+                    <option value="@tipo.Id">@tipo.Nombre</option>
+                }
+            </InputSelect>
+
+            <a href="/tiposGasto/crear"
+               class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center"
+               title="Nuevo Proveedor" style="width: 42px; height: 42px;">+</a>
+        </div>
+        
     </div>
 
     <button class="btn btn-primary" type="submit">Guardar</button>
