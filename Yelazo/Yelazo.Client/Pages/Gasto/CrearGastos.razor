@@ -115,7 +115,7 @@
             ProveedorId = gasto.ProveedorId
         };
 
-        var HttpRespuesta = await http.Post<Gasto>("api/Gastos", gastoEntity);
+        var HttpRespuesta = await http.Post<Gasto, int>("api/Gastos", gastoEntity);
         if (HttpRespuesta.Error)
         {
             var Body = HttpRespuesta.HttpResponseMessage;

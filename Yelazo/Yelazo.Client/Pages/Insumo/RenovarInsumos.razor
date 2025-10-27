@@ -116,7 +116,7 @@
     private async Task Guardar()
     {
         modelo.InsumoId = insumoId; // desde la URL
-        var resp = await http.Post<CrearIngresoInsumoDTO>("api/IngresoInsumo", modelo);
+        var resp = await http.Post<CrearIngresoInsumoDTO, int>("api/IngresoInsumo", modelo);
 
         if (!resp.Error)
         {

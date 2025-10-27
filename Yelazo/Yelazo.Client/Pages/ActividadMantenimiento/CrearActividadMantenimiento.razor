@@ -203,25 +203,12 @@ else
             TipoGastoId = modelo.TipoGastoId
         };
 
-        var respuesta = await http.Post("api/ActividadMantenimiento", actividadDto);
+        var respuesta = await http.Post<CrearActividadMantenimientoDTO, int>("api/ActividadMantenimiento", actividadDto);
 
         if (respuesta.Error)
         {
             Console.WriteLine("Error al crear la actividad de mantenimiento.");
             return;
-        }
-        else
-        {
-            await swal.FireAsync(new SweetAlertOptions
-            {
-                Title = "¡Registro exitoso!",
-                Text = "El mantenimiento se realizo correctamente.",
-                Icon = SweetAlertIcon.Success,
-                ConfirmButtonText = "Ir a gestion mantenimientos"
-            });
-
-            // Redirigir a la lista de insumos después de cerrar el SweetAlert
-            navigationManager.NavigateTo("/mantenimientos");
         }
 
         var responseString = await respuesta.HttpResponseMessage.Content.ReadAsStringAsync();
@@ -231,6 +218,7 @@ else
             return;
         }
 
+        // Si el mantenimiento requiere insumos y el usuario agregó algunos
         if (modelo.Insumos.Any())
         {
             var detalles = modelo.Insumos.Select(i => new CrearDetalleActividadMantenimientoDTO
@@ -240,27 +228,25 @@ else
                 Cantidad = i.Cantidad
             }).ToList();
 
-            var detalleResp = await http.Post("api/DetalleActividadMantenimiento", detalles);
+            var detalleResp = await http.Post<List<CrearDetalleActividadMantenimientoDTO>, int>(
+                "api/DetalleActividadMantenimiento", detalles);
 
             if (detalleResp.Error)
             {
                 Console.WriteLine("Error al guardar los insumos.");
                 return;
             }
-            else
-            {
-                await swal.FireAsync(new SweetAlertOptions
-                {
-                    Title = "¡Registro exitoso!",
-                    Text = "El mantenimiento se realizo correctamente.",
-                    Icon = SweetAlertIcon.Success,
-                    ConfirmButtonText = "Ir a gestion mantenimientos"
-                });
-
-                // Redirigir a la lista de insumos después de cerrar el SweetAlert
-                navigationManager.NavigateTo("/mantenimientos");
-            }
         }
+
+        await swal.FireAsync(new SweetAlertOptions
+        {
+            Title = "¡Registro exitoso!",
+            Text = "El mantenimiento se realizó correctamente.",
+            Icon = SweetAlertIcon.Success,
+            ConfirmButtonText = "Ir a gestión de mantenimientos"
+        });
+
+        navigationManager.NavigateTo("/mantenimientos");
 
     }
 }

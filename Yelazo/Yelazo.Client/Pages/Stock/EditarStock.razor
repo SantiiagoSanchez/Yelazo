@@ -107,7 +107,7 @@
                     Cantidad = cantidad,
                     Movimiento = movimiento
                 };
-            var HttpRespuesta = await http.Post<Stock>("api/Stock", registro);
+            var HttpRespuesta = await http.Post<Stock, int>("api/Stock", registro);
             if (HttpRespuesta.Error)
             {
                 var Body = HttpRespuesta.HttpResponseMessage;

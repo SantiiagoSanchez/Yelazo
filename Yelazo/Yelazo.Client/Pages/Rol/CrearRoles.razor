@@ -43,7 +43,7 @@
 
     private async Task Grabar()
     {
-        var HttpRespuesta = await http.Post<Rol>("api/Roles", rol);
+        var HttpRespuesta = await http.Post<Rol, int>("api/Roles", rol);
         if (HttpRespuesta.Error)
         {
             var Body = HttpRespuesta.HttpResponseMessage;

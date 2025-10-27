@@ -69,7 +69,7 @@
 
     private async Task Grabar()
     {
-        var HttpRespuesta = await http.Post<Mantenimiento>("api/Mantenimiento", mantenimiento);
+        var HttpRespuesta = await http.Post<Mantenimiento, int>("api/Mantenimiento", mantenimiento);
         if (HttpRespuesta.Error)
         {
             var Body = HttpRespuesta.HttpResponseMessage;
