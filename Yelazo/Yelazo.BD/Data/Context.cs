@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using Yelazo.BD.Data.Entity;
 
 namespace Yelazo.BD.Data
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext<UsuarioYelazo>
     {
 
         public DbSet<Insumo> Insumos { get; set; }

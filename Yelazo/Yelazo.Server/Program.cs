@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Yelazo.BD.Data;
+using Yelazo.BD.Data.Entity;
 using Yelazo.Server.Repositorios;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +32,26 @@ builder.Services.AddScoped<IDetalleActividadMantenimientoRepositorio, DetalleAct
 builder.Services.AddScoped<IIngresoInsumoRepositorio, IngresoInsumoRepositorio>();
 builder.Services.AddScoped<IInsumoRepositorio, InsumoRepositorio>();
 
+builder.Services.AddIdentity<UsuarioYelazo, IdentityRole>()
+    .AddEntityFrameworkStores<Context>()
+    .AddDefaultTokenProviders();
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+    {
+        options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(builder.Configuration["JwtKey"])),
+        };
+    });
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -43,6 +66,7 @@ app.UseBlazorFrameworkFiles();
 app.UseStaticFiles();
 app.UseRouting();
 app.MapRazorPages();
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
