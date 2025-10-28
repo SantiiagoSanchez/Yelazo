@@ -4,6 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using Yelazo.Client.Servicios;
+using Yelazo.Shared.DTO;
 
 namespace Yelazo.Client.Autorizacion
 {
@@ -50,7 +51,7 @@ namespace Yelazo.Client.Autorizacion
         public async Task Login(UserTokenDTO TokenDTO)
         {
             await js.GuardarEnLocalStorage(TOKENKEY, TokenDTO.Token);
-            await js.GuardarEnLocalStorage(EXPIRATIONTOKENKEY, TokenDTO.Expiration.ToString());
+            await js.GuardarEnLocalStorage(EXPIRATIONTOKENKEY, TokenDTO.Expiracion.ToString());
             var authState = ConstruirAuthenticationState(TokenDTO.Token);
             NotifyAuthenticationStateChanged(Task.FromResult(authState));
         }

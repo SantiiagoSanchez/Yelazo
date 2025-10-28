@@ -1,4 +1,6 @@
-﻿namespace Yelazo.Client.Autorizacion
+﻿using Yelazo.Shared.DTO;
+
+namespace Yelazo.Client.Autorizacion
 {
     public interface ILoginService
     {
