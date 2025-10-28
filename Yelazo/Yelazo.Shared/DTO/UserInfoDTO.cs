@@ -18,7 +18,7 @@ namespace Yelazo.Shared.DTO
 
         public string Apellido { get; set; }
 
-        public int Telefono { get; set; }
+        public string Telefono { get; set; }
 
         public string Direccion { get; set; }
 

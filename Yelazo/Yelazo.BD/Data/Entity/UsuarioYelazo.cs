@@ -18,7 +18,7 @@ namespace Yelazo.BD.Data.Entity
         public string Apellido { get; set; }
 
         [Required(ErrorMessage = "El telefono del usuario es obligatorio")]
-        public int Telefono { get; set; }
+        public string Telefono { get; set; }
 
         [Required(ErrorMessage = "La direccion del usuario es obligatoria")]
         public string Direccion { get; set; }
