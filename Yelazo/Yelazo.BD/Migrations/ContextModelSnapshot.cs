@@ -415,23 +415,6 @@ namespace Yelazo.BD.Migrations
                     b.ToTable("Proveedores");
                 });
 
-            modelBuilder.Entity("Yelazo.BD.Data.Entity.Rol", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
-                });
-
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Stock", b =>
                 {
                     b.Property<int>("Id")

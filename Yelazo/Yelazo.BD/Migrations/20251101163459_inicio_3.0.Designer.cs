@@ -12,8 +12,8 @@ using Yelazo.BD.Data;
 namespace Yelazo.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251028141500_Tipo_de_dato_telefono")]
-    partial class Tipo_de_dato_telefono
+    [Migration("20251101163459_inicio_3.0")]
+    partial class inicio_30
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -416,23 +416,6 @@ namespace Yelazo.BD.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Proveedores");
-                });
-
-            modelBuilder.Entity("Yelazo.BD.Data.Entity.Rol", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Nombre")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Roles");
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Stock", b =>
