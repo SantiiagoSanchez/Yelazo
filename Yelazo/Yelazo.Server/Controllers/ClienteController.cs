@@ -1,0 +1,81 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Yelazo.BD.Data.Entity;
+using Yelazo.Shared.DTO;
+
+namespace Yelazo.Server.Controllers
+{
+    [ApiController]
+    [Route("api/Cliente")]
+    public class ClienteController : ControllerBase
+    {
+        private readonly UserManager<UsuarioYelazo> userManager;
+        private readonly SignInManager<UsuarioYelazo> signInManager;
+        private readonly IConfiguration configuration;
+
+        public ClienteController(UserManager<UsuarioYelazo> userManager,
+                                 SignInManager<UsuarioYelazo> signInManager,
+                                 IConfiguration configuration)
+        {
+            this.userManager = userManager;
+            this.signInManager = signInManager;
+            this.configuration = configuration;
+        }
+
+        [HttpPost("registrar")]
+        public async Task<ActionResult<UserTokenDTO>> CrearUsuario([FromBody] UserInfoDTO dto)
+        {
+            var usuario = new UsuarioYelazo
+            {
+                UserName = dto.Email,
+                Email = dto.Email,
+                Nombre = dto.Nombre,
+                Apellido = dto.Apellido,
+                Telefono = dto.Telefono,
+                Direccion = dto.Direccion,
+                Zona = dto.Zona,
+                Estado = dto.Estado
+            };
+
+            var resultado = await userManager.CreateAsync(usuario, dto.Password);
+
+            if (!resultado.Succeeded)
+            {
+                return BadRequest(resultado.Errors.First());
+            }
+            
+            var rolAsignar = "cliente";
+
+            var resultadoRol = await userManager.AddToRoleAsync(usuario, rolAsignar);
+
+            if (!resultadoRol.Succeeded)
+            {
+                await userManager.DeleteAsync(usuario);
+                return BadRequest(resultadoRol.Errors.First());
+            }
+
+            return Ok();
+        }
+
+        [HttpGet()]
+        public async Task<ActionResult<List<UserListadoDTO>>> GetClientes()
+        {
+            // Trae todos los usuarios que tengan el rol "Cliente"
+            var usuarios = await userManager.GetUsersInRoleAsync("Cliente");
+
+            var lista = usuarios.Select(usuario => new UserListadoDTO
+            {
+                Id = usuario.Id,
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                Estado = usuario.Estado ?? false
+            }).ToList();
+
+            return lista;
+        }
+
+
+
+    }
+}
