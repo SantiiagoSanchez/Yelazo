@@ -1,27 +1,75 @@
-﻿@page "/login"
+﻿@page "/"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
 @inject IJSRuntime js
 @inject ILoginService loginService
-<h3>Login</h3>
+@layout EmptyLayout
 
-<EditForm Model="@userInfo" OnValidSubmit="Loguear">
-    <DataAnnotationsValidator />
-    <div class="mb-3">
-        <label for="email" class="form-label>">Email</label>
-        <InputText id="email" class="form-control" @bind-Value="userInfo.Email" />
-        <ValidationMessage For="@(() => userInfo.Email)" />
+<style>
+    /* Fondo con imagen */
+    body, html {
+        height: 100%;
+        margin: 0;
+    }
+
+    .login-background {
+        background-image: url('/fondo-login.png');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Tarjeta central */
+    .login-card {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 10px;
+        padding: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        width: 350px;
+        max-width: 90%;
+    }
+
+    /* Título */
+    .login-title {
+        text-align: center;
+        margin-bottom: 1.5rem;
+        color: #345874; 
+        font-weight: bold;
+    }
+
+    .btn-primary {
+        width: 100%;
+    }
+</style>
+
+<div class="login-background">
+    <div class="login-card">
+        <h3 class="login-title">Iniciar Sesión</h3>
+
+        <EditForm Model="@userInfo" OnValidSubmit="Loguear">
+            <DataAnnotationsValidator />
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <InputText id="email" class="form-control" @bind-Value="userInfo.Email" />
+                <ValidationMessage For="@(() => userInfo.Email)" />
+            </div>
+            <div class="mb-3">
+                <label for="password" class="form-label">Password</label>
+                <InputText id="password" type="password" class="form-control" @bind-Value="userInfo.Password" />
+                <ValidationMessage For="@(() => userInfo.Password)" />
+            </div>
+            <button type="submit" class="btn btn-primary">Ingresar</button>
+        </EditForm>
     </div>
-    <div class="mb-3">
-        <label for="password" class="form-label>">Password</label>
-        <InputText id="password" type="password" class="form-control" @bind-Value="userInfo.Password" />
-        <ValidationMessage For="@(() => userInfo.Password)" />
-    </div>
-    <button type="submit" class="btn btn-primary">Aceptar</button>
-</EditForm>
+</div>
 
 @code {
     private UserLoginDTO userInfo = new UserLoginDTO();
+
 
     private async Task Loguear()
     {
@@ -37,7 +85,9 @@
             if (UserToken != null)
             {
                 await loginService.Login(UserToken);
-                navigationManager.NavigateTo("/");
+
+                navigationManager.NavigateTo("/inicio");
+
             }
             else
             {

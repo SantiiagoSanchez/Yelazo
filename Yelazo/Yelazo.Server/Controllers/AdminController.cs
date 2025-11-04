@@ -20,24 +20,32 @@ namespace Yelazo.Server.Controllers
             this.signInManager = signInManager;
             this.userManager = userManager;
         }
-
-        [HttpGet]
-        public async Task<ActionResult<List<UserListadoDTO>>> Get()
+        [HttpGet()]
+        public async Task<ActionResult<List<UserListadoDTO>>> GetNoClientes()
         {
+            // Trae todos los usuarios
             var usuarios = userManager.Users.ToList();
+
             var lista = new List<UserListadoDTO>();
 
             foreach (var usuario in usuarios)
             {
-                var roles = await userManager.GetRolesAsync(usuario); // trae la lista de roles
+                // Obtiene los roles del usuario
+                var roles = await userManager.GetRolesAsync(usuario);
+
+                // Si tiene el rol "Cliente", lo saltamos
+                if (roles.Contains("Cliente", StringComparer.OrdinalIgnoreCase))
+                    continue;
+
                 lista.Add(new UserListadoDTO
                 {
                     Id = usuario.Id,
-                    Email = usuario.Email!,
                     Nombre = usuario.Nombre,
                     Apellido = usuario.Apellido,
+                    Email = usuario.Email,
                     Telefono = usuario.Telefono,
-                    Rol = roles.FirstOrDefault() ?? "Sin rol" // tomamos el primer rol
+                    Estado = usuario.Estado ?? false,
+                    Rol = roles.FirstOrDefault() ?? "Sin rol"
                 });
             }
 
