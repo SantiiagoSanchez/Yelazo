@@ -17,5 +17,7 @@ namespace Yelazo.Shared.DTO
 
         public bool? Estado { get; set; }
 
+        public string? Zona { get; set; }
+
     }
 }

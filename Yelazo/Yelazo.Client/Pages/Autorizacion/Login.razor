@@ -4,6 +4,8 @@
 @inject IJSRuntime js
 @inject ILoginService loginService
 @layout EmptyLayout
+@using System.IdentityModel.Tokens.Jwt;
+@using System.Security.Claims;
 
 <style>
     /* Fondo con imagen */
@@ -86,14 +88,39 @@
             {
                 await loginService.Login(UserToken);
 
-                navigationManager.NavigateTo("/inicio");
+                // Leer rol del token
+                var rol = ObtenerRolDesdeToken(UserToken.Token);
 
+                if (rol == "cliente")
+                {
+                    navigationManager.NavigateTo("/registrar"); //Aca va a la pagina de la tienda.
+                }
+                else
+                {
+                    navigationManager.NavigateTo("/inicio");
+                }
             }
             else
             {
                 await js.Confirmar("No se pudo obtener el token");
             }
         }
+    }
+
+    private string ObtenerRolDesdeToken(string token)
+    {
+        if (string.IsNullOrWhiteSpace(token))
+            return string.Empty;
+
+        var handler = new JwtSecurityTokenHandler();
+        var jwtToken = handler.ReadJwtToken(token);
+
+        var rolClaim = jwtToken.Claims.FirstOrDefault(c =>
+            c.Type == ClaimTypes.Role ||
+            c.Type == "role" ||
+            c.Type.EndsWith("/role"));
+
+        return rolClaim?.Value ?? string.Empty;
     }
 }
 

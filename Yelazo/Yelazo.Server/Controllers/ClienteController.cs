@@ -67,6 +67,8 @@ namespace Yelazo.Server.Controllers
             {
                 Id = usuario.Id,
                 Nombre = usuario.Nombre,
+                Email = usuario.Email,
+                Zona = usuario.Zona,
                 Apellido = usuario.Apellido,
                 Telefono = usuario.Telefono,
                 Estado = usuario.Estado ?? false
