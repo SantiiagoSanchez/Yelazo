@@ -1,0 +1,136 @@
+﻿/* === Estilos generales === */
+body {
+    font-family: 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #f1f5f9; /* gris suave de fondo */
+    color: #333;
+}
+
+/* === Encabezado general === */
+h3 {
+    font-weight: 700;
+    color: #1e293b;
+}
+
+/* === Botón "Nuevo producto" === */
+.btn-primary {
+    background-color: #3b82f6 !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: 0.2s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #2563eb !important;
+    }
+
+/* === Tabla general === */
+.table {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    margin-top: 20px;
+    border: 1px solid #e2e8f0; /* borde gris claro */
+}
+
+    /* === Encabezado de tabla === */
+    .table thead {
+        background-color: #e2e8f0; /* gris más notorio */
+        color: #1e293b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        font-weight: 700;
+        border-bottom: 2px solid #cbd5e1; /* línea divisoria más marcada */
+    }
+
+    .table th {
+        padding: 14px 16px !important;
+    }
+
+    /* === Filas y celdas === */
+    .table td {
+        padding: 12px 16px !important;
+        color: #334155;
+    }
+
+    .table tbody tr {
+        border-bottom: 1px solid #f1f5f9;
+        transition: background-color 0.2s ease;
+    }
+
+/* Hover sobre filas */
+.table-hover tbody tr:hover {
+    background-color: #f8fafc !important;
+}
+
+/* Efecto de sombra al pasar el mouse sobre la tabla */
+.table:hover {
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* === Estado Activo / Inactivo === */
+.text-success.fw-bold {
+    background-color: #dcfce7;
+    color: #16a34a !important;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 4px 10px;
+}
+
+.text-danger.fw-bold {
+    background-color: #fee2e2;
+    color: #dc2626 !important;
+    font-weight: 600;
+    border-radius: 12px;
+    padding: 4px 10px;
+}
+
+/* === Botones de acción === */
+td .btn {
+    border: none !important;
+    border-radius: 8px;
+    padding: 6px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.btn-primary svg,
+.btn-danger svg,
+.btn-secondary svg {
+    pointer-events: none;
+}
+
+.btn-danger {
+    background-color: #ef4444 !important;
+}
+
+    .btn-danger:hover {
+        background-color: #dc2626 !important;
+    }
+
+.btn-secondary {
+    background-color: #94a3b8 !important;
+}
+
+    .btn-secondary:hover {
+        background-color: #64748b !important;
+    }
+
+/* === Paginación (Bootstrap) === */
+.pagination .page-link {
+    border: none;
+    border-radius: 8px;
+    color: #3b82f6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #3b82f6;
+    color: #fff;
+}
