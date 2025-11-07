@@ -1,0 +1,79 @@
+﻿body {
+}
+
+/* Barra superior */
+.topbar {
+    background-color: #0A4D8F;
+    color: #fff;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .topbar .brand {
+        font-weight: 700;
+        font-size: 1.25rem;
+        letter-spacing: 1px;
+    }
+
+    .topbar .cart {
+        color: #fff;
+        text-decoration: none;
+        font-size: 0.95rem;
+        display: flex;
+        align-items: center;
+    }
+
+        .topbar .cart i {
+            font-size: 1.2rem;
+            margin-right: 6px;
+        }
+
+        .topbar .cart:hover {
+            text-decoration: underline;
+        }
+
+/* Fondo del encabezado y footer */
+.hero-section,
+.footer-modern {
+    background-color: #0A4D8F;
+}
+
+/* Tarjetas */
+.product-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+    border-radius: 15px;
+    overflow: hidden;
+    background-color: #fff;
+}
+
+    .product-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+    }
+
+.product-img {
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+/* Botón moderno */
+.btn-gradient {
+    background-color: #1976D2;
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+    .btn-gradient:hover {
+        background-color: #1534a1;
+        color: white;
+        transform: scale(1.03);
+    }
+
+/* Footer */
+.footer-modern {
+    background-color: #0A4D8F;
+}
