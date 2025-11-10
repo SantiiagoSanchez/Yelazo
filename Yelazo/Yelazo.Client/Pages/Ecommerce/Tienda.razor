@@ -1,6 +1,6 @@
 ﻿@page "/tienda"
 @layout EmptyLayout
-
+@inject ILoginService loginService
 @inject IHttpServicio http
 
 @Mensaje
@@ -103,11 +103,18 @@
     private List<Producto>? productos;
     private string imagenPorDefecto = "https://th.bing.com/th/id/R.69e0e202dc64320acf1b83f533690dc8?rik=sChSobWDBKU%2faA&pid=ImgRaw&r=0";
     public string Mensaje { get; set; } = string.Empty;
+    private Carrito carrito = new Carrito();
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
+
+        var userId = loginService.ObtenerIdUsuario();
+        if (!string.IsNullOrEmpty(userId))
+        {
+            carrito = await ObtenerOCrearCarritoAsync(userId);
+        }
     }
 
     private async Task Leer()
@@ -122,6 +129,34 @@
         {
             Mensaje = "Error";
         }
-
     }
+
+    // Método para obtener o crear carrito
+    private async Task<Carrito> ObtenerOCrearCarritoAsync(string userId)
+    {
+        // Llamada al API para obtener carrito activo
+        var respuesta = await http.Get<Carrito>($"api/Carrito/Activo/{userId}");
+
+        if (!respuesta.Error && respuesta.Respuesta != null)
+            return respuesta.Respuesta;
+
+        // Si no hay carrito activo, creamos uno nuevo
+        var nuevoCarrito = new Carrito
+        {
+            UsuarioId = userId,
+            FechaCreacion = DateTime.Now,
+            Finalizado = false
+        };
+
+        var crearResp = await http.Post<Carrito, Carrito>("api/Carrito", nuevoCarrito);
+        if (!crearResp.Error && crearResp.Respuesta != null)
+        {
+            return crearResp.Respuesta;
+        }
+
+        // Si falla la creación
+        throw new Exception("No se pudo obtener ni crear el carrito del usuario.");
+    }
+
+   
 }

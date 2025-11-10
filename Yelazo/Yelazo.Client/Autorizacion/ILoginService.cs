@@ -6,5 +6,6 @@ namespace Yelazo.Client.Autorizacion
     {
         Task Login(UserTokenDTO TokenDTO);
         Task Logout();
+        string ObtenerIdUsuario();
     }
 }

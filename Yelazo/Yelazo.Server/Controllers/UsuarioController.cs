@@ -81,8 +81,8 @@ namespace Yelazo.Server.Controllers
             {
                 new Claim(ClaimTypes.Email, userInfo.Email),
                 new Claim(ClaimTypes.Name, userInfo.Nombre),
-                new Claim(ClaimTypes.StreetAddress, userInfo.Direccion)
-
+                new Claim(ClaimTypes.StreetAddress, userInfo.Direccion),
+                new Claim(ClaimTypes.NameIdentifier, userInfo.Id)
             };
 
             var usuario = await userManager.FindByEmailAsync(userInfo.Email);

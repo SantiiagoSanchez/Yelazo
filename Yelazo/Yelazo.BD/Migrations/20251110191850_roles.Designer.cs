@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Yelazo.BD.Data;
 
@@ -11,9 +12,11 @@ using Yelazo.BD.Data;
 namespace Yelazo.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20251110191850_roles")]
+    partial class roles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -197,9 +200,6 @@ namespace Yelazo.BD.Migrations
 
                     b.Property<DateTime?>("FechaModificacion")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("Finalizado")
-                        .HasColumnType("bit");
 
                     b.Property<string>("UsuarioId")
                         .IsRequired()

@@ -63,5 +63,19 @@ namespace Yelazo.Client.Autorizacion
             httpClient.DefaultRequestHeaders.Authorization = null;
             NotifyAuthenticationStateChanged(Task.FromResult(Anonimo));
         }
+
+        public string ObtenerIdUsuario()
+        {
+            // Leemos el token desde localStorage
+            var token = js.ObtenerDeLocalStorage(TOKENKEY).Result;
+            if (string.IsNullOrEmpty(token))
+                return string.Empty;
+
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
+            return userIdClaim?.Value ?? string.Empty;
+        }
     }
 }
