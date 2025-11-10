@@ -12,8 +12,8 @@ using Yelazo.BD.Data;
 namespace Yelazo.BD.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251101163459_inicio_3.0")]
-    partial class inicio_30
+    [Migration("20251110191252_db-yelazo2.0")]
+    partial class dbyelazo20
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -187,6 +187,31 @@ namespace Yelazo.BD.Migrations
                     b.ToTable("ActividadMantenimientos");
                 });
 
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Carrito", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("FechaCreacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Carritos");
+                });
+
             modelBuilder.Entity("Yelazo.BD.Data.Entity.DetalleActividadMantenimiento", b =>
                 {
                     b.Property<int>("Id")
@@ -211,6 +236,64 @@ namespace Yelazo.BD.Migrations
                     b.HasIndex("InsumoId");
 
                     b.ToTable("DetalleActividadMantenimientos");
+                });
+
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.DetalleCarrito", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("CarritoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarritoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("DetalleCarritos");
+                });
+
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.DetallePedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PedidoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductoId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PedidoId");
+
+                    b.HasIndex("ProductoId");
+
+                    b.ToTable("DetallePedidos");
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Gasto", b =>
@@ -350,6 +433,43 @@ namespace Yelazo.BD.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MetodosPago");
+                });
+
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Pedido", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CarritoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("FechaPedido")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("Saldo")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("UsuarioId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CarritoId");
+
+                    b.HasIndex("UsuarioId");
+
+                    b.ToTable("Pedidos");
                 });
 
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Producto", b =>
@@ -606,13 +726,13 @@ namespace Yelazo.BD.Migrations
                     b.HasOne("Yelazo.BD.Data.Entity.Mantenimiento", "Mantenimiento")
                         .WithMany("ActividadesMantenimiento")
                         .HasForeignKey("MantenimientoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Yelazo.BD.Data.Entity.Proveedor", "Proveedor")
                         .WithMany()
                         .HasForeignKey("ProveedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Mantenimiento");
@@ -620,18 +740,29 @@ namespace Yelazo.BD.Migrations
                     b.Navigation("Proveedor");
                 });
 
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Carrito", b =>
+                {
+                    b.HasOne("Yelazo.BD.Data.Entity.UsuarioYelazo", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Yelazo.BD.Data.Entity.DetalleActividadMantenimiento", b =>
                 {
                     b.HasOne("Yelazo.BD.Data.Entity.ActividadMantenimiento", "ActividadMantenimiento")
                         .WithMany()
                         .HasForeignKey("ActividadMantenimientoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Yelazo.BD.Data.Entity.Insumo", "Insumo")
                         .WithMany()
                         .HasForeignKey("InsumoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("ActividadMantenimiento");
@@ -639,18 +770,56 @@ namespace Yelazo.BD.Migrations
                     b.Navigation("Insumo");
                 });
 
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.DetalleCarrito", b =>
+                {
+                    b.HasOne("Yelazo.BD.Data.Entity.Carrito", "Carrito")
+                        .WithMany("Detalles")
+                        .HasForeignKey("CarritoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yelazo.BD.Data.Entity.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Carrito");
+
+                    b.Navigation("Producto");
+                });
+
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.DetallePedido", b =>
+                {
+                    b.HasOne("Yelazo.BD.Data.Entity.Pedido", "Pedido")
+                        .WithMany("Detalles")
+                        .HasForeignKey("PedidoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yelazo.BD.Data.Entity.Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("ProductoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Pedido");
+
+                    b.Navigation("Producto");
+                });
+
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Gasto", b =>
                 {
                     b.HasOne("Yelazo.BD.Data.Entity.Proveedor", "Proveedor")
                         .WithMany()
                         .HasForeignKey("ProveedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Yelazo.BD.Data.Entity.TipoGasto", "TipoGasto")
                         .WithMany()
                         .HasForeignKey("tipoGastoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Proveedor");
@@ -663,13 +832,13 @@ namespace Yelazo.BD.Migrations
                     b.HasOne("Yelazo.BD.Data.Entity.Insumo", "Insumo")
                         .WithMany()
                         .HasForeignKey("InsumoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Yelazo.BD.Data.Entity.Proveedor", "Proveedor")
                         .WithMany()
                         .HasForeignKey("ProveedorId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Insumo");
@@ -677,20 +846,49 @@ namespace Yelazo.BD.Migrations
                     b.Navigation("Proveedor");
                 });
 
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Pedido", b =>
+                {
+                    b.HasOne("Yelazo.BD.Data.Entity.Carrito", "Carrito")
+                        .WithMany()
+                        .HasForeignKey("CarritoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Yelazo.BD.Data.Entity.UsuarioYelazo", "Usuario")
+                        .WithMany()
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Carrito");
+
+                    b.Navigation("Usuario");
+                });
+
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Stock", b =>
                 {
                     b.HasOne("Yelazo.BD.Data.Entity.Producto", "Producto")
                         .WithMany()
                         .HasForeignKey("ProductoId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Producto");
                 });
 
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Carrito", b =>
+                {
+                    b.Navigation("Detalles");
+                });
+
             modelBuilder.Entity("Yelazo.BD.Data.Entity.Mantenimiento", b =>
                 {
                     b.Navigation("ActividadesMantenimiento");
+                });
+
+            modelBuilder.Entity("Yelazo.BD.Data.Entity.Pedido", b =>
+                {
+                    b.Navigation("Detalles");
                 });
 #pragma warning restore 612, 618
         }

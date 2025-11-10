@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Yelazo.BD.Migrations
 {
     /// <inheritdoc />
-    public partial class inicio_30 : Migration
+    public partial class dbyelazo20 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -257,6 +257,27 @@ namespace Yelazo.BD.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Carritos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Carritos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Carritos_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Stocks",
                 columns: table => new
                 {
@@ -275,7 +296,7 @@ namespace Yelazo.BD.Migrations
                         column: x => x.ProductoId,
                         principalTable: "Productos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -297,13 +318,13 @@ namespace Yelazo.BD.Migrations
                         column: x => x.MantenimientoId,
                         principalTable: "Mantenimientos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ActividadMantenimientos_Proveedores_ProveedorId",
                         column: x => x.ProveedorId,
                         principalTable: "Proveedores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -326,13 +347,13 @@ namespace Yelazo.BD.Migrations
                         column: x => x.InsumoId,
                         principalTable: "Insumos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_IngresoInsumos_Proveedores_ProveedorId",
                         column: x => x.ProveedorId,
                         principalTable: "Proveedores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -355,13 +376,71 @@ namespace Yelazo.BD.Migrations
                         column: x => x.ProveedorId,
                         principalTable: "Proveedores",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Gastos_TiposGasto_tipoGastoId",
                         column: x => x.tipoGastoId,
                         principalTable: "TiposGasto",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DetalleCarritos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CarritoId = table.Column<int>(type: "int", nullable: false),
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetalleCarritos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DetalleCarritos_Carritos_CarritoId",
+                        column: x => x.CarritoId,
+                        principalTable: "Carritos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DetalleCarritos_Productos_ProductoId",
+                        column: x => x.ProductoId,
+                        principalTable: "Productos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Pedidos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UsuarioId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CarritoId = table.Column<int>(type: "int", nullable: false),
+                    FechaPedido = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Saldo = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Pedidos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Pedidos_AspNetUsers_UsuarioId",
+                        column: x => x.UsuarioId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Pedidos_Carritos_CarritoId",
+                        column: x => x.CarritoId,
+                        principalTable: "Carritos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -382,13 +461,41 @@ namespace Yelazo.BD.Migrations
                         column: x => x.ActividadMantenimientoId,
                         principalTable: "ActividadMantenimientos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_DetalleActividadMantenimientos_Insumos_InsumoId",
                         column: x => x.InsumoId,
                         principalTable: "Insumos",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DetallePedidos",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    PedidoId = table.Column<int>(type: "int", nullable: false),
+                    ProductoId = table.Column<int>(type: "int", nullable: false),
+                    Cantidad = table.Column<int>(type: "int", nullable: false),
+                    Total = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DetallePedidos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DetallePedidos_Pedidos_PedidoId",
+                        column: x => x.PedidoId,
+                        principalTable: "Pedidos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DetallePedidos_Productos_ProductoId",
+                        column: x => x.ProductoId,
+                        principalTable: "Productos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -441,6 +548,11 @@ namespace Yelazo.BD.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Carritos_UsuarioId",
+                table: "Carritos",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_DetalleActividadMantenimientos_ActividadMantenimientoId",
                 table: "DetalleActividadMantenimientos",
                 column: "ActividadMantenimientoId");
@@ -449,6 +561,26 @@ namespace Yelazo.BD.Migrations
                 name: "IX_DetalleActividadMantenimientos_InsumoId",
                 table: "DetalleActividadMantenimientos",
                 column: "InsumoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleCarritos_CarritoId",
+                table: "DetalleCarritos",
+                column: "CarritoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetalleCarritos_ProductoId",
+                table: "DetalleCarritos",
+                column: "ProductoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetallePedidos_PedidoId",
+                table: "DetallePedidos",
+                column: "PedidoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DetallePedidos_ProductoId",
+                table: "DetallePedidos",
+                column: "ProductoId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gastos_ProveedorId",
@@ -471,24 +603,20 @@ namespace Yelazo.BD.Migrations
                 column: "ProveedorId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Pedidos_CarritoId",
+                table: "Pedidos",
+                column: "CarritoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Pedidos_UsuarioId",
+                table: "Pedidos",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stocks_ProductoId",
                 table: "Stocks",
                 column: "ProductoId");
-
-            migrationBuilder.Sql(@$"INSERT INTO AspNetRoles(Id, Name, NormalizedName)
-                               VALUES('ba018153-7544-4fbd-a59c-c2660628308e', 'admin', 'ADMIN')");
-
-            migrationBuilder.Sql(@$"INSERT INTO AspNetRoles(Id, Name, NormalizedName)
-                               VALUES('ba018153-7544-4fbd-a59c-c2660628419f', 'produccion', 'PRODUCCION')");
-
-            migrationBuilder.Sql(@$"INSERT INTO AspNetRoles(Id, Name, NormalizedName)
-                               VALUES('ba018153-7544-4fbd-a59c-c3770628308e', 'repartidor', 'REPARTIDOR')");
-
-            migrationBuilder.Sql(@$"INSERT INTO AspNetRoles(Id, Name, NormalizedName)
-                               VALUES('ba018153-7544-4fbd-a59c-c5880628532e', 'cliente', 'CLIENTE')");
         }
-
-
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -512,6 +640,12 @@ namespace Yelazo.BD.Migrations
                 name: "DetalleActividadMantenimientos");
 
             migrationBuilder.DropTable(
+                name: "DetalleCarritos");
+
+            migrationBuilder.DropTable(
+                name: "DetallePedidos");
+
+            migrationBuilder.DropTable(
                 name: "Gastos");
 
             migrationBuilder.DropTable(
@@ -527,10 +661,10 @@ namespace Yelazo.BD.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ActividadMantenimientos");
 
             migrationBuilder.DropTable(
-                name: "ActividadMantenimientos");
+                name: "Pedidos");
 
             migrationBuilder.DropTable(
                 name: "TiposGasto");
@@ -547,10 +681,11 @@ namespace Yelazo.BD.Migrations
             migrationBuilder.DropTable(
                 name: "Proveedores");
 
-            migrationBuilder.Sql("DELETE AspNetRoles WHERE Id = 'ba018153-7544-4fbd-a59c-c2660628308e'");
-            migrationBuilder.Sql("DELETE AspNetRoles WHERE Id = 'ba018153-7544-4fbd-a59c-c2660628419f'");
-            migrationBuilder.Sql("DELETE AspNetRoles WHERE Id = 'ba018153-7544-4fbd-a59c-c3770628308e'");
-            migrationBuilder.Sql("DELETE AspNetRoles WHERE Id = 'ba018153-7544-4fbd-a59c-c5880628532e'");
+            migrationBuilder.DropTable(
+                name: "Carritos");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
         }
     }
 }
