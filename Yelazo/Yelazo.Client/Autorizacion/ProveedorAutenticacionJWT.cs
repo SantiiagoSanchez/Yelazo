@@ -64,10 +64,10 @@ namespace Yelazo.Client.Autorizacion
             NotifyAuthenticationStateChanged(Task.FromResult(Anonimo));
         }
 
-        public string ObtenerIdUsuario()
+        public async Task<string> ObtenerIdUsuario()
         {
             // Leemos el token desde localStorage
-            var token = js.ObtenerDeLocalStorage(TOKENKEY).Result;
+            var token = await js.ObtenerDeLocalStorage(TOKENKEY);
             if (string.IsNullOrEmpty(token))
                 return string.Empty;
 

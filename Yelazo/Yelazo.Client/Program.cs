@@ -16,6 +16,7 @@ builder.Services.AddScoped<ProveedorAutenticacionJWT>();
 builder.Services.AddScoped<IHttpServicio, HttpServicio>();
 builder.Services.AddScoped<AuthenticationStateProvider, ProveedorAutenticacionJWT>(proveedor => proveedor.GetRequiredService<ProveedorAutenticacionJWT>());
 builder.Services.AddScoped<ILoginService, ProveedorAutenticacionJWT>(proveedor => proveedor.GetRequiredService<ProveedorAutenticacionJWT>());
+builder.Services.AddScoped<ICarritoService, CarritoService>();
 builder.Services.AddSweetAlert2();
 
 await builder.Build().RunAsync();

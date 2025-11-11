@@ -2,6 +2,7 @@
 @layout EmptyLayout
 @inject ILoginService loginService
 @inject IHttpServicio http
+@inject ICarritoService carritoService
 
 @Mensaje
 
@@ -12,11 +13,36 @@
     <!-- Barra superior -->
     <header class="topbar">
         <div class="brand">YELAZO!</div>
-        <a href="#" class="cart">
+        <button class="cart position-relative btn btn-link text-decoration-none text-white" @onclick="ToggleCarrito">
             <i class="bi bi-cart3"></i>
-            Carrito (0)
-        </a>
+            Carrito (@cantidadCarrito)
+        </button>
     </header>
+
+    <div class="carrito-panel position-fixed top-0 end-0 bg-white shadow p-3"
+         style="width:300px; height:100vh; transition: transform 0.3s; transform:@(mostrarCarrito ? "translateX(0)" : "translateX(100%)"); z-index:1050;">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h5>Mi Carrito</h5>
+            <button class="btn-close" @onclick="CerrarCarrito"></button>
+        </div>
+
+        @if (carrito.Detalles != null && carrito.Detalles.Any())
+        {
+            <ul class="list-group">
+                @foreach (var detalle in carrito.Detalles)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        @detalle.Producto.Nombre
+                        <span class="badge bg-primary rounded-pill">@detalle.Cantidad</span>
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            <p>Tu carrito está vacío.</p>
+        }
+    </div>
 
     <!-- Encabezado -->
     <section class="hero-section text-white text-center py-5 mb-0">
@@ -62,7 +88,7 @@
                                     <p class="fw-bold text-primary fs-5 mb-3">
                                         @producto.Precio $
                                     </p>
-                                    <button class="btn btn-gradient w-100 rounded-pill py-2 mt-auto">
+                                    <button class="btn btn-gradient w-100 rounded-pill py-2 mt-auto" @onclick="() => agregarAlCarrito(producto.Id)">
                                         <i class="bi bi-cart-plus me-2"></i> Añadir al Carrito
                                     </button>
                                 </div>
@@ -103,17 +129,31 @@
     private List<Producto>? productos;
     private string imagenPorDefecto = "https://th.bing.com/th/id/R.69e0e202dc64320acf1b83f533690dc8?rik=sChSobWDBKU%2faA&pid=ImgRaw&r=0";
     public string Mensaje { get; set; } = string.Empty;
-    private Carrito carrito = new Carrito();
+    private CarritoDTO carrito = new CarritoDTO();
+    private int cantidadCarrito = 0;
+    private bool mostrarCarrito = false;
+
+    private void ToggleCarrito()
+    {
+        mostrarCarrito = !mostrarCarrito;
+    }
+
+    private void CerrarCarrito()
+    {
+        mostrarCarrito = false;
+    }
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
 
-        var userId = loginService.ObtenerIdUsuario();
+        var userId = await loginService.ObtenerIdUsuario();
         if (!string.IsNullOrEmpty(userId))
         {
             carrito = await ObtenerOCrearCarritoAsync(userId);
+            // Inicializamos el contador con la cantidad de productos del carrito
+            cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
         }
     }
 
@@ -127,35 +167,72 @@
         }
         else
         {
-            Mensaje = "Error";
+            Mensaje = "Error al cargar productos.";
         }
     }
 
     // Método para obtener o crear carrito
-    private async Task<Carrito> ObtenerOCrearCarritoAsync(string userId)
+    private async Task<CarritoDTO> ObtenerOCrearCarritoAsync(string userId)
     {
-        // Llamada al API para obtener carrito activo
-        var respuesta = await http.Get<Carrito>($"api/Carrito/Activo/{userId}");
+        var respuesta = await http.Get<CarritoDTO>($"api/Carrito/Activo/{userId}");
 
         if (!respuesta.Error && respuesta.Respuesta != null)
+        {
+            Console.WriteLine($"Carrito activo obtenido correctamente, id={respuesta.Respuesta.Id}, Detalles={respuesta.Respuesta.Detalles}");
             return respuesta.Respuesta;
+        }
+        
 
-        // Si no hay carrito activo, creamos uno nuevo
-        var nuevoCarrito = new Carrito
+        var nuevoCarritoDTO = new
         {
             UsuarioId = userId,
-            FechaCreacion = DateTime.Now,
-            Finalizado = false
+            FechaCreacion = DateTime.Now
         };
 
-        var crearResp = await http.Post<Carrito, Carrito>("api/Carrito", nuevoCarrito);
+        var crearResp = await http.Post<object, CarritoDTO>("api/Carrito", nuevoCarritoDTO);
         if (!crearResp.Error && crearResp.Respuesta != null)
         {
             return crearResp.Respuesta;
         }
 
-        // Si falla la creación
+
+            // Si ya existe un carrito activo, volver a pedirlo
+            var retry = await http.Get<CarritoDTO>($"api/Carrito/Activo/{userId}");
+            if (!retry.Error && retry.Respuesta != null)
+            {
+                return retry.Respuesta;
+            }
+        
         throw new Exception("No se pudo obtener ni crear el carrito del usuario.");
+    }
+
+
+    private async Task agregarAlCarrito(int productoId)
+    {
+        try
+        {
+            // Cantidad fija a 1 por ahora
+            await carritoService.AgregarProductoAsync(carrito.Id, productoId, 1);
+
+            // Actualizamos el contador
+            var userid = await loginService.ObtenerIdUsuario();
+            if (!string.IsNullOrEmpty(userid))
+            {
+                carrito = await ObtenerOCrearCarritoAsync(userid);
+            }
+
+            cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
+
+
+            // Fuerza a Blazor a refrescar la UI
+            StateHasChanged();
+
+            Mensaje = "Producto agregado al carrito correctamente.";
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"Error al agregar el producto: {ex.Message}";
+        }
     }
 
    
