@@ -26,5 +26,15 @@ namespace Yelazo.Client.Servicios
                 throw new Exception($"No se pudo agregar el producto al carrito. {respuesta.Error}");
             }
         }
+
+        public async Task QuitarProductoAsync(int carritoId, int productoId)
+        {
+            var respuesta = await http.Delete($"api/Carrito/{carritoId}/QuitarProducto/{productoId}");
+
+            if (respuesta.Error)
+            {
+                throw new Exception($"No se pudo quitar el producto del carrito. {respuesta.Error}");
+            }
+        }
     }
 }

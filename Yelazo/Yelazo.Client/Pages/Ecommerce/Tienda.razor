@@ -32,9 +32,18 @@
                 @foreach (var detalle in carrito.Detalles)
                 {
                     <li class="list-group-item d-flex justify-content-between align-items-center">
-                        @detalle.Producto.Nombre
-                        <span class="badge bg-primary rounded-pill">@detalle.Cantidad</span>
-                        <span class="badge bg-secondary rounded-pill">@detalle.Producto.Precio</span>
+                        <div>
+                            @detalle.Producto.Nombre
+                            <span class="badge bg-primary rounded-pill">@detalle.Cantidad</span>
+                            <span class="badge bg-secondary rounded-pill">@detalle.Producto.Precio</span>
+                        </div>
+
+                        <!-- Botón con ícono de X -->
+                        <button class="btn btn-sm btn-danger"
+                                style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
+                                @onclick="() => QuitarProductoAsync(detalle.Producto.Id)">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </li>
                 }
             </ul>
@@ -225,7 +234,7 @@
             cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
 
 
-            // Fuerza a Blazor a refrescar la UI
+            // Fuerza a Blazor a refrescar la pagina
             StateHasChanged();
 
             Mensaje = "Producto agregado al carrito correctamente.";
@@ -233,6 +242,33 @@
         catch (Exception ex)
         {
             Mensaje = $"Error al agregar el producto: {ex.Message}";
+        }
+    }
+
+    private async Task QuitarProductoAsync(int productoId)
+    {
+        try
+        {
+            await carritoService.QuitarProductoAsync(carrito.Id, productoId);
+
+            // Actualizamos el carrito desde la API
+            var userId = await loginService.ObtenerIdUsuario();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                carrito = await ObtenerOCrearCarritoAsync(userId);
+            }
+
+            // Recalcular el total de productos
+            cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
+
+            // Refrescar UI
+            StateHasChanged();
+
+            Mensaje = "Producto quitado del carrito correctamente.";
+        }
+        catch (Exception ex)
+        {
+            Mensaje = $"Error al quitar el producto: {ex.Message}";
         }
     }
 

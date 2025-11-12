@@ -44,5 +44,17 @@ namespace Yelazo.Server.Repositorios
 
             await context.SaveChangesAsync();
         }
+
+        public async Task QuitarProductoAsync(int carritoId, int productoId)
+        {
+            var detalle = await context.DetalleCarritos
+                .FirstOrDefaultAsync(d => d.CarritoId == carritoId && d.ProductoId == productoId);
+
+            if (detalle == null)
+                throw new Exception("El producto no existe en el carrito");
+
+            context.DetalleCarritos.Remove(detalle);
+            await context.SaveChangesAsync();
+        }
     }
 }

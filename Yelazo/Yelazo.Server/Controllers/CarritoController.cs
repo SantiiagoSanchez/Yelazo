@@ -60,5 +60,19 @@ namespace Yelazo.Server.Controllers
             await detalleCarritoRepositorio.AgregarProductoAsync(carritoId, dto.ProductoId, dto.Cantidad);
             return Ok(new { mensaje = "Producto agregado al carrito" });
         }
+
+        [HttpDelete("{carritoId}/QuitarProducto/{productoId}")]
+        public async Task<IActionResult> QuitarProducto(int carritoId, int productoId)
+        {
+            try
+            {
+                await detalleCarritoRepositorio.QuitarProductoAsync(carritoId, productoId);
+                return Ok(new { mensaje = "Producto quitado del carrito" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { mensaje = ex.Message });
+            }
+        }
     }
 }
