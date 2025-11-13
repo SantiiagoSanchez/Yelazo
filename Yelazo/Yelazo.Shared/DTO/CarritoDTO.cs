@@ -10,5 +10,7 @@ namespace Yelazo.Shared.DTO
     {
         public int Id { get; set; }
         public List<DetalleCarritoDTO> Detalles { get; set; } = new();
+
+        public decimal Total { get; set; }
     }
 }

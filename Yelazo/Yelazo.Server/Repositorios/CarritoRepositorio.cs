@@ -40,7 +40,9 @@ namespace Yelazo.Server.Repositorios
                         Precio = d.Producto.Precio
                     }
 
-                }).ToList()
+                }).ToList(),
+
+                Total = carrito.Total
             };
 
             
