@@ -24,7 +24,7 @@
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h5>Mi Carrito</h5>
-            <button class="btn-close" @onclick="CerrarCarrito"></button>
+            <button class="btn-close" @onclick="() => mostrarCarrito = false"></button>
         </div>
 
         @if (carrito.Detalles != null && carrito.Detalles.Any())
@@ -194,11 +194,6 @@
         mostrarCarrito = !mostrarCarrito;
     }
 
-    private void CerrarCarrito()
-    {
-        mostrarCarrito = false;
-    }
-
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
@@ -275,11 +270,19 @@
     {
         try
         {
+            if (cantidadSeleccionada < 1)
+            {
+                Mensaje = "La cantidad debe ser al menos 1.";
+                return;
+            }
+
             await carritoService.AgregarProductoAsync(
                 carrito.Id,
                 productoSeleccionadoId,
                 cantidadSeleccionada
             );
+
+
 
             mostrarModalCantidad = false;
 
