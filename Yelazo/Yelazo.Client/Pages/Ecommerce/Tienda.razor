@@ -140,6 +140,44 @@
         </div>
     </footer>
 </div>
+
+<!-- Modal para seleccionar cantidad -->
+@if (mostrarModalCantidad)
+{
+    <div class="modal fade show d-block"
+         style="background-color: rgba(0,0,0,.5); z-index:2000;">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Seleccionar cantidad</h5>
+                    <button class="btn-close" @onclick="() => mostrarModalCantidad = false"></button>
+                </div>
+
+                <div class="modal-body">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number"
+                           class="form-control"
+                           min="1"
+                           @bind="cantidadSeleccionada" />
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary"
+                            @onclick="() => mostrarModalCantidad = false">
+                        Cancelar
+                    </button>
+
+                    <button class="btn btn-primary"
+                            @onclick="ConfirmarAgregarCantidadAsync">
+                        Agregar
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+}
 @code {
     private List<Producto>? productos;
     private string imagenPorDefecto = "https://th.bing.com/th/id/R.69e0e202dc64320acf1b83f533690dc8?rik=sChSobWDBKU%2faA&pid=ImgRaw&r=0";
@@ -147,6 +185,9 @@
     private CarritoDTO carrito = new CarritoDTO();
     private int cantidadCarrito = 0;
     private bool mostrarCarrito = false;
+    bool mostrarModalCantidad = false;
+    int cantidadSeleccionada = 1;
+    int productoSeleccionadoId = 0;
 
     private void ToggleCarrito()
     {
@@ -222,31 +263,43 @@
     }
 
 
-    private async Task agregarAlCarrito(int productoId)
+    private Task agregarAlCarrito(int productoId)
+    {
+        productoSeleccionadoId = productoId;
+        cantidadSeleccionada = 1; // default
+        mostrarModalCantidad = true;
+        return Task.CompletedTask;
+    }
+
+    private async Task ConfirmarAgregarCantidadAsync()
     {
         try
         {
-            // Cantidad fija a 1 por ahora
-            await carritoService.AgregarProductoAsync(carrito.Id, productoId, 1);
+            await carritoService.AgregarProductoAsync(
+                carrito.Id,
+                productoSeleccionadoId,
+                cantidadSeleccionada
+            );
 
-            // Actualizamos el contador
-            var userid = await loginService.ObtenerIdUsuario();
-            if (!string.IsNullOrEmpty(userid))
+            mostrarModalCantidad = false;
+
+            // Actualizar carrito
+            var userId = await loginService.ObtenerIdUsuario();
+            if (!string.IsNullOrEmpty(userId))
             {
-                carrito = await ObtenerOCrearCarritoAsync(userid);
+                carrito = await ObtenerOCrearCarritoAsync(userId);
             }
 
+            // Actualizar contador del carrito
             cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
 
-
-            // Fuerza a Blazor a refrescar la pagina
             StateHasChanged();
 
-            Mensaje = "Producto agregado al carrito correctamente.";
+            Mensaje = "Producto agregado correctamente.";
         }
         catch (Exception ex)
         {
-            Mensaje = $"Error al agregar el producto: {ex.Message}";
+            Mensaje = $"Error al agregar producto: {ex.Message}";
         }
     }
 
