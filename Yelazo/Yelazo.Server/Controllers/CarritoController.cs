@@ -74,5 +74,16 @@ namespace Yelazo.Server.Controllers
                 return BadRequest(new { mensaje = ex.Message });
             }
         }
+
+        [HttpPost("{carritoId}/Finalizar")]
+        public async Task<IActionResult> FinalizarCarrito(int carritoId)
+        {
+            var exito = await repositorio.FinalizarCarrito(carritoId);
+
+            if (!exito)
+                return BadRequest("No se pudo finalizar el carrito.");
+
+            return Ok(new { mensaje = "Carrito finalizado" });
+        }
     }
 }

@@ -54,5 +54,22 @@ namespace Yelazo.Server.Repositorios
             await context.SaveChangesAsync();
             return carrito;
         }
+
+        // Finaliza el carrito marcándolo como finalizado
+        public async Task<bool> FinalizarCarrito(int carritoId)
+        {
+            var carrito = await context.Carritos.FirstOrDefaultAsync(c => c.Id == carritoId);
+
+            if (carrito == null)
+            {
+                return false;
+            }
+
+            carrito.Finalizado = true;
+            carrito.FechaModificacion = DateTime.Now;
+
+            await context.SaveChangesAsync();
+            return true;
+        }
     }
 }
