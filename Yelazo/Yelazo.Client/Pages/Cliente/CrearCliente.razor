@@ -63,11 +63,14 @@
 @code {
     private UserInfoDTO userInfo = new();
 
+
+
     protected override void OnInitialized()
     {
         // Estado por defecto "Activo"
         userInfo.Estado = true;
     }
+
 
     private async Task CrearUsuario()
     {
@@ -87,6 +90,6 @@
 
     private void Cancelar()
     {
-        navigationManager.NavigateTo("/");
+        navigationManager.NavigateTo("/clientes");
     }
 }

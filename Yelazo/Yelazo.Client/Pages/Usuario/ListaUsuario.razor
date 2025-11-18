@@ -9,6 +9,35 @@
         </svg> Nuevo usuario
     </a>
 </div>
+
+<!-- Tarjetas resumen -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="border rounded p-3 text-center">
+            <h6 class="text-muted m-0">Total de Usuarios</h6>
+            <h5 class="fw-bold mt-2 text-black">@totalUsuarios</h5>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="border rounded p-3 text-center">
+            <h6 class="text-muted m-0">Administradores</h6>
+            <h5 class="fw-bold mt-2" style="color: #8B5CF6">@totalAdmins</h5>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="border rounded p-3 text-center">
+            <h6 class="text-muted m-0">Produccion</h6>
+            <h5 class="fw-bold mt-2" style="color: #3B82F6">@totalProduccion</h5>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="border rounded p-3 text-center">
+            <h6 class="text-muted m-0">Repartidores</h6>
+            <h5 class="fw-bold mt-2" style="color: #10B981">@totalRepartidores</h5>
+        </div>
+    </div>
+</div>
+
 <table class="table table-hover">
     <thead>
         <tr>
@@ -58,12 +87,25 @@
     UserListadoDTO usuario;
     string mensaje;
     UserListadoDTO? UsuarioBorrar = null;
+    int totalUsuarios = 0;
+    int totalAdmins = 0;
+    int totalRepartidores = 0;
+    int totalProduccion = 0;
 
 
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         await Leer();
+        await ContarUsuarios();
+    }
+
+    private async Task ContarUsuarios()
+    {
+        totalUsuarios = listaUsuarios.Count;
+        totalAdmins = listaUsuarios.Count(u => u.Rol == "admin");
+        totalRepartidores = listaUsuarios.Count(u => u.Rol == "repartidor");
+        totalProduccion = listaUsuarios.Count(u => u.Rol == "produccion");
     }
 
     private async Task Leer()
