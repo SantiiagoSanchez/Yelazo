@@ -28,5 +28,19 @@ namespace Yelazo.Server.Controllers
                 return BadRequest(new { mensaje = ex.Message });
             }
         }
+
+        [HttpGet("")]
+        public async Task<ActionResult<List<PedidoDTO>>> ObtenerPedidos()
+        {
+            var pedidos = await repositorio.ObtenerPedidosActivos();
+            return Ok(pedidos);
+        }
+
+        [HttpGet("detalle/{pedidoId}")]
+        public async Task<ActionResult<List<DetallePedidoDTO>>> ObtenerDetallesPedidos(int pedidoId)
+        {
+            var detalles = await repositorio.ObtenerDetallesPorPedido(pedidoId);
+            return Ok(detalles);
+        }
     }
 }

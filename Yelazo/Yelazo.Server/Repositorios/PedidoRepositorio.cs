@@ -67,5 +67,42 @@ namespace Yelazo.Server.Repositorios
 
             return pedidoDTO;
         }
+
+        public async Task<List<PedidoDTO>> ObtenerPedidosActivos()
+        {
+            var pedidosDTO = await context.Pedidos
+                .Include(p => p.Usuario) 
+                .Where(p => p.Estado != "Entregado") // Filtrar pedidos no entregados
+                .Select(p => new PedidoDTO
+                {
+                    Id = p.Id,
+                    UsuarioId = p.UsuarioId,
+                    UsuarioNombre = p.Usuario.Nombre + " " + p.Usuario.Apellido,
+                    Direccion = p.Usuario.Direccion,
+                    Total = p.Total,
+                    Estado = p.Estado,
+                    FechaPedido = p.FechaPedido
+                })
+                .ToListAsync();
+
+            return pedidosDTO;
+        }
+
+        public async Task<List<DetallePedidoDTO>> ObtenerDetallesPorPedido(int pedidoId)
+        {
+            var detalles = await context.DetallePedidos
+                .Include(d => d.Producto) 
+                .Where(d => d.PedidoId == pedidoId)
+                .Select(d => new DetallePedidoDTO
+                {
+                    ProductoId = d.ProductoId,
+                    NombreProducto = d.Producto.Nombre,
+                    Cantidad = d.Cantidad,
+                    Total = d.Total
+                })
+                .ToListAsync();
+
+            return detalles;
+        }
     }
 }

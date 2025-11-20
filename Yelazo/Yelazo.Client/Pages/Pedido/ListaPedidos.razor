@@ -1,0 +1,146 @@
+﻿@page "/pedidos"
+@inject IHttpServicio http
+@inject SweetAlertService swal
+
+<link href="css/DiseñosCompartidos.css" rel="stylesheet" />
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold m-0">Pedidos Activos</h3>
+</div>
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>N° Pedido</th>
+            <th>Usuario</th>
+            <th>Dirección</th>
+            <th>Total</th>
+            <th>Estado</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (listaPedidos == null)
+        {
+            <tr><td colspan="6">Cargando pedidos...</td></tr>
+        }
+        else if (listaPedidos.Count == 0)
+        {
+            <tr><td colspan="6">No hay pedidos activos.</td></tr>
+        }
+        else
+        {
+            @foreach (var pedido in listaPedidos)
+            {
+                <tr>
+                    <td>@pedido.Id</td>
+                    <td>@pedido.UsuarioNombre</td>
+                    <td>@pedido.Direccion</td>
+                    <td>@pedido.Total $</td>
+                    <td>@pedido.Estado</td>
+                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        <button class="btn btn-info btn-sm" @onclick="() => AbrirDetalles(pedido.Id)">
+                            Ver detalles
+                        </button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<!-- Modal de Detalles -->
+@if (mostrarModal)
+{
+    <div class="modal d-block" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Detalles del Pedido</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar" @onclick="() => mostrarModal = false"></button>
+                </div>
+                <div class="modal-body">
+                    @if (pedidoDetalles == null)
+                    {
+                        <p>Cargando detalles...</p>
+                    }
+                    else if (pedidoDetalles.Count == 0)
+                    {
+                        <p>No hay productos en este pedido.</p>
+                    }
+                    else
+                    {
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Producto</th>
+                                    <th>Cantidad</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var det in pedidoDetalles)
+                                {
+                                    <tr>
+                                        <td>@det.NombreProducto</td>
+                                        <td>@det.Cantidad</td>
+                                        <td>@det.Total $</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="() => mostrarModal = false">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@code {
+    List<PedidoDTO> listaPedidos = new List<PedidoDTO>();
+    List<DetallePedidoDTO> pedidoDetalles;
+    public bool mostrarModal = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await LeerPedidos();
+    }
+
+    private async Task LeerPedidos()
+    {
+        var resp = await http.Get<List<PedidoDTO>>("api/Pedido");
+
+        if (!resp.Error)
+        {
+            listaPedidos = resp.Respuesta;
+        }
+        else
+        {
+            await swal.FireAsync("Error", "No se pudieron cargar los pedidos", SweetAlertIcon.Error);
+        }
+    }
+
+    private async Task AbrirDetalles(int pedidoId)
+    {
+        pedidoDetalles = null; // Reset antes de cargar
+        var resp = await http.Get<List<DetallePedidoDTO>>($"api/Pedido/detalle/{pedidoId}");
+
+        if (!resp.Error)
+        {
+            pedidoDetalles = resp.Respuesta;
+
+            mostrarModal = true;
+        }
+        else
+        {
+            await swal.FireAsync("Error", "No se pudieron cargar los detalles del pedido", SweetAlertIcon.Error);
+        }
+    }
+}
