@@ -42,5 +42,16 @@ namespace Yelazo.Server.Controllers
             var detalles = await repositorio.ObtenerDetallesPorPedido(pedidoId);
             return Ok(detalles);
         }
+
+        [HttpPut("en-camino/{pedidoId}")]
+        public async Task<ActionResult> MarcarPedidoEnCamino(int pedidoId)
+        {
+            var pedido = await repositorio.SelectById(pedidoId);
+            if (pedido == null)
+                return NotFound();
+            pedido.Estado = "En camino";
+            await repositorio.UpdateEntidad(pedidoId, pedido);
+            return NoContent();
+        }
     }
 }
