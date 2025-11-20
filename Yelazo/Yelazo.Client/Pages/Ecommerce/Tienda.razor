@@ -236,17 +236,14 @@
             //Finalizar carrito actual
             await carritoService.FinalizarCarritoAsync(carrito.Id);
 
-            // Obtener el userId
-            var usuarioId = await loginService.ObtenerIdUsuario();
 
-            // Crear nuevo carrito
-            var nuevo = new CrearCarritoDTO
+            //Post de la tabla pedidos
+            var pedidoResp = await http.Post<object, PedidoDTO>($"api/Pedido/CrearDesdeCarrito/{carrito.Id}", null);
+            if (pedidoResp.Error)
             {
-                UsuarioId = usuarioId,
-                FechaCreacion = DateTime.Now
-            };
-
-            carrito = await carritoService.CrearCarritoAsync(nuevo);
+                var error = pedidoResp.ObtenerError();
+                throw new Exception($"Error al crear el pedido: {error}");
+            }
 
             await swal.FireAsync(new SweetAlertOptions
             {
@@ -255,6 +252,17 @@
                 Icon = SweetAlertIcon.Success,
                 ConfirmButtonText = "OK"
             });
+
+
+            // Crear nuevo carrito
+            var usuarioId = await loginService.ObtenerIdUsuario();            
+            var nuevo = new CrearCarritoDTO
+            {
+                UsuarioId = usuarioId,
+                FechaCreacion = DateTime.Now
+            };
+
+            carrito = await carritoService.CrearCarritoAsync(nuevo);
 
             cantidadCarrito = carrito.Detalles?.Sum(d => d.Cantidad) ?? 0;
 
@@ -327,7 +335,6 @@
                 productoSeleccionadoId,
                 cantidadSeleccionada
             );
-
 
 
             mostrarModalCantidad = false;
