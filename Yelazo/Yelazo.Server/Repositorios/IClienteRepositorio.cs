@@ -4,6 +4,6 @@ namespace Yelazo.Server.Repositorios
 {
     public interface IClienteRepositorio
     {
-        Task<List<PedidoDTO>> ObtenerHistorialPorId(string id);
+        Task<List<GetHistorialPedidosDTO>> ObtenerHistorialPorId(string id);
     }
 }

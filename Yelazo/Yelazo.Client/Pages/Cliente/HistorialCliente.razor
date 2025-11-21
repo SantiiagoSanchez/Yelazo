@@ -17,38 +17,56 @@ else if (pedidos.Count == 0)
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Fecha</th>
-                <th>Total</th>
-                <th>Estado</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var pedido in pedidos)
-            {
-                <tr>
-                    <td>@pedido.Id</td>
-                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy")</td>
-                    <td>@pedido.Total.ToString("C")</td>
-                    <td>@pedido.Estado</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @foreach (var pedido in pedidos)
+    {
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <strong>Pedido #@pedido.Id</strong>
+            </div>
+
+            <div class="card-body">
+                <p><strong>Fecha:</strong> @pedido.FechaPedido.ToString("dd/MM/yyyy")</p>
+                <p><strong>Total:</strong> @pedido.Total $</p>
+                <p><strong>Estado:</strong> @pedido.Estado</p>
+
+                <hr />
+
+                <h5>Detalles del Pedido</h5>
+
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var detalle in pedido.Detalles)
+                        {
+                            <tr>
+                                <td>@detalle.NombreProducto</td>
+                                <td>@detalle.Cantidad</td>
+                                <td>@detalle.Total $</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
 }
 
 @code {
     [Parameter] public string UsuarioId { get; set; }
 
-    private List<PedidoDTO> pedidos;
+    private List<GetHistorialPedidosDTO> pedidos;
     private bool error = false;
 
     protected override async Task OnInitializedAsync()
     {
-        var resultado = await http.Get<List<PedidoDTO>>($"api/Cliente/historial/{UsuarioId}");
+        var resultado = await http.Get<List<GetHistorialPedidosDTO>>($"api/Cliente/historial/{UsuarioId}");
+
         if (resultado.Error)
         {
             error = true;

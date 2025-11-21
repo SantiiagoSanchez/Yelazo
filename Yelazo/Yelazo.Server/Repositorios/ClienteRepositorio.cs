@@ -15,20 +15,32 @@ namespace Yelazo.Server.Repositorios
             this.context = context;
         }
 
-        public async Task<List<PedidoDTO>> ObtenerHistorialPorId(string id)
+        public async Task<List<GetHistorialPedidosDTO>> ObtenerHistorialPorId(string id)
         {
             var pedidos = await context.Pedidos.
                 Include(p => p.Usuario).
+                Include(p => p.Detalles).
+                ThenInclude(d => d.Producto).
                 Where(p => p.UsuarioId == id).
-                Select(p => new PedidoDTO
+                Select(p => new GetHistorialPedidosDTO
                 {
                     Id = p.Id,
                     UsuarioId = p.UsuarioId,
                     UsuarioNombre = p.Usuario.Nombre + " " + p.Usuario.Apellido,
                     Total = p.Total,
                     Estado = p.Estado,
-                    FechaPedido = p.FechaPedido
+                    FechaPedido = p.FechaPedido,
+                    Detalles = p.Detalles.Select(d => new DetallePedidoDTO
+                    {
+                        NombreProducto = d.Producto.Nombre,
+                        Cantidad = d.Cantidad,
+                        Total = d.Total,
+                        FechaPedido = p.FechaPedido,
+                        Estado = p.Estado
+                    }).ToList()
                 }).ToListAsync();
+
+
 
             return pedidos;
         }
