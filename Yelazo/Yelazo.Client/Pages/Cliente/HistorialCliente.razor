@@ -1,0 +1,61 @@
+﻿@page "/clientes/historial/{UsuarioId}"
+@inject IHttpServicio http
+
+<h3>Historial de Pedidos</h3>
+
+@if (error)
+{
+    <div class="alert alert-danger">Error al cargar pedidos.</div>
+}
+else if (pedidos == null)
+{
+    <p>Cargando pedidos...</p>
+}
+else if (pedidos.Count == 0)
+{
+    <p>No hay pedidos para este cliente.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Estado</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pedido in pedidos)
+            {
+                <tr>
+                    <td>@pedido.Id</td>
+                    <td>@pedido.FechaPedido.ToString("dd/MM/yyyy")</td>
+                    <td>@pedido.Total.ToString("C")</td>
+                    <td>@pedido.Estado</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public string UsuarioId { get; set; }
+
+    private List<PedidoDTO> pedidos;
+    private bool error = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var resultado = await http.Get<List<PedidoDTO>>($"api/Cliente/historial/{UsuarioId}");
+        if (resultado.Error)
+        {
+            error = true;
+        }
+        else
+        {
+            pedidos = resultado.Respuesta;
+        }
+    }
+}

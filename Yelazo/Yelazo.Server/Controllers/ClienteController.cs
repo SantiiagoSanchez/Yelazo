@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Yelazo.BD.Data.Entity;
+using Yelazo.Server.Repositorios;
 using Yelazo.Shared.DTO;
 
 namespace Yelazo.Server.Controllers
@@ -12,14 +13,17 @@ namespace Yelazo.Server.Controllers
         private readonly UserManager<UsuarioYelazo> userManager;
         private readonly SignInManager<UsuarioYelazo> signInManager;
         private readonly IConfiguration configuration;
+        private readonly IClienteRepositorio repositorio;
 
         public ClienteController(UserManager<UsuarioYelazo> userManager,
                                  SignInManager<UsuarioYelazo> signInManager,
-                                 IConfiguration configuration)
+                                 IConfiguration configuration,
+                                 IClienteRepositorio repositorio)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.configuration = configuration;
+            this.repositorio = repositorio;
         }
 
         [HttpPost("registrar")]
@@ -75,6 +79,13 @@ namespace Yelazo.Server.Controllers
             }).ToList();
 
             return lista;
+        }
+
+        [HttpGet("historial/{id}")]
+        public async Task<ActionResult> GetHistorialPedidos(string id)
+        {
+            var pedido = await repositorio.ObtenerHistorialPorId(id);
+            return Ok(pedido);
         }
 
 

@@ -34,6 +34,7 @@ builder.Services.AddScoped<IInsumoRepositorio, InsumoRepositorio>();
 builder.Services.AddScoped<ICarritoRepositorio, CarritoRepositorio>();
 builder.Services.AddScoped<IDetalleCarritoRepositorio, DetalleCarritoRepositorio>();
 builder.Services.AddScoped<IPedidoRepositorio, PedidoRepositorio>();
+builder.Services.AddScoped<IClienteRepositorio, ClienteRepositorio>();
 
 builder.Services.AddIdentity<UsuarioYelazo, IdentityRole>()
     .AddEntityFrameworkStores<Context>()

@@ -95,7 +95,6 @@ namespace Yelazo.Server.Repositorios
                 .Where(d => d.PedidoId == pedidoId)
                 .Select(d => new DetallePedidoDTO
                 {
-                    ProductoId = d.ProductoId,
                     NombreProducto = d.Producto.Nombre,
                     Cantidad = d.Cantidad,
                     FechaPedido = d.Pedido.FechaPedido,
