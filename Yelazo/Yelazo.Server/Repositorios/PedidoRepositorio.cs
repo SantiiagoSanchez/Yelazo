@@ -98,6 +98,10 @@ namespace Yelazo.Server.Repositorios
                     ProductoId = d.ProductoId,
                     NombreProducto = d.Producto.Nombre,
                     Cantidad = d.Cantidad,
+                    FechaPedido = d.Pedido.FechaPedido,
+                    TelefonoCliente = d.Pedido.Usuario.Telefono,
+                    Ubicacion = d.Pedido.Usuario.Direccion,
+                    Estado = d.Pedido.Estado,
                     Total = d.Total
                 })
                 .ToListAsync();
