@@ -31,6 +31,8 @@ namespace Yelazo.BD.Data
 
         public DbSet<DetallePedido> DetallePedidos { get; set; }
 
+        public DbSet<Pago> Pagos { get; set; }
+
         public DbSet<Stock> Stocks { get; set; }
         public Context(DbContextOptions<Context> options) : base(options)
         {
