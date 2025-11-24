@@ -8,5 +8,6 @@ namespace Yelazo.Server.Repositorios
         Task<PedidoDTO> CrearPedidoDesdeCarrito(int carritoId);
         Task<List<DetallePedidoDTO>> ObtenerDetallesPorPedido(int pedidoId);
         Task<List<PedidoDTO>> ObtenerPedidosActivos();
+        Task<PedidoDTO> ObtenerUnPedido(int id);
     }
 }

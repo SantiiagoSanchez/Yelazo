@@ -1,0 +1,124 @@
+﻿@page "/pago/registrar/{pedidoId:int}"
+@inject IHttpServicio http
+@inject SweetAlertService swal
+@inject NavigationManager nav
+
+<h3 class="fw-bold mb-3">Registrar Pago de Pedido #@pedidoId</h3>
+
+@if (pedido == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <div class="card p-3 shadow-sm">
+
+        <p><strong>Cliente:</strong> @pedido.UsuarioNombre</p>
+        <p><strong>Total:</strong> @pedido.Total $</p>
+
+        <hr />
+
+        <div class="mb-3">
+            <label class="form-label">Método de Pago</label>
+            <select class="form-select" @bind="metodoPagoId">
+
+                @foreach (var metodo in metodoPagos)
+                {
+                    <option value="@metodo.Id">@metodo.Nombre</option>
+                }
+
+            </select>
+
+            <div class="mb-3">
+                <label class="form-label">Monto a pagar</label>
+                <input class="form-control" type="number" step="0.01" @bind="montoPago" />
+            </div>
+        </div>
+
+        <button class="btn btn-success" @onclick="RegistrarPago">Registrar Pago</button>
+        <button class="btn btn-secondary ms-2" @onclick="Volver">Cancelar</button>
+
+    </div>
+}
+
+@code {
+    [Parameter] public int pedidoId { get; set; }
+
+    PedidoDTO pedido;
+
+    decimal montoPago;
+
+    List<MetodoPago> metodoPagos = new();
+
+
+    int metodoPagoId = 1;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Leer();
+        await LeerMetodosPago();
+    }
+
+    private async Task Leer()
+    {
+        var resp = await http.Get<PedidoDTO>($"api/Pedido/{pedidoId}");
+
+        if (!resp.Error)
+            pedido = resp.Respuesta;
+        else
+            await swal.FireAsync("Error", "No se pudo cargar el pedido", SweetAlertIcon.Error);
+    }
+
+    private async Task LeerMetodosPago()
+    {
+        var resp = await http.Get<List<MetodoPago>>("api/MetodoPago");
+        if (!resp.Error)
+            metodoPagos = resp.Respuesta;
+        else
+            await swal.FireAsync("Error", "No se pudieron cargar los métodos de pago", SweetAlertIcon.Error);
+    }
+
+    private async Task RegistrarPago()
+    {
+        if (montoPago <= 0)
+        {
+            await swal.FireAsync("Error", "Debe ingresar un monto válido.", SweetAlertIcon.Error);
+            return;
+        }
+
+        var dto = new CrearPagoDTO
+        {
+            PedidoId = pedidoId,
+            Monto = montoPago,
+            FechaPago = DateTime.Now,
+            MetodoPagoId = metodoPagoId
+        };
+
+        Console.WriteLine("=== DTO a enviar ===");
+        Console.WriteLine($"PedidoId: {dto.PedidoId}");
+        Console.WriteLine($"Monto: {dto.Monto}");
+        Console.WriteLine($"MetodoPagoId: {dto.MetodoPagoId}");
+
+        var resp = await http.Post<CrearPagoDTO, object>("api/Pago", dto);
+
+        Console.WriteLine("=== RESPUESTA ===");
+        Console.WriteLine("Error: " + resp.Error);
+        Console.WriteLine("Mensaje: " + resp.HttpResponseMessage);
+
+        if (!resp.Error)
+        {
+            await swal.FireAsync("Éxito", "Pago registrado correctamente", SweetAlertIcon.Success);
+
+            nav.NavigateTo("/pedidos");
+        }
+        else
+        {
+            await swal.FireAsync("Error", "No se pudo registrar el pago", SweetAlertIcon.Error);
+        }
+    }
+
+    void Volver()
+    {
+        nav.NavigateTo("/pedidos");
+    }
+}

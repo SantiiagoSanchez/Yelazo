@@ -107,5 +107,27 @@ namespace Yelazo.Server.Repositorios
 
             return detalles;
         }
+
+        public async Task<PedidoDTO> ObtenerUnPedido(int id) 
+        {
+            var pedido = await context.Pedidos
+                .Include(p => p.Usuario)
+                .FirstOrDefaultAsync(p => p.Id == id);
+            if (pedido == null)
+                throw new Exception("Pedido no encontrado");
+            var pedidoDTO = new PedidoDTO
+            {
+                Id = pedido.Id,
+                UsuarioId = pedido.UsuarioId,
+                UsuarioNombre = pedido.Usuario.Nombre + " " + pedido.Usuario.Apellido,
+                Direccion = pedido.Usuario.Direccion,
+                Total = pedido.Total,
+                Estado = pedido.Estado,
+                FechaPedido = pedido.FechaPedido
+            };
+            return pedidoDTO;
+        }
+
+
     }
 }

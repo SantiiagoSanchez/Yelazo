@@ -43,6 +43,15 @@ namespace Yelazo.Server.Controllers
             return Ok(detalles);
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PedidoDTO>> ObtenerPedidoPorId(int id)
+        {
+            var pedido = await repositorio.ObtenerUnPedido(id);
+            if (pedido == null)
+                return NotFound();
+            return Ok(pedido);
+        }
+
         [HttpPut("en-camino/{pedidoId}")]
         public async Task<ActionResult> MarcarPedidoEnCamino(int pedidoId)
         {
