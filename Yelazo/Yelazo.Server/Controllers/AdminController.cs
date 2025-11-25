@@ -44,7 +44,7 @@ namespace Yelazo.Server.Controllers
                     Apellido = usuario.Apellido,
                     Email = usuario.Email,
                     Telefono = usuario.Telefono,
-                    Estado = usuario.Estado ?? false,
+                    Estado = usuario.Estado,
                     Rol = roles.FirstOrDefault() ?? "Sin rol"
                 });
             }

@@ -38,7 +38,7 @@ namespace Yelazo.Server.Controllers
                 Telefono = dto.Telefono,
                 Direccion = dto.Direccion,
                 Zona = dto.Zona,
-                Estado = dto.Estado
+                Estado = true
             };
 
             var resultado = await userManager.CreateAsync(usuario, dto.Password);
@@ -111,6 +111,47 @@ namespace Yelazo.Server.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiracion = expiracion
             };
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<EditarUsuarioDTO>> GetUsuarioPorId(string id)
+        {
+            var usuario = await userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+            var dto = new EditarUsuarioDTO
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Telefono = usuario.Telefono,
+                Direccion = usuario.Direccion
+            };
+            return dto;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ActualizarUsuario(string id, [FromBody] EditarUsuarioDTO dto)
+        {
+            var usuario = await userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+            usuario.Nombre = dto.Nombre;
+            usuario.Apellido = dto.Apellido;
+            usuario.Telefono = dto.Telefono;
+            usuario.Direccion = dto.Direccion;
+            var resultado = await userManager.UpdateAsync(usuario);
+            if (resultado.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                return BadRequest(resultado.Errors.First());
+            }
         }
     }
 }

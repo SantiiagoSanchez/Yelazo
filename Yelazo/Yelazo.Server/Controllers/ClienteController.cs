@@ -38,7 +38,7 @@ namespace Yelazo.Server.Controllers
                 Telefono = dto.Telefono,
                 Direccion = dto.Direccion,
                 Zona = dto.Zona,
-                Estado = dto.Estado
+                Estado = true
             };
 
             var resultado = await userManager.CreateAsync(usuario, dto.Password);
@@ -75,7 +75,7 @@ namespace Yelazo.Server.Controllers
                 Zona = usuario.Zona,
                 Apellido = usuario.Apellido,
                 Telefono = usuario.Telefono,
-                Estado = usuario.Estado ?? false
+                Estado = usuario.Estado
             }).ToList();
 
             return lista;
@@ -89,6 +89,47 @@ namespace Yelazo.Server.Controllers
         }
 
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<EditarClienteDTO>> GetClientePorId(string id)
+        {
+            var usuario = await userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            var detalle = new EditarClienteDTO
+            {
+                Nombre = usuario.Nombre,
+                Apellido = usuario.Apellido,
+                Direccion = usuario.Direccion,
+                Telefono = usuario.Telefono,
+                Zona = usuario.Zona,
+                Estado = usuario.Estado
+            };
+            return detalle;
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> EditarCliente(string id, EditarClienteDTO dto)
+        {
+            var usuario = await userManager.FindByIdAsync(id);
+            if (usuario == null)
+            {
+                return NotFound();
+            }
+            usuario.Nombre = dto.Nombre;
+            usuario.Apellido = dto.Apellido;
+            usuario.Direccion = dto.Direccion;
+            usuario.Telefono = dto.Telefono;
+            usuario.Zona = dto.Zona;
+            usuario.Estado = dto.Estado;
+            var resultado = await userManager.UpdateAsync(usuario);
+            if (!resultado.Succeeded)
+            {
+                return BadRequest(resultado.Errors.First());
+            }
+            return NoContent();
+        }
 
     }
 }

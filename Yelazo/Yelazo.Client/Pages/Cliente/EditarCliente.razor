@@ -1,0 +1,91 @@
+﻿@page "/cliente/editar/{clienteId}"
+@inject IHttpServicio http
+@inject NavigationManager navigationManager
+
+<EditForm Model="@userInfo" OnValidSubmit="CrearUsuario">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="nombre" class="form-label">Nombre</label>
+        <InputText id="nombre" class="form-control" placeholder="Ejemplo: Jhon" @bind-Value="userInfo.Nombre" />
+        <ValidationMessage For="@(() => userInfo.Nombre)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="apellido" class="form-label">Apellido</label>
+        <InputText id="apellido" class="form-control" placeholder="Ejemplo: Doe" @bind-Value="userInfo.Apellido" />
+        <ValidationMessage For="@(() => userInfo.Apellido)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="telefono" class="form-label">Teléfono</label>
+        <InputText id="telefono" class="form-control" placeholder="+12 345-6789101" @bind-Value="userInfo.Telefono" />
+        <ValidationMessage For="@(() => userInfo.Telefono)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="direccion" class="form-label">Dirección</label>
+        <InputText id="direccion" class="form-control" placeholder="Ejemplo: Velez Sarfield 2784" @bind-Value="userInfo.Direccion" />
+        <ValidationMessage For="@(() => userInfo.Direccion)" />
+    </div>
+
+    <div class="mb-3">
+        <label for="zona" class="form-label">Zona</label>
+        <InputSelect id="zona" class="form-select" @bind-Value="userInfo.Zona">
+            <option value="">Seleccione una zona</option>
+            <option value="Norte">Norte</option>
+            <option value="Sur">Sur</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => userInfo.Zona)" />
+    </div>
+    <div class="mb-3 form-check">
+        <InputCheckbox id="estado" class="form-check-input" @bind-Value="userInfo.Estado" />
+        <label for="estado" class="form-check-label">Estado</label>
+        <ValidationMessage For="@(() => userInfo.Estado)" />
+    </div>
+
+
+    <button type="submit" class="btn btn-primary">Registrar</button>
+    <button type="button" class="btn btn-secondary" @onclick="Cancelar">Cancelar</button>
+</EditForm>
+
+@code {
+    [Parameter] public string clienteId { get; set; }
+
+    EditarClienteDTO userInfo = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await Mostrar();
+    }
+
+    private async Task Mostrar()
+    {
+        var resultado = await http.Get<EditarClienteDTO>($"api/Cliente/{clienteId}");
+        if (!resultado.Error)
+        {
+            userInfo = resultado.Respuesta;
+        }
+
+    }
+
+    public async Task CrearUsuario()
+    {
+        var resultado = await http.Put<EditarClienteDTO>($"api/Cliente/{clienteId}", userInfo);
+        if (resultado.Error)
+        {
+            var Body = resultado.HttpResponseMessage;
+
+        }
+        navigationManager.NavigateTo("/clientes");
+
+    }
+
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/clientes");
+    }
+}
+

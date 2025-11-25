@@ -25,6 +25,8 @@ namespace Yelazo.BD.Data.Entity
 
         public string? Zona { get; set; }
 
-        public bool? Estado { get; set; }
+        [Required(ErrorMessage = "El estado del usuario es obligatorio")]
+
+        public bool Estado { get; set; }
     }
 }
