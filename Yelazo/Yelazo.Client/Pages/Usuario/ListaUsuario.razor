@@ -41,7 +41,6 @@
 <table class="table table-hover">
     <thead>
         <tr>
-            <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
             <th>Telefono</th>
@@ -61,8 +60,7 @@
         }
         @foreach (var item in listaUsuarios)
         {
-            <tr>
-                <td>@item.Id</td>
+            <tr>              
                 <td>@item.Nombre @item.Apellido</td>
                 <td>@item.Email</td>
                 <td>@item.Telefono</td>

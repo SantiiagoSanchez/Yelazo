@@ -62,11 +62,20 @@
 </div>
 
 @code {
-    private Producto producto = new Producto();
+    public Producto producto = new Producto();
 
+   
     private async Task Grabar()
     {
-        var HttpRespuesta = await http.Post<Producto, int>("api/Productos", producto);
+        Producto prod = new Producto
+        {
+            Nombre = producto.Nombre,
+            Descripcion = producto.Descripcion,
+            Presentacion = producto.Presentacion + " Kg",
+            Precio = producto.Precio
+        };
+
+        var HttpRespuesta = await http.Post<Producto, int>("api/Productos", prod);
         if (HttpRespuesta.Error)
         {
             var Body = HttpRespuesta.HttpResponseMessage;
