@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Yelazo.BD.Data;
 using Yelazo.BD.Data.Entity;
+using Yelazo.Client.Pages.Cliente;
 using Yelazo.Shared.DTO;
 
 namespace Yelazo.Server.Repositorios
@@ -126,6 +127,14 @@ namespace Yelazo.Server.Repositorios
                 FechaPedido = pedido.FechaPedido
             };
             return pedidoDTO;
+        }
+
+        public async Task<List<Pedido>> CuentaCorrientePorUsuario(string usuarioId)
+        {
+            var pedidos = await context.Pedidos
+                .Where(p => p.UsuarioId == usuarioId && p.Saldo > 0)
+                .OrderByDescending(p => p.FechaPedido).ToListAsync();
+            return pedidos;
         }
 
 

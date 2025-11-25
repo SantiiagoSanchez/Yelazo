@@ -1,0 +1,71 @@
+﻿@page "/clientes/cuenta-corriente/{usuarioId}"
+@inject IHttpServicio http
+@inject NavigationManager nav
+
+<h3 class="fw-bold mb-3">Cuenta Corriente del Cliente</h3>
+
+@if (pedidos == null)
+{
+    <p>Cargando datos...</p>
+}
+else if (pedidos.Count == 0)
+{
+    <div class="alert alert-success">
+        Este cliente no posee saldo pendiente.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pedido</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Saldo</th>
+                <th>Registrar pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in pedidos)
+            {
+                <tr>
+                    <td>@p.Id</td>
+                    <td>@p.FechaPedido.ToShortDateString()</td>
+                    <td>$ @p.Total</td>
+                    <td class="fw-bold text-danger">$ @p.Saldo</td>
+                    <td>
+                        <a class="btn btn-success btn-sm" href="@($"/pago/registrar/{p.Id}")">
+                            Registrar Pago
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public string usuarioId { get; set; }
+
+    List<Pedido> pedidos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarCuentaCorriente();
+    }
+
+    private async Task CargarCuentaCorriente()
+    {
+        var resp = await http.Get<List<Pedido>>($"api/CuentaCorriente/Cliente/{usuarioId}");
+
+        if (!resp.Error)
+        {
+            pedidos = resp.Respuesta;
+        }
+        else
+        {
+            pedidos = new List<Pedido>();
+        }
+    }
+}

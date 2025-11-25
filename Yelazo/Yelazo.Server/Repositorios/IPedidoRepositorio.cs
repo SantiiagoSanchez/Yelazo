@@ -6,6 +6,7 @@ namespace Yelazo.Server.Repositorios
     public interface IPedidoRepositorio : IRepositorio<Pedido>
     {
         Task<PedidoDTO> CrearPedidoDesdeCarrito(int carritoId);
+        Task<List<Pedido>> CuentaCorrientePorUsuario(string usuarioId);
         Task<List<DetallePedidoDTO>> ObtenerDetallesPorPedido(int pedidoId);
         Task<List<PedidoDTO>> ObtenerPedidosActivos();
         Task<PedidoDTO> ObtenerUnPedido(int id);
