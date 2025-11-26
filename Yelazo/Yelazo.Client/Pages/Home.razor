@@ -1,7 +1,95 @@
 ﻿@page "/inicio"
 
-<PageTitle>Home</PageTitle>
+<PageTitle>Inicio</PageTitle>
 
-<h1>Hello, world!</h1>
+<div class="container py-4">
 
-Welcome to your new app.
+    <h2 class="mb-4 fw-semibold text-center">Módulos del Sistema</h2>
+
+    <div class="row g-4 justify-content-center">
+
+        @foreach (var modulo in Modulos)
+        {
+            <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                <div class="module-card text-center" @onclick="() => Navegar(modulo.Url)">
+                    <div class="icon-box mb-3">
+                        <i class="@modulo.Icono"></i>
+                    </div>
+                    <h5 class="fw-bold">@modulo.Titulo</h5>
+                    <p class="module-desc">@modulo.Descripcion</p>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<style>
+
+    .module-card {
+        background: #ffffff;
+        border-radius: 16px;
+        padding: 28px 20px;
+        transition: all .25s ease;
+        cursor: pointer;
+        border: 1px solid #e5e5e5;
+    }
+
+        .module-card:hover {
+            transform: translateY(-6px);
+            background: #f8f9fa;
+            box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+            border-color: #d6d6d6;
+        }
+
+    .icon-box {
+        font-size: 46px;
+        color: #4a6cf7;
+        transition: .3s ease;
+    }
+
+    .module-card:hover .icon-box {
+        color: #2c54f0;
+        transform: scale(1.1);
+    }
+
+    .module-desc {
+        color: #6c757d;
+        font-size: 0.9rem;
+        margin-top: 6px;
+    }
+</style>
+
+
+@code {
+    public class Modulo
+    {
+        public string Titulo { get; set; }
+        public string Descripcion { get; set; }
+        public string Url { get; set; }
+        public string Icono { get; set; }
+    }
+
+    List<Modulo> Modulos = new()
+    {
+        new Modulo { Titulo = "Clientes", Icono="bi bi-people", Descripcion="Administrar clientes", Url="/clientes" },
+        new Modulo { Titulo = "Usuarios", Icono="bi bi-person-gear", Descripcion="Control de usuarios del sistema", Url="/usuarios" },
+        new Modulo { Titulo = "Pedidos", Icono="bi bi-bag-check", Descripcion="Gestión de pedidos", Url="/pedidos" },
+        new Modulo { Titulo = "Gastos", Icono="bi bi-cash-stack", Descripcion="Registrar y controlar gastos", Url="/gastos" },
+        new Modulo { Titulo = "Stock", Icono="bi bi-box-seam", Descripcion="Inventario y existencias", Url="/stock/gestionar" },
+        new Modulo { Titulo = "Proveedores", Icono="bi bi-truck", Descripcion="Administrar proveedores", Url="/proveedor" },
+        new Modulo { Titulo = "Productos", Icono="bi bi-tags", Descripcion="Gestión de productos", Url="/productos" },
+        new Modulo { Titulo = "Mantenimientos", Icono="bi bi-wrench", Descripcion="Módulo de mantenimiento", Url="/mantenimientos" },
+        new Modulo { Titulo = "Insumos", Icono="bi bi-nut", Descripcion="Control de insumos", Url="/insumos" },
+        new Modulo { Titulo = "Reportes", Icono="bi bi-bar-chart-line", Descripcion="Reportes generales", Url="/reportes" }
+    };
+
+    [Inject]
+    NavigationManager Nav { get; set; }
+
+    void Navegar(string url)
+    {
+        Nav.NavigateTo(url);
+    }
+}
