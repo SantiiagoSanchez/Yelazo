@@ -1,0 +1,121 @@
+﻿@page "/reportes"
+@inject IHttpServicio http
+
+<h3>Informe de Ingresos</h3>
+
+<select class="form-select w-auto mb-3" @onchange="OnChangeAño">
+    @foreach (var a in Años)
+    {
+        <option value="@a">@a</option>
+    }
+</select>
+
+@if (ingresos != null)
+{
+    <table class="table table-hover text-center">
+        <thead class="table-light">
+            <tr>
+                <th>Mes</th>
+                <th>Total Ingresos</th>
+                <th>Cantidad Pagos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var mes in Enumerable.Range(1, 12))
+            {
+                var mesData = ingresos.IngresosPorMes.FirstOrDefault(m => m.Mes == mes);
+
+                <tr style="cursor:pointer" @onclick="() => VerDetalleMes(mes)">
+                    <td>@NombreMes(mes)</td>
+                    <td>@(mesData != null ? $"${mesData.TotalIngresos:F2}" : "$0.00")</td>
+                    <td>@(mesData?.CantidadIngresos ?? 0)</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@if (detalleMensual != null)
+{
+    <h4 class="mt-4">Detalle de Ingresos - @NombreMes(mesSeleccionado)</h4>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Monto</th>
+                <th>Método de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var d in detalleMensual)
+            {
+                <tr>
+                    <td>@d.Fecha.ToShortDateString()</td>
+                    <td>@d.Cliente</td>
+                    <td>@d.Monto $</td>
+                    <td>@d.MetodoPago</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+
+@code {
+    private int anioSeleccionado = DateTime.Now.Year;
+
+    private List<int> Años = new()
+    {
+        DateTime.Now.Year,
+        DateTime.Now.Year - 1,
+        DateTime.Now.Year - 2
+    };
+
+    private IngresosAnualesDTO? ingresos;
+    private List<DetalleIngresosDTO>? detalleMensual;
+    private int mesSeleccionado;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarIngresos();
+    }
+
+    private async Task OnChangeAño(ChangeEventArgs e)
+    {
+        anioSeleccionado = int.Parse(e.Value.ToString());
+        await CargarIngresos();
+    }
+
+    private async Task CargarIngresos()
+    {
+        var respuesta = await http.Get<IngresosAnualesDTO>($"api/Estadisticas/Ingresos/{anioSeleccionado}");
+
+        if (!respuesta.Error)
+        {
+            ingresos = respuesta.Respuesta;
+        }
+
+        detalleMensual = null; // reset detalle cuando se cambia el año
+    }
+
+    private async Task VerDetalleMes(int mes)
+    {
+        mesSeleccionado = mes;
+
+        var respuesta = await http.Get<List<DetalleIngresosDTO>>(
+            $"api/Estadisticas/Ingresos/{anioSeleccionado}/{mes}");
+
+        if (!respuesta.Error)
+        {
+            detalleMensual = respuesta.Respuesta;
+        }
+    }
+
+    private string NombreMes(int mes)
+    {
+        return new DateTime(2025, mes, 1).ToString("MMMM");
+    }
+}
