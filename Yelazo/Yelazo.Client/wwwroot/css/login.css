@@ -1,40 +1,112 @@
-﻿body {
-}
-/* Fondo con imagen */
+﻿/* ===== Fondo general ===== */
 body, html {
     height: 100%;
     margin: 0;
+    font-family: 'Inter', 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
+/* Fondo con blur */
 .login-background {
     background-image: url('/fondo-login.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    height: 100vh;
     display: flex;
-    align-items: center;
+    height: 100vh;
     justify-content: center;
+    align-items: center;
+    padding: 20px;
+    backdrop-filter: blur(3px);
 }
 
-/* Tarjeta central */
+/* ===== Tarjeta del login ===== */
 .login-card {
-    background-color: rgba(255, 255, 255, 0.95);
-    border-radius: 10px;
-    padding: 2rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    width: 350px;
-    max-width: 90%;
+    background: #ffffff;
+    border-radius: 22px;
+    padding: 2.5rem;
+    width: 380px;
+    max-width: 95%;
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.18);
 }
 
-/* Título */
+/* ===== Título principal ===== */
 .login-title {
     text-align: center;
-    margin-bottom: 1.5rem;
-    color: #345874;
-    font-weight: bold;
+    font-size: 60px;
+    font-weight: 800;
+    color: #2563eb;
+    margin-bottom: 2px;
+    font-family: 'Mongolian Baiti', sans-serif;
 }
 
-.btn-primary {
-    width: 100%;
+.login-subtitle {
+    text-align: center;
+    color: #64748b;
+    font-size: 17px;
+    margin-bottom: 1.8rem;
 }
+
+/* ===== Labels ===== */
+.form-label {
+    font-weight: 700 !important;
+    color: #1e293b;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+
+/* ===== Inputs ===== */
+.login-input {
+    border-radius: 12px !important;
+    border: 1px solid #e2e8f0 !important;
+    background-color: #f8fafc !important;
+    padding: 12px 14px !important;
+    font-size: 15px;
+}
+
+    .login-input:focus {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25) !important;
+    }
+
+/* === Contraseña con botón de mostrar === */
+.password-wrapper {
+    position: relative;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 5px;
+}
+
+/* ===== Botón ===== */
+.login-button {
+    width: 100%;
+    background-color: #2563eb !important;
+    border-radius: 12px !important;
+    padding: 14px 0;
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 10px;
+    border: none !important;
+    box-shadow: 0px 6px 16px rgba(37, 99, 235, 0.3);
+}
+
+    .login-button:hover {
+        background-color: #1d4ed8 !important;
+    }
+
+/* ===== Link de recuperar ===== */
+.forgot-link {
+    display: block;
+    text-align: center;
+    margin-top: 1rem;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+    .forgot-link:hover {
+        text-decoration: underline;
+    }

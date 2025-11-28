@@ -7,28 +7,55 @@
 @using System.IdentityModel.Tokens.Jwt;
 @using System.Security.Claims;
 
-<link href="/css/login.css" rel="stylesheet" />
+<link href="css/login.css?v=3" rel="stylesheet" />
 
 <div class="login-background">
     <div class="login-card">
-        <h3 class="login-title">Iniciar Sesión</h3>
+
+        <h3 class="login-title">YELAZO</h3>
+        <p class="login-subtitle">Inicio de Sesión</p>
 
         <EditForm Model="@userInfo" OnValidSubmit="Loguear">
             <DataAnnotationsValidator />
+
+            <!-- Usuario -->
             <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <InputText id="email" class="form-control" @bind-Value="userInfo.Email" />
+                <label class="form-label">Nombre de usuario</label>
+                <InputText class="form-control login-input" placeholder="Ingresa tu nombre de usuario" @bind-Value="userInfo.Email" />
                 <ValidationMessage For="@(() => userInfo.Email)" />
             </div>
+
+            <!-- Contraseña -->
             <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-                <InputText id="password" type="password" class="form-control" @bind-Value="userInfo.Password" />
+                <label class="form-label">Contraseña</label>
+
+                <div class="password-wrapper">
+                    <InputText type="password"
+                               class="form-control login-input password-input"
+                               placeholder="•••••••••••••"
+                               @bind-Value="userInfo.Password" />
+
+                    <span class="toggle-password">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="#94a3b8" class="bi bi-eye-slash" viewBox="0 0 16 16">
+                            <path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-6-8-6a7.028 7.028 0 0 0-2.79.588l.76.76A5.944 5.944 0 0 1 8 3c3.5 0 6 5 6 5-.264.45-.753 1.18-1.467 1.863l-.536-.625z" />
+                            <path d="M11.297 9.176A3.5 3.5 0 0 0 5.82 3.7l.717.717A2.5 2.5 0 0 1 10.282 8.46l1.015 1.015zm-8.14-6.19.708.708A7.027 7.027 0 0 0 0 8s3 6 8 6a7.027 7.027 0 0 0 3.502-.904l.708.708.708-.708L1.865 2.286l-.708.708z" />
+                        </svg>
+                    </span>
+                </div>
+
                 <ValidationMessage For="@(() => userInfo.Password)" />
             </div>
-            <button type="submit" class="btn btn-primary">Ingresar</button>
+
+            <!-- Botón -->
+            <button type="submit" class="btn btn-primary login-button">Ingresar</button>
+
+            <!-- Link -->
+            <a href="#" class="forgot-link">¿Olvidaste tu contraseña?</a>
         </EditForm>
+
     </div>
 </div>
+
 
 @code {
     private UserLoginDTO userInfo = new UserLoginDTO();
