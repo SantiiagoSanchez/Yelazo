@@ -3,6 +3,49 @@
 
 <h3>Informe de Ingresos</h3>
 
+@if (tarjetaReportes != null)
+{
+    <div class="row mb-4">
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Top Cliente</h5>
+                    <p class="card-text fs-5 fw-bold">@tarjetaReportes.TopCliente</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Top Producto</h5>
+                    <p class="card-text fs-5 fw-bold">@tarjetaReportes.TopProducto</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Top Zona</h5>
+                    <p class="card-text fs-5 fw-bold">@tarjetaReportes.TopZona</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card shadow-sm text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Total Clientes</h5>
+                    <p class="card-text fs-5 fw-bold">@tarjetaReportes.TotalClientes</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
 <select class="form-select w-auto mb-3" @onchange="OnChangeAño">
     @foreach (var a in Años)
     {
@@ -77,16 +120,27 @@
     private IngresosAnualesDTO? ingresos;
     private List<DetalleIngresosDTO>? detalleMensual;
     private int mesSeleccionado;
+    private TarjetasReportesDTO? tarjetaReportes;
 
     protected override async Task OnInitializedAsync()
     {
         await CargarIngresos();
+        await CargarTarjetaReportes();
     }
 
     private async Task OnChangeAño(ChangeEventArgs e)
     {
         anioSeleccionado = int.Parse(e.Value.ToString());
         await CargarIngresos();
+    }
+
+    private async Task CargarTarjetaReportes()
+    {
+        var respuesta = await http.Get<TarjetasReportesDTO>("api/Estadisticas/Tarjetas");
+        if (!respuesta.Error)
+        {
+            tarjetaReportes = respuesta.Respuesta;
+        }
     }
 
     private async Task CargarIngresos()

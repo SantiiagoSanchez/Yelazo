@@ -42,5 +42,36 @@ namespace Yelazo.Server.Repositorios
             })
                 .ToListAsync();
         }
+
+        public async Task<TarjetasReportesDTO> ObtenerTarjetasAsync()
+        {
+            var dto = new TarjetasReportesDTO();
+
+            dto.TopCliente = await context.Pedidos
+                .Include(p => p.Usuario)
+                .GroupBy(p => new { p.Usuario.Id, p.Usuario.Nombre, p.Usuario.Apellido })
+                .OrderByDescending(g => g.Sum(x => x.Total))
+                .Select(g => g.Key.Nombre + " " + g.Key.Apellido)
+                .FirstOrDefaultAsync() ?? "N/A";
+
+            dto.TopProducto = await context.DetallePedidos
+                .Include(d => d.Producto)
+                .GroupBy(d => new { d.Producto.Id, d.Producto.Nombre })
+                .OrderByDescending(g => g.Sum(x => x.Cantidad))
+                .Select(g => g.Key.Nombre)
+                .FirstOrDefaultAsync() ?? "N/A";
+
+            dto.TopZona = await context.Pedidos
+                .Include(p => p.Usuario)
+                .Where(p => p.Usuario.Zona != null)
+                .GroupBy(p => p.Usuario.Zona!)
+                .OrderByDescending(g => g.Count())
+                .Select(g => g.Key)
+                .FirstOrDefaultAsync() ?? "N/A";
+
+            dto.TotalClientes = await context.Users.CountAsync();
+
+            return dto;
+        }
     }
 }

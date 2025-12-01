@@ -27,5 +27,12 @@ namespace Yelazo.Server.Controllers
             var ingresosDetallados = await repositorio.GetIngresosDetallados(anio, mes);
             return Ok(ingresosDetallados);
         }
+
+        [HttpGet("Tarjetas")]
+        public async Task<IActionResult> ObtenerTarjetasAsync()
+        {
+            var tarjetas = await repositorio.ObtenerTarjetasAsync();
+            return Ok(tarjetas);
+        }
     }
 }
