@@ -134,3 +134,56 @@ td .btn {
     background-color: #3b82f6;
     color: #fff;
 }
+/* === Botón Volver mejorado === */
+.btn-volver {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #1e293b;
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 8px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+    .btn-volver:hover {
+        background-color: #e2e8f0;
+        border-color: #94a3b8;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    /* Icono del botón Volver */
+    .btn-volver i {
+        font-size: 1rem;
+        color: #475569;
+    }
+/* === Botón Aplicar mejorado === */
+.btn-aplicar {
+    background-color: #3b82f6;
+    border: none;
+    color: white;
+    border-radius: 10px;
+    padding: 8px 18px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+}
+
+    .btn-aplicar:hover {
+        background-color: #2563eb;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.45);
+    }
+
+    .btn-aplicar i {
+        font-size: 1rem;
+        color: #fff;
+    }
+

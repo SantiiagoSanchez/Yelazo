@@ -1,0 +1,184 @@
+﻿/* === Fondo del modal === */
+.bg-dark.bg-opacity-50 {
+    background-color: rgba(15, 23, 42, 0.6) !important; /* gris oscuro translúcido */
+    backdrop-filter: blur(4px);
+}
+
+/* === Contenedor principal del modal === */
+.modal-contenedor {
+    background-color: #ffff;
+    border-radius: 45px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 480px;
+    padding: 32px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+    /* === Título y descripción === */
+    .modal-contenedor h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1e293b;
+    }
+
+    .modal-contenedor p {
+        color: #64748b;
+        font-size: 0.95rem;
+    }
+
+    /* === Secciones del formulario === */
+    .modal-contenedor h6 {
+        font-weight: 600;
+        font-size: 1rem;
+        margin-top: 1rem;
+        margin-bottom: 0.75rem;
+        color: #1e293b;
+    }
+
+/* === Inputs === */
+.form-label {
+    font-weight: 500;
+    color: #334155;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    box-shadow: none !important;
+    border-radius: 12px; /* Esquinas muy redondeadas */
+    padding: 7px 10px;
+    transition: all 0.2s ease;
+}
+
+    .form-control:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+/* === Input con símbolo (precio) === */
+.input-group-text {
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    color: #475569;
+}
+
+/* === Línea divisoria === */
+.border-top {
+    border-top: 1px solid #e2e8f0 !important;
+}
+
+/* === Botones === */
+.btn-light {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    color: #334155;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+    .btn-light:hover {
+        background-color: #e2e8f0;
+    }
+
+.btn-primary {
+    background-color: #3b82f6 !important;
+    border: none !important;
+    border-radius: 8px;
+    font-weight: 500;
+    padding: 8px 16px;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.3);
+    transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .btn-primary:hover {
+        background-color: #2563eb !important;
+        box-shadow: 0 3px 8px rgba(37, 99, 235, 0.4);
+    }
+
+/* === Botón de cerrar === */
+.btn-close {
+    opacity: 0.6;
+    transition: opacity 0.2s ease;
+}
+
+    .btn-close:hover {
+        opacity: 1;
+    }
+
+.producto-icon {
+    /* Define el tamaño del ícono */
+    font-size: 1rem;
+    /* Mantiene el color del texto actual del contenedor (generalmente oscuro o negro) */
+    color: inherit;
+}
+
+.producto-header-text {
+    /* Asegura que el texto no herede estilos de formulario */
+    font-size: 1rem;
+    color: inherit;
+}
+
+
+/* Estilo del Contenedor de Stock */
+.stock-box {
+    /* Layout: Flexbox para alinear el ícono y el texto */
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 20px;
+    /* Fondo y Bordes (coincide con el tono azul claro de la imagen) */
+    background-color: #f0f7ff; /* Azul muy claro */
+    border: 2px solid #545fff; /* Borde azul sutil */
+    border-radius: 12px; /* Esquinas muy redondeadas */
+    padding: 10px 15px;
+    /* Fuente */
+    font-size: 0.95rem;
+    color: #2563eb; /* Texto principal oscuro */
+}
+
+    .stock-box strong {
+        /* Aseguramos que el "Stock actual:" sea más negrita que el número */
+        font-weight: 700;
+    }
+
+/* Estilo del Ícono */
+.stock-icon {
+    /* Color azul del ícono */
+    color: #2563eb;
+    font-size: 1rem; /* El ícono es un poco más grande para destacar */
+}
+.select-wrapper {
+    position: relative;
+}
+
+.select-modern {
+    width: 100%;
+    appearance: none;
+    background-color: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    color: #334155;
+    transition: 0.2s ease;
+}
+
+    .select-modern:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        outline: none;
+    }
+
+/* Ícono del select */
+.select-wrapper::after {
+    content: "▼";
+    font-size: 0.7rem;
+    color: #64748b;
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}

@@ -1,62 +1,42 @@
 ﻿@page "/stock/gestionar"
 @inject IHttpServicio http
-@inject SweetAlertService swal
-@inject IJSRuntime JS
 @inject NavigationManager navigationManager
 
 
-<div class="card shadow-sm border-0 mb-4">
-    <div class="card-body">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-                <h4 class="fw-semibold mb-0">Gestión de Stock</h4>
-                <small class="text-muted">Listado de productos disponibles</small>
-            </div>
-            <button class="btn btn-outline-secondary d-flex align-items-center gap-2" @onclick="VisualizarHistorial">
-                <i class="bi bi-clock-history"></i>
-                Historial
-            </button>
-        </div>
+<link href="css/GestionarStock.css " rel="stylesheet" />
 
-        @if (listaProducto == null)
+<div class="container-fluid p-0">
+    <h3 class="fw-bold text-dark mb-4">Gestión de Stock</h3>
+
+    <div class="mb-4">
+        @if (listaProducto != null && listaProducto.Count > 0)
         {
-            <div class="alert alert-info">Cargando stock...</div>
-        }
-        else if (listaProducto.Count == 0)
-        {
-            <div class="alert alert-warning">No se encontraron productos cargados.</div>
-        }
-        else
-        {
-            <div class="table-responsive">
-                <table class="table align-middle table-hover">
-                    <thead class="table-light">
+            <div class="table-responsive" style="padding: 10px;">
+                <table class="table-rounded align-middle">
+                    <thead class="thead-custom">
                         <tr>
-                            <th>Tipo de Bolsa</th>
-                            <th>Cantidad</th>
-                            <th class="text-end">Acciones</th>
+                            <th class="ps-4">TIPO DE BOLSA (x KG)</th>
+                            <th class="text-center">CANTIDAD</th>
+                            <th class="text-end pe-4">ACCIONES</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in listaProducto)
                         {
-                            <tr>
-                                <td>
-                                    <div class="fw-bold">@item.Nombre</div>
-                                    <div class="text-muted small">@item.Presentacion</div>
+                            <tr class="fila-producto">
+                                <td class="ps-4">
+                                    <div class="nombre-producto">@item.Nombre</div>
+                                    <div class="descripcion-producto">@item.Presentacion</div>
                                 </td>
-
-                                <td>
-                                    <span class="badge bg-primary-subtle text-primary fw-semibold px-3 py-2">
-                                        @item.Cantidad
-                                    </span>
+                                <td class="text-center">
+                                    <span class="cantidad-numero">@item.Cantidad</span>
                                 </td>
-
-                                <td class="text-end">
-                                    <a class="btn btn-sm btn-outline-primary d-flex align-items-center gap-1" href="/stock/editar/@item.Id">
-                                        <i class="bi bi-pencil-square"></i>
-                                        Editar
-                                    </a>
+                                <td class="text-end pe-4">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <a href="/stock/editar/@item.Id" class="btn-accion btn-azul">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -65,10 +45,16 @@
             </div>
         }
     </div>
+
+    <div class="d-flex justify-content-end align-items-center mt-3">
+        <button class="btn btn-historial" @onclick="VisualizarHistorial">
+            <i class="bi bi-clock-history me-2"></i> Ver Historial
+        </button>
+    </div>
 </div>
 
-
 @code {
+    // ... Tu código C# se mantiene igual ...
     List<Producto> listaProducto = new List<Producto>();
     string Mensaje = "";
 
@@ -86,17 +72,7 @@
     private async Task Leer()
     {
         var resp = await http.Get<List<Producto>>("api/Productos");
-
-        if (!resp.Error)
-        {
-            listaProducto = resp.Respuesta;
-        }
-        else
-        {
-            Mensaje = "Error";
-        }
-
+        if (!resp.Error) { listaProducto = resp.Respuesta; }
+        else { Mensaje = "Error"; }
     }
-
-
 }

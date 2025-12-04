@@ -3,30 +3,39 @@
 @inject NavigationManager navigationManager
 
 <div class="card shadow-sm border-0 p-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
+
+    <!-- Encabezado -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+
+
+        <button class="btn-volver btn-sm mb-3" @onclick="Volver">
+            <i class="bi bi-arrow-left-circle"></i> Volver
+        </button>
+
+        <!-- Título -->
+        <div class="flex-grow-1 text-center">
             <h3 class="fw-bold mb-1">Historial de Movimientos</h3>
             <small class="text-muted">Control de entradas y salidas de productos</small>
         </div>
-        <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="Volver">
-            <i class="bi bi-arrow-left"></i> Volver
-        </button>
+
         <!-- Filtro -->
         <div class="d-flex align-items-center gap-2">
             <InputDate @bind-Value="fechaSeleccionada" class="form-control form-control-sm" />
-            <button class="btn btn-outline-primary btn-sm" @onclick="Leer">
-                <i class="bi bi-search"></i> Aplicar
+            <button class="btn-aplicar btn-sm" @onclick="Leer">
+            <i class="bi bi-search"></i> Aplicar
             </button>
         </div>
+
     </div>
 
-    <!-- Totales -->
+    <!-- Tarjetas Totales -->
     <div class="d-flex gap-3 mb-4">
-        <div class="card border-0 shadow-sm flex-fill p-3 text-center">
+        <div class="card total-card shadow-custom flex-fill p-3 text-center">
             <h6 class="text-muted">INGRESOS HOY</h6>
             <h2 class="text-success fw-bold">@TotalIngresosHoy</h2>
         </div>
-        <div class="card border-0 shadow-sm flex-fill p-3 text-center">
+
+        <div class="card total-card shadow-custom flex-fill p-3 text-center">
             <h6 class="text-muted">EGRESOS HOY</h6>
             <h2 class="text-danger fw-bold">@TotalEgresosHoy</h2>
         </div>
@@ -34,23 +43,24 @@
 
     <!-- Tabla -->
     <div class="table-responsive">
-        <table class="table align-middle table-hover">
-            <thead class="table-light">
+        <table class="table align-middle table-hover text-center tabla-mov">
+            <thead>
                 <tr>
-                    <th class="text-uppercase small">ID Mov.</th>
-                    <th class="text-uppercase small">Producto</th>
-                    <th class="text-uppercase small">Cantidad</th>
-                    <th class="text-uppercase small">Fecha</th>
+                    <th>ID Mov.</th>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
                 </tr>
             </thead>
+
             <tbody>
                 @if (listaStock == null)
                 {
-                    <tr><td colspan="4" class="text-center text-muted">Buscando registros ...</td></tr>
+                    <tr><td colspan="4" class="text-muted">Buscando registros...</td></tr>
                 }
                 else if (listaStock.Count == 0)
                 {
-                    <tr><td colspan="4" class="text-center text-muted">No se encontraron registros cargados.</td></tr>
+                    <tr><td colspan="4" class="text-muted">No se encontraron registros.</td></tr>
                 }
                 else
                 {
@@ -59,7 +69,8 @@
                         <tr>
                             <td>@item.Id.ToString("D3")</td>
                             <td>@item.Producto.Nombre @item.Producto.Presentacion</td>
-                            <td class="fw-bold" style="color:@(item.Movimiento == "Entrada" ? "green" : "red")">
+                            <td class="fw-bold"
+                                style="color:@(item.Movimiento == "Entrada" ? "#16a34a" : "#dc2626")">
                                 @(item.Movimiento == "Entrada" ? "+" : "-")@Math.Abs(item.Cantidad)
                             </td>
                             <td>@item.FechaActualizacio.ToString("dd MMM yyyy")</td>
@@ -75,38 +86,19 @@
     DateTime fechaSeleccionada = DateTime.Today;
     int TotalIngresosHoy = 0;
     int TotalEgresosHoy = 0;
-
-    List<Stock> listaStock = new List<Stock>();
-    string Mensaje = "";
+    List<Stock> listaStock = new();
 
     protected override async Task OnInitializedAsync()
     {
-        await base.OnInitializedAsync();
         await Leer();
         await CargarTotalesHoy();
     }
 
     private async Task Leer()
     {
-        Mensaje = "";
-        listaStock = new List<Stock>();
-
         var fechaStr = fechaSeleccionada.ToString("yyyy-MM-dd");
         var resp = await http.Get<List<Stock>>($"api/Stock/filter?fecha={fechaStr}");
-
-        if (!resp.Error && resp.Respuesta != null)
-        {
-            listaStock = resp.Respuesta;
-
-            if (listaStock.Count == 0)
-            {
-                Mensaje = "No se encontraron registros para la fecha seleccionada.";
-            }
-        }
-        else
-        {
-            Mensaje = "Error al obtener datos.";
-        }
+        listaStock = resp.Error ? new() : resp.Respuesta;
     }
 
     private async Task CargarTotalesHoy()
@@ -115,26 +107,46 @@
 
         if (!resp.Error && resp.Respuesta != null)
         {
-            var movimientosHoy = resp.Respuesta;
-
-            TotalIngresosHoy = movimientosHoy
-                .Where(x => x.Movimiento == "Entrada")
-                .Sum(x => x.Cantidad);
-
-            TotalEgresosHoy = movimientosHoy
-                .Where(x => x.Movimiento == "Salida")
-                .Sum(x => Math.Abs(x.Cantidad));
-        }
-        else
-        {
-            TotalIngresosHoy = 0;
-            TotalEgresosHoy = 0;
+            TotalIngresosHoy = resp.Respuesta.Where(x => x.Movimiento == "Entrada").Sum(x => x.Cantidad);
+            TotalEgresosHoy = resp.Respuesta.Where(x => x.Movimiento == "Salida").Sum(x => Math.Abs(x.Cantidad));
         }
     }
 
     private void Volver()
     {
-        // Navegar a la página de gestión de stock
         navigationManager.NavigateTo("/stock/gestionar");
     }
+
+    int pagina = 1;
+    int registrosPorPagina = 10;
+
+    int totalPaginas = 1;
+    List<Stock> paginaActual = new();
+
+
+    void CalcularPaginacion()
+    {
+        if (listaStock == null || listaStock.Count == 0)
+        {
+            paginaActual = new();
+            totalPaginas = 1;
+            return;
+        }
+
+        totalPaginas = (int)Math.Ceiling(listaStock.Count / (double)registrosPorPagina);
+
+        pagina = Math.Clamp(pagina, 1, totalPaginas);
+
+        paginaActual = listaStock
+            .Skip((pagina - 1) * registrosPorPagina)
+            .Take(registrosPorPagina)
+            .ToList();
+    }
+
+    void CambiarPagina(int nueva)
+    {
+        pagina = nueva;
+        CalcularPaginacion();
+    }
+
 }
