@@ -104,3 +104,90 @@
     .btn-close:hover {
         opacity: 1;
     }
+
+/* === Grupo especial para precio === */
+.precio-group {
+    display: flex;
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 56px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+    .precio-group:focus-within {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+.precio-icon {
+    font-weight: 600;
+    color: #475569;
+    margin-right: 10px;
+    font-size: 1.2rem;
+}
+
+.precio-input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    font-size: 1.15rem;
+}
+
+/* --- Precio: contenedor unificado con selects --- */
+.precio-group {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #ffffff; /* mismo fondo que inputs */
+    border: 1px solid #cbd5e1; /* mismo borde */
+    border-radius: 8px;
+    overflow: hidden;
+    height: auto;
+}
+
+
+
+/* input: sin borde propio, ocupa el resto y tiene el mismo padding/altura que form-control-lg */
+.precio-input {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 0.625rem 0.75rem; /* coincide con form-control-lg visualmente */
+    font-size: 1rem;
+    line-height: 1.5;
+    width: 100%;
+    height: calc(1.5em + 1rem); /* matching typical form-control-lg height */
+}
+
+/* focus: cuando el input tiene foco, que se note como tus otros inputs */
+.precio-group:focus-within {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59,130,246,0.12);
+}
+
+/* sombra ligera igual a .shadow-sm */
+.precio-group.shadow-sm {
+    box-shadow: 0 1px 3px rgba(16,24,40,0.04), 0 1px 2px rgba(16,24,40,0.06);
+}
+
+/* En caso de bootstrap inyecte padding extra en form-control-lg,
+   forzamos la consistencia */
+.form-control-lg.precio-input {
+    padding-top: 0.625rem;
+    padding-bottom: 0.625rem;
+}
+
+/* small responsive tweak: en pantallas muy pequeñas */
+@media (max-width: 420px) {
+    .precio-icon {
+        width: 48px;
+    }
+
+    .precio-input {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+    }
+}

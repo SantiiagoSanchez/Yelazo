@@ -187,3 +187,18 @@ td .btn {
         color: #fff;
     }
 
+.btn-historial {
+    background-color: #5a7d96;
+    color: white;
+    font-weight: 500;
+    padding: 8px 20px;
+    border-radius: 6px;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+    .btn-historial:hover {
+        background-color: #466378;
+        color: white;
+    }
+
