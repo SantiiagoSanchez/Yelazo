@@ -21,46 +21,63 @@
         </button>
     </header>
 
-    <div class="carrito-panel position-fixed top-0 end-0 bg-white shadow p-3 d-flex flex-column"
-         style="width:300px; height:100vh; transition: transform 0.3s; transform:@(mostrarCarrito ? "translateX(0)" : "translateX(100%)"); z-index:1050;">
+    <div class="carrito-panel position-fixed top-0 end-0 bg-white shadow-lg p-3 d-flex flex-column"
+         style="width:320px; height:100vh; transition: transform .3s ease;
+            transform:@(mostrarCarrito ? "translateX(0)" : "translateX(100%)"); z-index:1050;">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h5>Mi Carrito</h5>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h4 class="fw-semibold m-0">Mi Carrito</h4>
             <button class="btn-close" @onclick="() => mostrarCarrito = false"></button>
         </div>
 
         @if (carrito.Detalles != null && carrito.Detalles.Any())
         {
-            <ul class="list-group flex-grow-1 overflow-auto">
+            <div class="flex-grow-1 overflow-auto pe-1">
+
                 @foreach (var detalle in carrito.Detalles)
                 {
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                            @detalle.Producto.Nombre
-                            <span class="badge bg-primary rounded-pill ms-2">@detalle.Cantidad</span>
-                            <span class="badge bg-secondary rounded-pill ms-1">@detalle.Producto.Precio</span>
+                    <div class="card mb-3 border-0 shadow-sm">
+                        <div class="card-body d-flex justify-content-between align-items-center">
+
+                            <div>
+                                <div class="fw-semibold">@detalle.Producto.Nombre</div>
+
+                                <div class="d-flex align-items-center mt-1" style="gap:.4rem;">
+                                    <span class="badge bg-primary">@detalle.Cantidad</span>
+                                    <span class="badge bg-dark">@detalle.Producto.Precio</span>
+                                </div>
+                            </div>
+
+                            <button class="btn btn-outline-danger btn-sm rounded-circle d-flex justify-content-center align-items-center"
+                                    style="width:30px; height:30px;"
+                                    @onclick="() => QuitarProductoAsync(detalle.Producto.Id)">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+
                         </div>
-
-                        <button class="btn btn-sm btn-danger"
-                                style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
-                                @onclick="() => QuitarProductoAsync(detalle.Producto.Id)">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </li>
+                    </div>
                 }
-            </ul>
 
-            <!-- Total al final -->
-            <div class="mt-3 border-top pt-2">
-                <strong>Total: $</strong> @carrito.Total
             </div>
 
-            <button class="btn btn-success" @onclick="Pedir">Pedir</button>
+            <!-- TOTAL -->
+            <div class="border-top pt-3 mt-2">
+                <div class="d-flex justify-content-between mb-3">
+                    <span class="fw-semibold">Total:</span>
+                    <span class="fw-bold fs-5 text-success">$@carrito.Total</span>
+                </div>
+
+                <button class="btn btn-success w-100 py-2" @onclick="Pedir">Pedir</button>
+            </div>
         }
         else
         {
-            <p class="mt-auto">Tu carrito está vacío.</p>
+            <div class="mt-auto text-center text-muted">
+                <i class="bi bi-cart-x" style="font-size:2rem;"></i>
+                <p class="mt-2">Tu carrito está vacío.</p>
+            </div>
         }
+
     </div>
 
     <!-- Encabezado -->
@@ -148,31 +165,32 @@
 <!-- Modal para seleccionar cantidad -->
 @if (mostrarModalCantidad)
 {
-    <div class="modal fade show d-block"
-         style="background-color: rgba(0,0,0,.5); z-index:2000;">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal fade show d-flex align-items-center justify-content-center"
+         style="background-color: rgba(0,0,0,.35); z-index:2000;">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Seleccionar cantidad</h5>
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+            <div class="modal-content rounded-4 shadow-lg border-0">
+
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-semibold">Seleccionar cantidad</h5>
                     <button class="btn-close" @onclick="() => mostrarModalCantidad = false"></button>
                 </div>
 
-                <div class="modal-body">
-                    <label class="form-label">Cantidad</label>
+                <div class="modal-body pt-2">
+                    <label class="form-label fw-medium">Cantidad</label>
                     <input type="number"
-                           class="form-control"
+                           class="form-control form-control-lg rounded-3"
                            min="1"
                            @bind="cantidadSeleccionada" />
                 </div>
 
-                <div class="modal-footer">
-                    <button class="btn btn-secondary"
+                <div class="modal-footer border-0 pt-0">
+                    <button class="btn btn-light px-4 py-2 rounded-3"
                             @onclick="() => mostrarModalCantidad = false">
                         Cancelar
                     </button>
 
-                    <button class="btn btn-primary"
+                    <button class="btn btn-primary px-4 py-2 rounded-3 fw-semibold"
                             @onclick="ConfirmarAgregarCantidadAsync">
                         Agregar
                     </button>
