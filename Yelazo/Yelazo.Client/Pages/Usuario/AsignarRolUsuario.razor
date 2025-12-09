@@ -3,7 +3,7 @@
 @inject SweetAlertService swal
 @inject NavigationManager navigationManager
 
-<h3 class="mb-4 fw-bold text-primary">
+@* <h3 class="mb-4 fw-bold text-primary">
     <i class="bi bi-person-gear me-2"></i>Gestión de Roles
 </h3>
 
@@ -50,7 +50,78 @@
             </button>
         </div>
     }
+</div> *@
+<link href="css/DiseñoModalCompartido.css" rel="stylesheet" />
+
+<div class="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center bg-dark bg-opacity-50" style="z-index: 1050;">
+    <div class="modal-contenedor">
+
+        <!-- Botón de cerrar -->
+        <button type="button" class="btn-close position-absolute top-0 end-0 m-3" aria-label="Cerrar" @onclick="Cancelar"></button>
+
+        <!-- Título -->
+        <h5 class="fw-semibold mb-1">Asignar Rol</h5>
+
+        @if (roles == null)
+        {
+            <div class="text-center py-4">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-3"><em>Cargando...</em></p>
+            </div>
+        }
+        else if (roles.Count == 0)
+        {
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                No hay roles disponibles.
+            </div>
+        }
+        else
+        {
+            <p class="fs-5 text-success fw-semibold">@Mensaje</p>
+
+            <EditForm Model="roles" OnValidSubmit="AsignarRol">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <!-- Información del gasto -->
+
+                <div class="mb-3">
+                    <label class="form-label">Seleccione un rol</label>
+
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="precio-group flex-grow-1 d-flex">
+                            <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="rolSeleccionado">
+                                <option value="">Seleccione...</option>
+                                @foreach (var rol in roles)
+                                {
+                                    <option value="@rol.Nombre">@rol.Nombre</option>
+                                }
+                            </InputSelect>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Botones -->
+                <div class="d-flex justify-content-end border-top pt-3 gap-2">
+
+                    <button type="button" class="btn btn-light btn-lg" @onclick="RemoverRol">
+                        Remover rol
+
+                    </button>
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        Asignar rol
+                    </button>
+                </div>
+            </EditForm>
+        }
+
+    </div>
 </div>
+
 
 
 @code {
@@ -118,6 +189,10 @@
 
             navigationManager.NavigateTo("/usuarios");
         }
+    }
+    private void Cancelar()
+    {
+        navigationManager.NavigateTo("/usuarios");
     }
 
 }

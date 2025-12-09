@@ -105,6 +105,8 @@
         opacity: 1;
     }
 
+
+
 /* === Grupo especial para precio === */
 .precio-group {
     display: flex;
@@ -214,4 +216,86 @@
             grid-column: span 1;
         }
 }
+
+/* ========== GRID FORZADO DE 2 COLUMNAS ========== */
+.modal-grid {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    column-gap: 24px !important;
+    row-gap: 20px !important;
+    width: 100%;
+}
+
+/* === Contenedor principal del modal === */
+.gasto-modal{
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 850px !important;
+    padding: 32px;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* === Título y descripción === */
+.gasto-modal h5 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+.gasto-modal p {
+    color: #64748b;
+    font-size: 0.95rem;
+}
+
+/* === Secciones del formulario === */
+.gasto-modal h6 {
+    font-weight: 600;
+    font-size: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0.75rem;
+    color: #1e293b;
+}
+
+/* Subtítulos de cada columna */
+/* ===== Subtítulos de columnas ===== */
+.modal-section-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e2e8f0;
+    text-align: left;
+}
+
+/* Responsive para pantallas chicas */
+@media (max-width: 700px) {
+    .modal-grid {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+.btn-plus {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e2e8f0;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+    .btn-plus:hover {
+        background: #e2e8f0;
+    }
+
+
+
+
 

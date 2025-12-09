@@ -48,40 +48,47 @@
 
             <div class="mb-3">
                 <label class="form-label">Proveedor *</label>
-                <div class="precio-group d-flex">
-                    <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="modelo.ProveedorId">
-                        <option value="">Seleccione...</option>
-                        @foreach (var tg in listaProveedores)
-                        {
-                            <option value="@tg.Id">@tg.Nombre</option>
-                        }
-                    </InputSelect>
-                    <a href="/proveedor/crear" class="btn-plus" title="Nuevo proveedor">
+
+                <div class="d-flex align-items-center gap-2">
+                    <div class="precio-group flex-grow-1 d-flex">
+                        <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="modelo.ProveedorId">
+                            <option value="">Seleccione...</option>
+                            @foreach (var tg in listaProveedores)
+                            {
+                                <option value="@tg.Id">@tg.Nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
+                    <a href="/proovedor/crear" class="btn-plus" title="Nuevo proovedor">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8 1a.75.75 0 0 1 .75.75V7.25H14.25a.75.75 0 0 1 0 1.5H8.75v5.5a.75.75 0 0 1-1.5 0v-5.5H1.75a.75.75 0 0 1 0-1.5H7.25V1.75A.75.75 0 0 1 8 1z" />
                         </svg>
                     </a>
-
                 </div>
+
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Tipo de gasto *</label>
-                <div class="precio-group d-flex">
-                    <InputSelect class="form-select form-control-lg shadow-sm border-0 me-2" @bind-Value="modelo.TipoGastoId">
-                        <option value="">Seleccione...</option>
-                        @foreach (var tg in listaTiposGasto)
-                        {
-                            <option value="@tg.Id">@tg.Nombre</option>
-                        }
-                    </InputSelect>
+                <div class="d-flex align-items-center gap-2">
+                    <div class="precio-group flex-grow-1 d-flex">
+                        <InputSelect class="form-select form-control-lg shadow-sm border-0" @bind-Value="modelo.TipoGastoId">
+                            <option value="">Seleccione...</option>
+                            @foreach (var tg in listaTiposGasto)
+                            {
+                                <option value="@tg.Id">@tg.Nombre</option>
+                            }
+                        </InputSelect>
+                    </div>
+
                     <a href="/tiposGasto/crear" class="btn-plus" title="Nuevo tipo de gasto">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
                             <path d="M8 1a.75.75 0 0 1 .75.75V7.25H14.25a.75.75 0 0 1 0 1.5H8.75v5.5a.75.75 0 0 1-1.5 0v-5.5H1.75a.75.75 0 0 1 0-1.5H7.25V1.75A.75.75 0 0 1 8 1z" />
                         </svg>
                     </a>
-
                 </div>
+
             </div>
 
 
