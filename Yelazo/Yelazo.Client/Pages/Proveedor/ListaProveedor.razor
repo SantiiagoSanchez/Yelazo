@@ -2,6 +2,7 @@
 @inject IHttpServicio http
 @inject SweetAlertService swal
 @inject IJSRuntime JS
+@attribute [Authorize(Roles = "admin")]
 
 <div class="card shadow-sm border-0">
     <div class="card-body">

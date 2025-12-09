@@ -2,6 +2,7 @@
 @inject IHttpServicio http
 @inject SweetAlertService swal
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "admin, repartidor")]
 
 <link href="css/DiseñosCompartidos.css" rel="stylesheet" />
 
@@ -18,6 +19,7 @@
             <th>Total</th>
             <th>Estado</th>
             <th>Fecha</th>
+            <th>Zona</th>
             <th>Acciones</th>
         </tr>
     </thead>
@@ -41,6 +43,7 @@
                     <td>@pedido.Total $</td>
                     <td>@pedido.Estado</td>
                     <td>@pedido.FechaPedido.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>@pedido.Zona</td>
                     <td>
                         <button class="btn btn-info btn-sm text-white" @onclick="() => AbrirDetalles(pedido.Id)">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">

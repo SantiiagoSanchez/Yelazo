@@ -1,5 +1,6 @@
 ﻿@page "/clientes"
 @inject IHttpServicio http
+@attribute [Authorize(Roles = "admin")]
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="fw-bold m-0">Gestión de Clientes</h3>

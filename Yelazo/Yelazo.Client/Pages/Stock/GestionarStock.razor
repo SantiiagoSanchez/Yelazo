@@ -1,6 +1,7 @@
 ﻿@page "/stock/gestionar"
 @inject IHttpServicio http
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "admin, produccion")]
 
 
 <link href="css/GestionarStock.css " rel="stylesheet" />

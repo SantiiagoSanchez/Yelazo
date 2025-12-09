@@ -82,6 +82,7 @@ namespace Yelazo.Server.Repositorios
                     Direccion = p.Usuario.Direccion,
                     Total = p.Total,
                     Estado = p.Estado,
+                    Zona = p.Usuario.Zona,
                     FechaPedido = p.FechaPedido
                 })
                 .ToListAsync();

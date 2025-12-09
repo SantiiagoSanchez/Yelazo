@@ -3,6 +3,7 @@
 @inject SweetAlertService swal
 @inject IJSRuntime JS
 @inject NavigationManager navigationManager
+@attribute [Authorize(Roles = "admin, produccion")]
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="fw-bold m-0">Gestión de Insumos</h3>

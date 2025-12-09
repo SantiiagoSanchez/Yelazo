@@ -1,5 +1,6 @@
 ﻿@page "/usuarios"
 @inject IHttpServicio http
+@attribute [Authorize(Roles = "admin")]
 
 <style>
     .btn-purple {

@@ -15,6 +15,8 @@ namespace Yelazo.Shared.DTO
         public string Direccion { get; set; } = string.Empty;
         public decimal Total { get; set; }
         public string Estado { get; set; } = string.Empty;
+
+        public string Zona { get; set; } = string.Empty;
         public DateTime FechaPedido { get; set; }
     }
 }
