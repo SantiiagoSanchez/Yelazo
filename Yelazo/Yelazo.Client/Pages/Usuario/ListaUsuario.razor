@@ -2,17 +2,6 @@
 @inject IHttpServicio http
 @attribute [Authorize(Roles = "admin")]
 
-<style>
-    .btn-purple {
-        background-color: #6f42c1;
-        color: white;
-    }
-
-    .btn-purple:hover {
-        background-color: #5a32a3;
-        color: white;
-        }
-</style>
 
 <link href="css/Gastos.css" rel="stylesheet" />
 
@@ -27,30 +16,26 @@
 </div>
 
 <!-- Tarjetas resumen -->
-<div class="row mb-4">
-    <div class="col-md-3">
-        <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Total de Usuarios</h6>
-            <h5 class="fw-bold mt-2 text-black">@totalUsuarios</h5>
-        </div>
+
+<div class="tarjetas-resumen-contenedor mb-4">
+    <div class="tarjeta-resumen">
+        <h6 class="text-muted m-0 text-black">Total de Usuarios</h6>
+        <h5 class="fw-bold mt-2">@totalUsuarios</h5>
     </div>
-    <div class="col-md-3">
-        <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Administradores</h6>
-            <h5 class="fw-bold mt-2" style="color: #8B5CF6">@totalAdmins</h5>
-        </div>
+
+    <div class="tarjeta-resumen">
+        <h6 class="text-muted m-0">Administradores</h6>
+        <h5 class="fw-bold mt-2 text-warning" style="color: #8B5CF6">@totalAdmins</h5>
     </div>
-    <div class="col-md-3">
-        <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Produccion</h6>
-            <h5 class="fw-bold mt-2" style="color: #3B82F6">@totalProduccion</h5>
-        </div>
+
+    <div class="tarjeta-resumen">
+        <h6 class="text-muted m-0">Producción</h6>
+        <h5 class="fw-bold mt-2 " style="color: #3B82F6">@totalProduccion</h5>
     </div>
-    <div class="col-md-3">
-        <div class="border rounded p-3 text-center">
-            <h6 class="text-muted m-0">Repartidores</h6>
-            <h5 class="fw-bold mt-2" style="color: #10B981">@totalRepartidores</h5>
-        </div>
+
+    <div class="tarjeta-resumen">
+        <h6 class="text-muted m-0">Repartidores</h6>
+        <h5 class="fw-bold mt-2 " style="color: #10B981">@totalRepartidores</h5>
     </div>
 </div>
 
@@ -85,11 +70,11 @@
                 <td>
                     @if (item.Estado)
                     {
-                        <span class="badge bg-success">Activo</span>
+                        <span class="text-success fw-bold">Activo</span>
                     }
                     else
                     {
-                        <span class="badge bg-secondary">Inactivo</span>
+                        <span class="text-danger fw-bold">Inactivo</span>
                     }
                 </td>
                 <td>

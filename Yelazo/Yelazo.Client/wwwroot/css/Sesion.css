@@ -1,0 +1,67 @@
+﻿/* Contenedor general */
+.user-bar {
+    padding: 10px 25px;
+}
+
+/* Avatar redondo */
+.avatar-circle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #3b82f6;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* Pill del usuario */
+.user-pill {
+    background: #f1f5f9;
+    border-radius: 20px;
+    padding: 6px 12px;
+    display: inline-flex;
+    align-items: center;
+    transition: 0.25s ease;
+    border: 1px solid #e2e8f0;
+}
+
+    .user-pill:hover {
+        background: #e2e8f0;
+    }
+
+/* Texto del nombre */
+.user-label {
+    font-size: 0.95rem;
+    color: #334155;
+}
+
+/* Botón de cerrar sesión */
+.logout-pill {
+    background: #fff5f5;
+    border-radius: 20px;
+    border: 1px solid #ffcccc;
+    text-decoration: none;
+    padding: 6px 12px;
+    color: #dc3545 !important;
+    font-weight: 500;
+    transition: 0.25s ease;
+}
+
+    .logout-pill:hover {
+        background: #ffe0e0;
+        transform: translateX(-3px);
+    }
+
+/* Icono con animación */
+.icon-logout {
+    transition: transform 0.25s ease;
+}
+
+.logout-pill:hover .icon-logout {
+    transform: translateX(-3px);
+}
