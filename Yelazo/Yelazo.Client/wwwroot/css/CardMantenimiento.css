@@ -1,0 +1,161 @@
+﻿/* === CARD MODERNA DE MANTENIMIENTO === */
+.card-mantenimiento {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.card-mantenimiento:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.10);
+}
+
+/* === TÍTULO === */
+.card-mantenimiento .card-title {
+    font-size: 1.15rem;
+    color: #1e293b;
+}
+
+/* === DESCRIPCIÓN === */
+.card-mantenimiento .descripcion {
+    color: #64748b;
+    font-size: 0.92rem;
+    margin-bottom: 0;
+}
+
+/* === BADGE ESTADO === */
+.badge-estado {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.8rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+.badge-al-dia {
+    background-color: #d1fae5;
+    color: #059669;
+    border: 1px solid #86efac;
+}
+
+.badge-vencido {
+    background-color: #fee2e2;
+    color: #dc2626;
+    border: 1px solid #fca5a5;
+}
+
+/* === INFORMACIÓN DE LISTA === */
+.card-mantenimiento ul li {
+    padding: 2px 0;
+    font-size: 0.9rem;
+    color: #334155;
+}
+
+.card-mantenimiento ul strong {
+    color: #1e293b;
+}
+
+/* === BOTONES === */
+.acciones {
+    display: flex;
+    gap: 12px;
+    margin-top: 16px;
+}
+
+/* === Próxima renovación resaltada === */
+.proxima-renovacion {
+    color: #dc2626;
+    font-weight: 700;
+}
+
+/* === Quitar subrayado de links en botones === */
+.btn-renovar,
+.btn-renovar:hover,
+.btn-renovar:focus,
+.btn-renovar:active {
+    text-decoration: none !important;
+}
+/* === Botón Eliminar estilo moderno === */
+.btn-eliminar {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background-color: #dc2626; /* rojo */
+    color: #ffffff; /* texto e icono blancos */
+    border: none;
+    padding: 10px 0;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+    .btn-eliminar i {
+        color: #ffffff; /* icono blanco */
+    }
+
+    /* Hover → se vuelve suave, igual que Renovar pero en rojo */
+    .btn-eliminar:hover {
+        background-color: #fee2e2; /* fondo rojo muy claro */
+        color: #dc2626; /* texto rojo */
+        box-shadow: 0 3px 6px rgba(220, 38, 38, 0.2);
+    }
+
+        .btn-eliminar:hover i {
+            color: #dc2626; /* icono rojo */
+        }
+
+    /* Evita subrayados en los textos dentro de botones */
+    .btn-eliminar,
+    .btn-eliminar:hover {
+        text-decoration: none !important;
+    }
+
+/* === Botón Renovar === */
+.btn-renovar {
+    background-color: #10b981;
+    color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 0;
+    font-size: 0.9rem;
+    font-weight: 600;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all .2s ease;
+}
+
+    .btn-renovar i {
+        font-size: 1rem;
+        color: #ffffff; /* blanco por defecto */
+    }
+
+    .btn-renovar:hover {
+        background-color: #059669;
+        box-shadow: 0 3px 6px rgba(16, 185, 129, 0.3);
+    }
+
+        .btn-renovar:hover i {
+            color: #e6fffa; /* un tono celeste suave */
+        }
+
+
+
+    /* Evitar subrayados */
+    .btn-renovar,
+    .btn-renovar:hover {
+        text-decoration: none !important;
+    }
+

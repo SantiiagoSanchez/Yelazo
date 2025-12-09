@@ -1,0 +1,144 @@
+﻿
+/* Contenedor en fila, siempre horizontal */
+.tarjetas-resumen-contenedor {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+    justify-content: flex-start;
+    align-items: stretch;
+    width: 100%;
+}
+
+/* Cada tarjeta */
+.tarjeta-resumen {
+    flex: 1; /* todas el mismo ancho */
+    background: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    padding: 25px;
+    height: 130px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+    transition: transform .2s ease;
+}
+
+    /* Hover animado */
+    .tarjeta-resumen:hover {
+        transform: translateY(-3px);
+    }
+
+/* Último gasto destacado */
+.badge-ultimo-gasto {
+    background: #d1fae5;
+    padding: 6px 20px;
+    border-radius: 10px;
+    color: #059669;
+    font-weight: bold;
+    display: inline-block;
+}
+
+
+/* === SELECTS MODERNOS === */
+.select-moderno {
+    border-radius: 10px !important;
+    padding: 10px !important;
+    border: 1px solid #cbd5e1 !important;
+    background: #ffffff !important;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    font-weight: 500;
+    color: #334155;
+    transition: all .2s ease;
+}
+
+    .select-moderno:focus {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 3px rgba(59,130,246,.25) !important;
+    }
+
+
+
+/* === BOTÓN FILTRAR (nuevo estilo premium) === */
+.btn-filtrar {
+    background-color: #16a34a !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 10px 18px !important;
+    font-weight: 600 !important;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .2s ease, box-shadow .2s ease;
+}
+
+    .btn-filtrar:hover {
+        background-color: #15803d !important;
+        box-shadow: 0 4px 12px rgba(22,163,74,0.25);
+    }
+
+/* === BOTÓN MOSTRAR TODOS === */
+.btn-todos {
+    background-color: #e2e8f0 !important;
+    color: #334155 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 10px 18px !important;
+    font-weight: 600 !important;
+    transition: background .2s ease, box-shadow .2s ease;
+}
+
+    .btn-todos:hover {
+        background-color: #cbd5e1 !important;
+        box-shadow: 0 4px 10px rgba(148,163,184,0.25);
+    }
+
+/* === BOTÓN EDITAR === */
+.table .btn-primary {
+    background: #3b82f6 !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 6px 10px !important;
+}
+
+    .table .btn-primary:hover {
+        background: #2563eb !important;
+    }
+
+/* === BOTÓN LIMPIAR / MOSTRAR TODOS === */
+
+/* Botón amarillo (Limpiar filtros) */
+.btn-limpiar {
+    background-color: #facc15; /* amarillo */
+    color: #4b4b4b;
+    font-weight: 600;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 10px;
+    justify-content: center;
+    transition: all .2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+    .btn-limpiar i {
+        font-size: 17px;
+    }
+
+    .btn-limpiar:hover {
+        background-color: #eab308;
+        box-shadow: 0 3px 8px rgba(234, 179, 8, 0.3);
+        transform: scale(1.03);
+    }
+
+/* Ambos botones mismo tamaño */
+.btn-filtrar,
+.btn-limpiar {
+    flex: 1;
+}
+

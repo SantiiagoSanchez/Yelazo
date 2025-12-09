@@ -191,3 +191,27 @@
         padding-right: 0.5rem;
     }
 }
+
+/* === FORMULARIO EN 2 COLUMNAS === */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas */
+    gap: 16px 20px; /* espaciado entre filas y columnas */
+}
+
+    /* Campos que deben ocupar toda la fila */
+    .form-grid .full-row {
+        grid-column: span 2;
+    }
+
+/* Responsive: en pantallas pequeñas vuelve a 1 columna */
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+        .form-grid .full-row {
+            grid-column: span 1;
+        }
+}
+
