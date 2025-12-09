@@ -4,7 +4,7 @@
 @inject IHttpServicio http
 @inject ICarritoService carritoService
 @inject SweetAlertService swal
-
+@attribute [Authorize(Roles = "cliente")]
 
 @Mensaje
 

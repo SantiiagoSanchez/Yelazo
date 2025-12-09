@@ -1,5 +1,7 @@
 ﻿@page "/gastos"
 @inject IHttpServicio http
+@attribute [Authorize(Roles = "admin, repartidor, produccion")]
+
 
 <link href="css/Gastos.css" rel="stylesheet" />
 

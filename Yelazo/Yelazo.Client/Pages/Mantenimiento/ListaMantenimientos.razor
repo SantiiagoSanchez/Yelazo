@@ -2,6 +2,7 @@
 @inject IHttpServicio http
 @inject SweetAlertService swal
 @inject IJSRuntime JS
+@attribute [Authorize(Roles = "admin, repartidor, produccion")]
 
 
 <link rel="stylesheet" href="css/CardMantenimiento.css" />
