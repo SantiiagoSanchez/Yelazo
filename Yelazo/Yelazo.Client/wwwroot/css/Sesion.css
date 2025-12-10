@@ -65,3 +65,16 @@
 .logout-pill:hover .icon-logout {
     transform: translateX(-3px);
 }
+
+.brand-title-strong {
+    font-size: 1.8rem; /* tamaño grande, estilo marca */
+    font-weight: 800; /* negrita fuerte */
+    color: #ffffff; /* blanco puro */
+    letter-spacing: 1px; /* separación ligera entre letras */
+    text-transform: uppercase; /* todo mayúsculas */
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 4px 0;
+    user-select: none; /* que no se seleccione por accidente */
+}
+
