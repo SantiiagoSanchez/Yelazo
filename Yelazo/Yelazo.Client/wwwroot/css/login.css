@@ -7,7 +7,7 @@ body, html {
 
 /* Fondo con blur */
 .login-background {
-    background-image: url('/fondo-login.png');
+    background-image: url('/hielo-imagen.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
